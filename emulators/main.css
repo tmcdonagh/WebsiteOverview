@@ -1,0 +1,17 @@
+head {
+
+
+}
+
+
+body {
+	background-color: rgb(0,100,175);
+	width: 950px;
+	margin: 0 auto;
+	padding: 0;
+}
+a {
+	color: black;
+	text-decoration: none;
+	outline: none;
+}
