@@ -1,41 +1,42 @@
 <!DOCTYPE html>
-<html>
-	<div class="box">
-		<head>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>McDonagh Corp</title>
+    <link rel="stylesheet" type="text/css" href="/menu.css">
+    <link rel="icon" type="img/ico" href="/favicon.ico">
+  </head>
+  <body>
 
-			<title>McDonagh Corp</title>
-			<link rel="stylesheet" type="text/css" href="/main.css">
-			<link rel="stylesheet" type="text/css" href="/tabs.css">
-			<link rel="stylesheet" type="text/css" href="/page.css">
-			<link rel="icon" type="img/ico" href="favicon.ico">
-			<a href="/"><center style = "font-size:100px"><font face="impact">McDonagh Corp</font></center></a>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="/">Home</a>
+      <a href="/games">Games</a>
+      <a href="/emulators">Emulators</a>
+    </div>
 
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
 
+    <script type="text/javascript" src="/nav.js"></script>
+    <div id="main">
+      <center>
+        <h1>McDonagh Corp</h1>
 
-		</head>
-
-		<body>
-			<div class="tabs">
-				<ul class="tab-links">
-					<li><a href="/">Home</a></li>
-					<li><a href="/games">Games</a></li>
-					<li><a href="/emulators">Emulators</a></li>
-					<li class="active"><a href="/coinhive">CoinHive Miner</a></li>
-				</ul>
-			</div>
-
-			<script src="http://authedmine.com/lib/simple-ui.min.js" async></script>
-			<center>
-				<div class="coinhive-miner" 
-					style="width: 256px; height: 310px"
-					data-key="kOB43R5FlK0BdIHpvbMhjjseJyy8y06J">
-					<em>Loading...</em>
-				</div>
-			</center>
-
+        <script src="http://authedmine.com/lib/simple-ui.min.js" async></script>
+        <center>
+          <div class="coinhive-miner" 
+               style="width: 256px; height: 310px"
+               data-key="kOB43R5FlK0BdIHpvbMhjjseJyy8y06J">
+            <em>Loading...</em>
+          </div>
+        </center>
 
 
 
-		</body>
-	</div>
-</html>
+
+      </center>
+    </div>
+  </body>
+</html> 
+
