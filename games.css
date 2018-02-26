@@ -1,7 +1,6 @@
 .game
 {
-	position: relative;
-	width: relative / 2;
-	padding: auto;
-	margin: 0 auto;
+  width: 950px;
+  margin: 0 auto;
+  padding: 0;
 }
