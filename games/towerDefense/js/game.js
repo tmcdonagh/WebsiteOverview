@@ -13,7 +13,7 @@ Game.create = function(){
   Game.camera = this.camera.main;
   Game.camera.setBounds(0, 0, 20*32, 20*32);
 
-  var phaserGuy = this.add.image(32,32 'phaserguy');
+  var phaserGuy = this.add.image(32, 32, 'phaserguy');
   phaserGuy.setDepth(1);
   phaserGuy.setOrigin(0, 0.5);
   Game.camera.startFollow(phaserGuy);
