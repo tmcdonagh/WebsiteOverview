@@ -1,6 +1,3 @@
-/**
- * Created by Jerome Renaux (jerome.renaux@gmail.com) on 25-02-18.
- */
 var Game = {};
 
 Game.preload = function(){
@@ -68,17 +65,27 @@ Game.create = function(){
         if(properties[i].cost) Game.finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
     }
     Game.finder.setAcceptableTiles(acceptableTiles);
+  
+
+
+    var count = 0;
 };
 
 Game.update = function(){
-    var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
+    //var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
 
     // Rounds down to nearest tile
+    /*
     var pointerTileX = Game.map.worldToTileX(worldPoint.x);
     var pointerTileY = Game.map.worldToTileY(worldPoint.y);
     Game.marker.x = Game.map.tileToWorldX(pointerTileX);
     Game.marker.y = Game.map.tileToWorldY(pointerTileY);
     Game.marker.setVisible(!Game.checkCollision(pointerTileX,pointerTileY));
+    */
+    if(count == 0){
+      Game.movement();
+      count++;
+    }
 };
 
 Game.checkCollision = function(x,y){
@@ -91,6 +98,8 @@ Game.getTileID = function(x,y){
     return tile.index;
 };
 
+
+/*
 Game.handleClick = function(pointer){
     var x = Game.camera.scrollX + pointer.x;
     var y = Game.camera.scrollY + pointer.y;
@@ -110,6 +119,29 @@ Game.handleClick = function(pointer){
     });
     Game.finder.calculate(); // don't forget, otherwise nothing happens
 };
+*/
+
+Game.movement = function(){
+  var x = 288;
+  var y = 288;
+  var toX = Math.floor(x/32);
+  var toY = Math.floor(y/32);
+  var fromX = Math.floor(Game.player.x/32);
+  var fromY = Math.floor(Game.player.y/32);
+  console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+
+  Game.finder.findPath(fromX, fromY, toX, toY, function( path ) {
+    if(path === null) {
+      console.warn("Path was not found.");
+    }
+    else {
+      console.log(path);
+      Game.moveCharacter(path);
+    }
+  });
+  Game.finder.calculate();
+};
+
 
 Game.moveCharacter = function(path){
     // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
