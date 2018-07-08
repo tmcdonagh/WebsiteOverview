@@ -9,7 +9,8 @@ Game.preload = function(){
 
 Game.create = function(){
     // Handles the clicks on the map to make the character move
-    this.input.on('pointerup',Game.handleClick);
+    
+    //this.input.on('pointerup',Game.handleClick);
 
     Game.camera = this.cameras.main;
     Game.camera.setBounds(0, 0, 20*32, 20*32);
