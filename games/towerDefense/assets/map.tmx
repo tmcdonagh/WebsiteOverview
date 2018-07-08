@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="10" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1">
- <tileset firstgid="1" source="gridtiles.tsx"/>
+ <tileset firstgid="1" name="gridtiles" tilewidth="32" tileheight="32" tilecount="140" columns="14">
+  <image source="pathfinding_tutorial/assets/gridtiles.png" width="448" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="cost" type="int" value="4"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer name="Tile Layer 1" width="10" height="11">
   <data encoding="csv">
 15,15,15,15,15,15,15,15,15,15,
