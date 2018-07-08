@@ -25,7 +25,7 @@
          "imageheight":320,
          "imagewidth":448,
          "margin":0,
-         "name":"gridtiles",
+         "name":"tiles",
          "spacing":0,
          "tilecount":140,
          "tileheight":32,
