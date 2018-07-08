@@ -19,8 +19,47 @@
  "tileheight":32,
  "tilesets":[
         {
+         "columns":14,
          "firstgid":1,
-         "source":"gridtiles.tsx"
+         "image":"pathfinding_tutorial\/assets\/gridtiles.png",
+         "imageheight":320,
+         "imagewidth":448,
+         "margin":0,
+         "name":"gridtiles",
+         "spacing":0,
+         "tilecount":140,
+         "tileheight":32,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "collide":true
+                },
+             "1":
+                {
+                 "cost":4
+                },
+             "14":
+                {
+                 "collide":true
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "collide":"bool"
+                },
+             "1":
+                {
+                 "cost":"int"
+                },
+             "14":
+                {
+                 "collide":"bool"
+                }
+            },
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",
