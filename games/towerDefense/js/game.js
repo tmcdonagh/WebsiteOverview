@@ -18,7 +18,7 @@ Game.create = function(){
     var phaserGuy = this.add.image(32,32,'phaserguy');
     phaserGuy.setDepth(1);
     phaserGuy.setOrigin(0,0.5);
-    Game.camera.startFollow(phaserGuy);
+    //Game.camera.startFollow(phaserGuy);
     Game.player = phaserGuy;
 
     // Display map
