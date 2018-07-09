@@ -13,7 +13,7 @@ Game.create = function(){
     //this.input.on('pointerup',Game.handleClick);
 
     Game.camera = this.cameras.main;
-    Game.camera.setBounds(0, 0, 20*32, 20*32);
+    //Game.camera.setBounds(0, 0, 20*32, 20*32);
 
     var phaserGuy = this.add.image(32,32,'phaserguy');
     phaserGuy.setDepth(1);
