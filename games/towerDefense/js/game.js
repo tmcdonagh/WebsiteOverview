@@ -12,14 +12,8 @@ Game.create = function(){
     
     //this.input.on('pointerup',Game.handleClick);
 
-    //Game.camera = this.cameras.main;
+    Game.camera = this.cameras.main;
     //Game.camera.setBounds(0, 0, 20*32, 20*32);
-
-
-    Game.camera.scale.x = 2;
-    Game.camera.scale.y = 2;
-
-
 
 
     var phaserGuy = this.add.image(32,32,'phaserguy');
