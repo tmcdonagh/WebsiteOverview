@@ -68,6 +68,7 @@ Game.create = function(){
     Game.finder.setAcceptableTiles(acceptableTiles);
 
     Game.movement();
+    Game.marker.setVisible(false);
   
 };
 
