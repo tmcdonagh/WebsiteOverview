@@ -16,8 +16,8 @@ Game.create = function(){
     //Game.camera.setBounds(0, 0, 20*32, 20*32);
 
 
-    Game.camera.scale.x = 2;
-    Game.camera.scale.y = 2;
+    game.camera.scale.x = 2;
+    game.camera.scale.y = 2;
 
 
 
