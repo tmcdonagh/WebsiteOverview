@@ -21,11 +21,11 @@
         {
          "columns":14,
          "firstgid":1,
-         "image":"pathfinding_tutorial\/assets\/gridtiles.png",
+         "image":"gridtiles.png",
          "imageheight":320,
          "imagewidth":448,
          "margin":0,
-         "name":"gridtiles",
+         "name":"tiles",
          "spacing":0,
          "tilecount":140,
          "tileheight":32,
