@@ -67,9 +67,6 @@ Game.create = function(){
     }
     Game.finder.setAcceptableTiles(acceptableTiles);
   
-
-
-    var count = 0;
 };
 
 Game.update = function(){
@@ -83,10 +80,7 @@ Game.update = function(){
     Game.marker.y = Game.map.tileToWorldY(pointerTileY);
     Game.marker.setVisible(!Game.checkCollision(pointerTileX,pointerTileY));
     */
-    if(count == 0){
-      Game.movement();
-      count++;
-    }
+    Game.movement();
 };
 
 Game.checkCollision = function(x,y){
