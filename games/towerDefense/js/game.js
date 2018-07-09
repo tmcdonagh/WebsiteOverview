@@ -66,6 +66,8 @@ Game.create = function(){
         if(properties[i].cost) Game.finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
     }
     Game.finder.setAcceptableTiles(acceptableTiles);
+
+    Game.movement();
   
 };
 
@@ -80,7 +82,7 @@ Game.update = function(){
     Game.marker.y = Game.map.tileToWorldY(pointerTileY);
     Game.marker.setVisible(!Game.checkCollision(pointerTileX,pointerTileY));
     */
-    Game.movement();
+    //Game.movement();
 };
 
 Game.checkCollision = function(x,y){
