@@ -74,17 +74,9 @@ Game.create = function(){
 };
 
 Game.update = function(){
-    //var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
 
-    // Rounds down to nearest tile
-    /*
-    var pointerTileX = Game.map.worldToTileX(worldPoint.x);
-    var pointerTileY = Game.map.worldToTileY(worldPoint.y);
-    Game.marker.x = Game.map.tileToWorldX(pointerTileX);
-    Game.marker.y = Game.map.tileToWorldY(pointerTileY);
-    Game.marker.setVisible(!Game.checkCollision(pointerTileX,pointerTileY));
-    */
-    //Game.movement();
+
+
 };
 
 Game.checkCollision = function(x,y){
@@ -98,31 +90,9 @@ Game.getTileID = function(x,y){
 };
 
 
-/*
-Game.handleClick = function(pointer){
-    var x = Game.camera.scrollX + pointer.x;
-    var y = Game.camera.scrollY + pointer.y;
-    var toX = Math.floor(x/32);
-    var toY = Math.floor(y/32);
-    var fromX = Math.floor(Game.player.x/32);
-    var fromY = Math.floor(Game.player.y/32);
-    console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
-
-    Game.finder.findPath(fromX, fromY, toX, toY, function( path ) {
-        if (path === null) {
-            console.warn("Path was not found.");
-        } else {
-            console.log(path);
-            Game.moveCharacter(path);
-        }
-    });
-    Game.finder.calculate(); // don't forget, otherwise nothing happens
-};
-*/
-
 Game.movement = function(){
-  var x = 288;
-  var y = 288;
+  var x = 640;
+  var y = 608;
   var toX = Math.floor(x/32);
   var toY = Math.floor(y/32);
   var fromX = Math.floor(Game.player.x/32);
