@@ -1,6 +1,6 @@
 var playState = {
   create:function(){
-    // game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //this.input.on('pointerup', handleClick);
 
