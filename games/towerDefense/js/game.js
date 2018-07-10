@@ -38,6 +38,8 @@ function collisionHandler(bullet, enemy) {
   //checkEnemies();
 }
 
+
+
 game.state.add('boot', bootState);
 game.state.add('load', loadState);
 game.state.add('menu', menuState);
