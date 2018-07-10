@@ -1,5 +1,6 @@
 var loadState = {
   preload: function(){
+    var scene = game;
     var loadingLabel = game.add.text(80, 150, 'Loading...', {font: '30px Arial'});
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     game.scale.pageAlignHorizontally = true;
@@ -7,6 +8,10 @@ var loadState = {
     game.stage.backgroundColor = '#ffffff';
   
     game.load.image('mainEnemy', 'img/mainEnemy.png');
+
+    game.load.image('tileset', 'assets/map.json');
+    game.load.tilemapTiledJSON('map', 'assets/map.json');
+    
 
   },
 
