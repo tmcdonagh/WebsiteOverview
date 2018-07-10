@@ -82,7 +82,7 @@ Game.update = function(){
   var pointerTileY = Game.map.worldToTileY(worldPoint.y);
   Game.marker.x = Game.map.tileToWorldX(pointerTileX);
   Game.marker.y = Game.map.tileToWorldY(pointerTileY);
-  Game.marker.setVisible(!Game.checkCollision(pointerTileX,pointerTileY));
+  Game.marker.setVisible(Game.checkCollision(pointerTileX,pointerTileY));
 
 };
 
