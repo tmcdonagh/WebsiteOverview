@@ -23,7 +23,7 @@ Game.create = function(){
   this.input.on('pointerup',Game.handleClick);
 
   Game.camera = this.cameras.main;
-  //Game.camera.setBounds(0, 0, 20*32, 20*32);
+  Game.camera.setBounds(0, 0, 21*32, 21*32);
   
   //this.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -144,9 +144,11 @@ Game.handleClick = function(pointer){
 
 Game.spawnEnemy = function(type){
   if(type == 1){
-    var mainEnemy = mainEnemies.create(64, 32, 'mainEnemy');
-    mainEnemy.anchor.setTo(0.5, 0.5);
+    var mainEnemy = mainEnemies.create(32, 32, 'mainEnemy');
+    //mainEnemy.anchor.setTo(0.5, 0.5);
     mainEnemy.checkWorldBounds = true;
+    mainEnemy.setDepth(1);
+    mainEnemy.setOrigin(0,0.5);
     Game.movement(mainEnemy);
   }
 };
@@ -166,6 +168,7 @@ Game.movement = function(player){
   var toY = Math.floor(y/32);
   var fromX = Math.floor(player.x/32);
   var fromY = Math.floor(player.y/32);
+  
   console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
   Game.finder.findPath(fromX, fromY, toX, toY, function( path ) {
@@ -174,23 +177,24 @@ Game.movement = function(player){
     }
     else {
       console.log(path);
-      Game.moveCharacter(path);
+      Game.moveCharacter(path, player);
     }
   });
   Game.finder.calculate();
 };
 
 
-Game.moveCharacter = function(path){
+Game.moveCharacter = function(path, enemy){
   // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
   var tweens = [];
   for(var i = 0; i < path.length-1; i++){
     var ex = path[i+1].x;
     var ey = path[i+1].y;
     tweens.push({
-      targets: Game.player,
-      x: {value: ex*Game.map.tileWidth, duration: 200},
-      y: {value: ey*Game.map.tileHeight, duration: 200}
+      //targets: Game.player,
+      targets: enemy,
+      x: {value: ex*Game.map.tileWidth, duration: 800},
+      y: {value: ey*Game.map.tileHeight, duration: 800}
     });
   }
 
