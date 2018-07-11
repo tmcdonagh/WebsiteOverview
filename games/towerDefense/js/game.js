@@ -1,5 +1,4 @@
-//var Game = {};
-var Game = new Phaser.Game(21*32, 21*32, Phaser.AUTO, 'gameDiv');
+var Game = {};
 
 
 
