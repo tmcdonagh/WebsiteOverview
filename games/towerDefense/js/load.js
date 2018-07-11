@@ -9,8 +9,8 @@ var loadState = {
   
     game.load.image('mainEnemy', 'img/mainEnemy.png');
 
-    game.load.image('tileset', 'assets/gridtiles.png');
-    game.load.tilemapTiledJSON('map', 'assets/map.json');
+    //game.load.image('tileset', 'assets/gridtiles.png');
+    //game.load.tilemapTiledJSON('map', 'assets/map.json');
     
 
   },
