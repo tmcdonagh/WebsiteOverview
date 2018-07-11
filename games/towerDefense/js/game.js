@@ -122,7 +122,7 @@ Game.update = function(){
   Game.marker.setVisible(Game.checkCollision(pointerTileX,pointerTileY));
 
   if(this.time.now > firingTimer && enemiesLeft > 0){
-    spawnEnemy(1);
+    Game.spawnEnemy(1);
     firingTimer = this.time.now + 2000;
   }
 
