@@ -108,6 +108,10 @@ Game.getTileID = function(x,y){
   return tile.index;
 };
 
+Game.handleClick = function(pointer){
+  
+};
+
 
 Game.movement = function(){
   var x = 640;
