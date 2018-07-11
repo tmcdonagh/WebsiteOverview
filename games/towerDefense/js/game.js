@@ -16,6 +16,7 @@ Game.preload = function(){
 
 Game.create = function(){
   // Handles the clicks on the map to make the character move
+
   Game.scene = this;
 
   // Runs Game.handleClick when mouse is clicked
@@ -24,14 +25,14 @@ Game.create = function(){
   Game.camera = this.cameras.main;
   //Game.camera.setBounds(0, 0, 20*32, 20*32);
   
-  this.physics.startSystem(Phaser.Physics.ARCADE);
+  //this.physics.startSystem(Phaser.Physics.ARCADE);
 
 
   mainEnemies = this.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
   
-  Game.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
+  //Game.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
 
 
 
