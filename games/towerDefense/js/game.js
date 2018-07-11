@@ -1,10 +1,15 @@
 var Game = {};
 
+
+var firingTimer = 0;
+var enemiesLeft = 10;
+
 Game.preload = function(){
   Game.scene = this; // Handy reference to the scene (alternative to `this` binding)
   this.load.image('tileset', 'assets/gridtiles.png');
   this.load.tilemapTiledJSON('map', 'assets/map.json');
-  this.load.image('phaserguy', 'assets/phaserguy.png');
+  this.load.image('mainEnemy', 'assets/phaserguy.png');
+  this.load.image('bullet', 'assets/bullet.png');
 };
 
 Game.create = function(){
@@ -17,10 +22,22 @@ Game.create = function(){
   Game.camera = this.cameras.main;
   //Game.camera.setBounds(0, 0, 20*32, 20*32);
 
+  mainEnemies = game.add.group();
+  mainEnemies.enableBody = true;
+  mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
   
+  game.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
 
 
 
+
+  bullets = game.add.group();
+  bullets.enableBody = true;
+  bullets.physicsBodyType = Phaser.Physics.ARCADE;
+  bullets.createMultiple(30, 'bullet');
+  bullets.setAll('anchor.x', 0.5);
+  bullets.setAll('outOfBoundsKill', true);
+  bullets.setAll('checkWorldBounds', true);
 
 
 
@@ -80,7 +97,7 @@ Game.create = function(){
   }
   Game.finder.setAcceptableTiles(acceptableTiles);
 
-  Game.movement();
+  //Game.movement();
   Game.marker.setVisible(false);
 
 };
@@ -95,6 +112,11 @@ Game.update = function(){
   Game.marker.x = Game.map.tileToWorldX(pointerTileX);
   Game.marker.y = Game.map.tileToWorldY(pointerTileY);
   Game.marker.setVisible(Game.checkCollision(pointerTileX,pointerTileY));
+
+  if(game.time.now > firingTimer && enemiesLeft > 0){
+    spawnEnemy(1);
+    firingTimer = game.time.now + 2000;
+  }
 
 };
 
@@ -112,14 +134,30 @@ Game.handleClick = function(pointer){
   
 };
 
+Game.spawnEnemy = function(type){
+  if(type == 1){
+    var mainEnemy = mainEnemies.create(64, 32, 'mainEnemy');
+    mainEnemy.anchor.setTo(0.5, 0.5);
+    mainEnemy.checkWorldBounds = true;
+    Game.movement(mainEnemy);
+  }
+};
 
-Game.movement = function(){
+
+
+
+
+
+
+
+
+Game.movement = function(player){
   var x = 640;
   var y = 608;
   var toX = Math.floor(x/32);
   var toY = Math.floor(y/32);
-  var fromX = Math.floor(Game.player.x/32);
-  var fromY = Math.floor(Game.player.y/32);
+  var fromX = Math.floor(player.x/32);
+  var fromY = Math.floor(player.y/32);
   console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
   Game.finder.findPath(fromX, fromY, toX, toY, function( path ) {
