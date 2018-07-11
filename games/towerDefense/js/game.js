@@ -41,10 +41,12 @@ Game.create = function(){
   bullets.enableBody = true;
   bullets.physicsBodyType = Phaser.Physics.ARCADE;
   bullets.createMultiple(30, 'bullet');
+  
+  /*
   bullets.setAll('anchor.x', 0.5);
   bullets.setAll('outOfBoundsKill', true);
   bullets.setAll('checkWorldBounds', true);
-
+  */
 
 
 
