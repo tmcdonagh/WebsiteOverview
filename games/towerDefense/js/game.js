@@ -16,7 +16,7 @@ Game.preload = function(){
 
 Game.create = function(){
   // Handles the clicks on the map to make the character move
-
+  Game.scene = this;
 
   // Runs Game.handleClick when mouse is clicked
   this.input.on('pointerup',Game.handleClick);
@@ -24,7 +24,7 @@ Game.create = function(){
   Game.camera = this.cameras.main;
   //Game.camera.setBounds(0, 0, 20*32, 20*32);
   
-  Game.physics.startSystem(Phaser.Physics.ARCADE);
+  this.physics.startSystem(Phaser.Physics.ARCADE);
 
 
   mainEnemies = this.add.group();
