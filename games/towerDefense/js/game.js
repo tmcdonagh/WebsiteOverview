@@ -23,14 +23,14 @@ Game.create = function(){
   Game.camera = this.cameras.main;
   //Game.camera.setBounds(0, 0, 20*32, 20*32);
   
-  this.physics.startSystem(Phaser.Physics.ARCADE);
+  Game.physics.startSystem(Phaser.Physics.ARCADE);
 
 
   mainEnemies = this.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
   
-  this.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
+  Game.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
 
 
 
