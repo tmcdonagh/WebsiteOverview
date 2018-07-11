@@ -4,6 +4,7 @@ var Game = {};
 var firingTimer = 0;
 var enemiesLeft = 10;
 
+
 Game.preload = function(){
   Game.scene = this; // Handy reference to the scene (alternative to `this` binding)
   this.load.image('tileset', 'assets/gridtiles.png');
@@ -21,6 +22,9 @@ Game.create = function(){
 
   Game.camera = this.cameras.main;
   //Game.camera.setBounds(0, 0, 20*32, 20*32);
+  
+  this.physics.startSystem(Phaser.Physics.ARCADE);
+
 
   mainEnemies = this.add.group();
   mainEnemies.enableBody = true;
