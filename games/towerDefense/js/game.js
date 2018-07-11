@@ -22,16 +22,16 @@ Game.create = function(){
   Game.camera = this.cameras.main;
   //Game.camera.setBounds(0, 0, 20*32, 20*32);
 
-  mainEnemies = game.add.group();
+  mainEnemies = this.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
   
-  game.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
+  this.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
 
 
 
 
-  bullets = game.add.group();
+  bullets = this.add.group();
   bullets.enableBody = true;
   bullets.physicsBodyType = Phaser.Physics.ARCADE;
   bullets.createMultiple(30, 'bullet');
@@ -113,9 +113,9 @@ Game.update = function(){
   Game.marker.y = Game.map.tileToWorldY(pointerTileY);
   Game.marker.setVisible(Game.checkCollision(pointerTileX,pointerTileY));
 
-  if(game.time.now > firingTimer && enemiesLeft > 0){
+  if(this.time.now > firingTimer && enemiesLeft > 0){
     spawnEnemy(1);
-    firingTimer = game.time.now + 2000;
+    firingTimer = this.time.now + 2000;
   }
 
 };
