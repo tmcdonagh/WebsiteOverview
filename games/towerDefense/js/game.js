@@ -203,12 +203,13 @@ function placeArrow(x, y){
   //console.log(xTile + ' ' + yTile);
   if(cash >= 100){ 	
     // need to add something that prevents turrets on turrets
-
-
-    var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret');
-    cash -= 100;
-    cashText.setText('$' + cash);
-
+    console.log(getTileID(xTile, yTile));
+    if(getTileID(xTile, yTile) == 15){
+    
+      var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret');
+      cash -= 100;
+      cashText.setText('$' + cash);
+    }
   }
   
 };
