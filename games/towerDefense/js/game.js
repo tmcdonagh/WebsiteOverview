@@ -47,8 +47,14 @@ function create(){
   shopScreen.setOrigin(0, 0.5);
 
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
-
   livesText = game.add.text(25.5*32, 3.75*32, lives, {font: '18px Arial'});
+
+  //arrowTurretButton = this.physics.add.button(25*32, 3*32, 'endPoint', selectArrowTurret, this, 2, 1, 0);
+  arrowTurretButton = this.add.image(25*32, 8*32, 'bullet')
+  arrowTurretButton.inputEnabled = true;
+  //arrowTurretButton.events.onInputUp.add(function(){
+  //  console.log('worked');
+  //});
 
 
   mainEnemies = this.physics.add.group();
@@ -124,25 +130,30 @@ function create(){
   //this.physics.add.overlap(mainEnemies, endPoints, endPointCollision, null, this);
 
 }
+/* ***** End of Create function ***** */
 
 function update(){
 
-  var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
-  //this.physics.add.overlap(mainEnemies, endPoints, endPointCollision, null, this);
   this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
+
+
+
+
+  var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
 
   //Rounds down to nearest tile
   var pointerTileX = map.worldToTileX(worldPoint.x);
   var pointerTileY = map.worldToTileY(worldPoint.y);
   marker.x = map.tileToWorldX(pointerTileX);
   marker.y = map.tileToWorldY(pointerTileY);
-  //Game.marker.setVisible(Game.checkCollision(pointerTileX,pointerTileY));
   if(pointerTileX < 21){
     marker.setVisible(true);
   }
   else {
     marker.setVisible(false);
   }
+
+  console.log(pointerTileX);
 
   if(this.time.now > firingTimer && enemiesLeft > 0){
     spawnEnemy(1);
@@ -153,6 +164,8 @@ function update(){
 
 
 }
+
+/* ***** End of Update Function ***** */
 
 function checkCollision(x,y){
   if(!map.getTileAt(x, y) == null){
@@ -171,6 +184,10 @@ function getTileID(x,y){
 };
 
 function handleClick(pointer){
+
+};
+
+function selectArrowTurret(){
 
 };
 
