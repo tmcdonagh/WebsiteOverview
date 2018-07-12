@@ -22,6 +22,7 @@ var firingTimer = 0;
 var enemiesLeft = 10;
 var lives = 10;
 var cash = 1000
+arrowFollow = false;
 
 
 function preload(){
@@ -39,46 +40,8 @@ function preload(){
 
 
 function create(){
-  // Handles the clicks on the map to make the character move
-  // Runs Game.handleClick when mouse is clicked
-  //this.input.on('pointerup',Game.handleClick);
 
-  shopScreen = this.add.image(672, 335, 'shop');
-  shopScreen.setOrigin(0, 0.5);
-
-  cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
-  livesText = game.add.text(25.5*32, 3.75*32, lives, {font: '18px Arial'});
-
-  //arrowTurretButton = this.physics.add.button(25*32, 3*32, 'endPoint', selectArrowTurret, this, 2, 1, 0);
-  arrowTurretButton = this.add.image(25*32, 8*32, 'bullet')
-  arrowTurretButton.inputEnabled = true;
-  //arrowTurretButton.events.onInputUp.add(function(){
-  //  console.log('worked');
-  //});
-
-
-  mainEnemies = this.physics.add.group();
-  mainEnemies.enableBody = true;
-  mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
-  mainEnemies.createMultiple(25, 'mainEnemies');
-
-  bullets = this.add.group();
-  bullets.enableBody = true;
-  bullets.physicsBodyType = Phaser.Physics.ARCADE;
-  bullets.createMultiple(30, 'bullet');
-
-
-  //endPoints = this.add.group();
-
-  endPoints = this.physics.add.group();
-  endPoints.enableBody = true;
-  endPoints.physicsBodyType = Phaser.Physics.ARCADE;
-  endPoints.createMultiple(2, 'endPoint');
-
-
-
-
-  // Makes map 
+  // Makes map
   map = game.add.tilemap('map');
   var tiles = map.addTilesetImage('tiles', 'tileset');
   map.createStaticLayer(0, tiles, 0,0);
@@ -121,13 +84,37 @@ function create(){
     if(properties[i].cost) finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
   }
   finder.setAcceptableTiles(acceptableTiles);
-
-  //Game.movement();
   marker.setVisible(false);
+  // Handles the clicks on the map to make the character move
+  // Runs Game.handleClick when mouse is clicked
+  this.input.on('pointerup', handleClick);
+
+  shopScreen = this.add.image(672, 335, 'shop');
+  shopScreen.setOrigin(0, 0.5);
+
+  cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
+  livesText = game.add.text(25.5*32, 3.75*32, lives, {font: '18px Arial'});
+
+  arrowTurretButton = this.add.image(23*32, 8*32, 'endPoint')
+  arrowTurretButton.inputEnabled = true;
+
+
+  mainEnemies = this.physics.add.group();
+  mainEnemies.enableBody = true;
+  mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
+  mainEnemies.createMultiple(25, 'mainEnemies');
+
+  bullets = this.add.group();
+  bullets.enableBody = true;
+  bullets.physicsBodyType = Phaser.Physics.ARCADE;
+  bullets.createMultiple(30, 'bullet');
+
+  endPoints = this.physics.add.group();
+  endPoints.enableBody = true;
+  endPoints.physicsBodyType = Phaser.Physics.ARCADE;
+  endPoints.createMultiple(2, 'endPoint');
 
   spawnEndPoints(660, 630);
-
-  //this.physics.add.overlap(mainEnemies, endPoints, endPointCollision, null, this);
 
 }
 /* ***** End of Create function ***** */
@@ -153,7 +140,11 @@ function update(){
     marker.setVisible(false);
   }
 
-  console.log(pointerTileX);
+  if(arrowFollow){
+    arrowTurretButton.x = this.input.activePointer.x;
+    arrowTurretButton.y = this.input.activePointer.y;
+  }
+
 
   if(this.time.now > firingTimer && enemiesLeft > 0){
     spawnEnemy(1);
@@ -184,12 +175,17 @@ function getTileID(x,y){
 };
 
 function handleClick(pointer){
-
+  console.log(pointer.y);
+  if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283){
+    arrowFollow = true;
+  }
+  else if(pointer.x >= 672){
+    arrowFollow = false;
+    arrowTurretButton.x = 23*32;
+    arrowTurretButton.y = 8*32;
+  }
 };
 
-function selectArrowTurret(){
-
-};
 
 function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
