@@ -48,6 +48,7 @@ function create(){
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
+  mainEnemies.createMultiple(25, 'mainEnemies');
 
   //Game.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
 
@@ -173,7 +174,7 @@ function handleClick(pointer){
 };
 
 function spawnEnemy(type){
-  if(type == 1){
+  if(type == 1 && mainEnemies.countActive(true) <= 20){
     var mainEnemy = mainEnemies.create(0, 32, 'mainEnemy');
     //mainEnemy.anchor.setTo(0.5, 0.5);
     mainEnemy.checkWorldBounds = true;
@@ -184,14 +185,14 @@ function spawnEnemy(type){
   }
 };
 function bulletCollision(bullet, enemy){
-  //bullet.kill();
-  enemy.kill();
+  bullet.destroy();
+  enemy.destroy();
   //cash += 10;
 
 };
 function endPointCollision(endPoint, enemy){
   lives--;
-  enemy.disableBody(true, true);
+  enemy.destroy();
   console.log(lives);
   
 };
