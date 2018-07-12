@@ -12,6 +12,8 @@ Game.preload = function(){
   this.load.tilemapTiledJSON('map', 'assets/map.json');
   this.load.image('mainEnemy', 'assets/phaserguy.png');
   this.load.image('bullet', 'assets/bullet.png');
+  this.load.image('shop', 'assets/tdShop.png');
+  this.load.image('arrowTurret', 'assets/arrow.png');
 };
 
 Game.create = function(){
@@ -26,6 +28,9 @@ Game.create = function(){
   Game.camera.setBounds(0, 0, 21*32, 21*32);
   
   //this.physics.startSystem(Phaser.Physics.ARCADE);
+
+  shopScreen = this.add.image(672, 335, 'shop');
+  shopScreen.setOrigin(0, 0.5);
 
 
   mainEnemies = this.add.group();
@@ -156,7 +161,7 @@ Game.handleClick = function(pointer){
 
 Game.spawnEnemy = function(type){
   if(type == 1){
-    var mainEnemy = mainEnemies.create(32, 32, 'mainEnemy');
+    var mainEnemy = mainEnemies.create(0, 32, 'mainEnemy');
     //mainEnemy.anchor.setTo(0.5, 0.5);
     mainEnemy.checkWorldBounds = true;
     mainEnemy.setDepth(1);
