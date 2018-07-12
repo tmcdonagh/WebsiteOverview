@@ -34,6 +34,7 @@ function preload(){
   game.load.image('shop', 'assets/tdShop.png');
   game.load.image('arrowTurret', 'assets/arrow.png');
   game.load.image('endPoint', 'assets/endPoint.png');
+  game.load.image('dock', 'assets/dock.png');
 }
   // Supposed to fix switching tabs issue but doesn't work
   //stage.disableVisibilityChange = true;
@@ -94,10 +95,17 @@ function create(){
 
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
   livesText = game.add.text(25.5*32, 3.75*32, lives, {font: '18px Arial'});
+  arrowCost = game.add.text(22.3*32, 8.9*32, '$100', {font: '18px Arial'});
 
-  arrowTurretButton = this.add.image(23*32, 8*32, 'endPoint')
+  arrowDock = this.add.image(23*32, 8*32, 'dock');
+  arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret')
   arrowTurretButton.inputEnabled = true;
+  
 
+  arrowTurrets = this.physics.add.group();
+  arrowTurrets.enableBody = true;
+  arrowTurrets.physicsBodyType = Phaser.Physics.ARCADE;
+  
 
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
@@ -175,8 +183,8 @@ function getTileID(x,y){
 };
 
 function handleClick(pointer){
-  console.log(pointer.y);
-  if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283){
+  console.log('(' + pointer.x + ', ' + pointer.y + ')');
+  if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
   }
   else if(pointer.x >= 672){
@@ -184,6 +192,25 @@ function handleClick(pointer){
     arrowTurretButton.x = 23*32;
     arrowTurretButton.y = 8*32;
   }
+  else if(arrowFollow){
+    placeArrow(pointer.x, pointer.y);
+  }
+};
+
+function placeArrow(x, y){
+  xTile = Math.floor(x/32);
+  yTile = Math.floor(y/32);
+  //console.log(xTile + ' ' + yTile);
+  if(cash >= 100){ 	
+    // need to add something that prevents turrets on turrets
+
+
+    var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret');
+    cash -= 100;
+    cashText.setText('$' + cash);
+
+  }
+  
 };
 
 
