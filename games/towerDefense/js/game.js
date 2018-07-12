@@ -20,10 +20,10 @@ var game = new Phaser.Game(config);
 
 var firingTimer = 0;
 var enemiesLeft = 10;
+var lives = 10;
 
 
 function preload(){
-  //Game.scene = this; // Handy reference to the scene (alternative to `this` binding)
   game = this;
   game.load.image('tileset', 'assets/gridtiles.png');
   game.load.tilemapTiledJSON('map', 'assets/map.json');
@@ -31,18 +31,14 @@ function preload(){
   game.load.image('bullet', 'assets/bullet.png');
   game.load.image('shop', 'assets/tdShop.png');
   game.load.image('arrowTurret', 'assets/arrow.png');
+  game.load.image('endPoint', 'assets/endPoint.png');
 }
 
 function create(){
   // Handles the clicks on the map to make the character move
-
-  //Game.scene = this;
-
   // Runs Game.handleClick when mouse is clicked
   //this.input.on('pointerup',Game.handleClick);
 
-  //game.camera = this.cameras.main;
-  //game.camera.setBounds(0, 0, 21*32, 21*32);
 
 
   shopScreen = this.add.image(672, 335, 'shop');
@@ -69,7 +65,7 @@ function create(){
   endPoints = this.physics.add.group();
   endPoints.enableBody = true;
   endPoints.physicsBodyType = Phaser.Physics.ARCADE;
-  endPoints.createMultiple(2, 'bullet');
+  endPoints.createMultiple(2, 'endPoint');
 
 
 
@@ -121,16 +117,17 @@ function create(){
   //Game.movement();
   marker.setVisible(false);
 
-  spawnEndPoints(600, 620);
+  spawnEndPoints(660, 630);
 
-  this.physics.add.overlap(mainEnemies, endPoints, bulletCollision, null, this);
+  //this.physics.add.overlap(mainEnemies, endPoints, endPointCollision, null, this);
 
 }
 
 function update(){
 
   var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
-  this.physics.add.overlap(mainEnemies, endPoints, bulletCollision, null, this);
+  //this.physics.add.overlap(mainEnemies, endPoints, endPointCollision, null, this);
+  this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
 
   //Rounds down to nearest tile
   var pointerTileX = map.worldToTileX(worldPoint.x);
@@ -192,11 +189,18 @@ function bulletCollision(bullet, enemy){
   //cash += 10;
 
 };
+function endPointCollision(endPoint, enemy){
+  lives--;
+  enemy.disableBody(true, true);
+  console.log(lives);
+  
+};
 function spawnEndPoints(x, y){
-  var endPoint = endPoints.create(x, y, 'bullet');
+  var endPoint = endPoints.create(x, y, 'endPoint');
   endPoint.checkWorldBounds = true;
   endPoint.setDepth(1);
   endPoint.setOrigin(0, 0.5);
+  endPoint.setVisible(false);
 };
 function movement(player){
   var x = 640;
@@ -229,10 +233,8 @@ function moveCharacter(path, enemy){
     tweens.push({
       //targets: Game.player,
       targets: enemy,
-      //x: {value: ex*map.tileWidth, duration: 800},
-      x: {value: ex*map.tileWidth, duration: 100},
-      //y: {value: ey*map.tileHeight, duration: 800}
-      y: {value: ey*map.tileHeight, duration: 100}
+      x: {value: ex*map.tileWidth, duration: 800},
+      y: {value: ey*map.tileHeight, duration: 800}
     });
   }
   game.tweens.timeline({
