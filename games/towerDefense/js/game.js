@@ -21,6 +21,7 @@ var game = new Phaser.Game(config);
 var firingTimer = 0;
 var enemiesLeft = 10;
 var lives = 10;
+var cash = 1000
 
 
 function preload(){
@@ -33,27 +34,27 @@ function preload(){
   game.load.image('arrowTurret', 'assets/arrow.png');
   game.load.image('endPoint', 'assets/endPoint.png');
 }
+  // Supposed to fix switching tabs issue but doesn't work
+  //stage.disableVisibilityChange = true;
+
 
 function create(){
   // Handles the clicks on the map to make the character move
   // Runs Game.handleClick when mouse is clicked
   //this.input.on('pointerup',Game.handleClick);
 
-
-
   shopScreen = this.add.image(672, 335, 'shop');
   shopScreen.setOrigin(0, 0.5);
+
+  cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
+
+  livesText = game.add.text(25.5*32, 3.75*32, lives, {font: '18px Arial'});
 
 
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
   mainEnemies.createMultiple(25, 'mainEnemies');
-
-  //Game.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
-
-
-
 
   bullets = this.add.group();
   bullets.enableBody = true;
@@ -193,7 +194,7 @@ function bulletCollision(bullet, enemy){
 function endPointCollision(endPoint, enemy){
   lives--;
   enemy.destroy();
-  console.log(lives);
+  livesText.setText(lives);  
   
 };
 function spawnEndPoints(x, y){
