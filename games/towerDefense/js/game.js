@@ -53,6 +53,12 @@ Game.create = function(){
   bullets.setAll('checkWorldBounds', true);
   */
 
+  endPoints = this.add.group();
+  endPoints.enableBody = true;
+  endPoints.physicsBodyType = Phaser.Physics.ARCADE;
+  endPoints.createMultiple(2, 'bullet');
+
+
 
 
 /*
@@ -113,6 +119,9 @@ Game.create = function(){
   //Game.movement();
   Game.marker.setVisible(false);
 
+  Game.spawnEndPoints(655, 630);
+
+
 };
 
 Game.update = function(){
@@ -136,6 +145,9 @@ Game.update = function(){
     Game.spawnEnemy(1);
     firingTimer = this.time.now + 2000;
   }
+  //have to find a fix for this
+  //this.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
+
 
 };
 
@@ -169,15 +181,18 @@ Game.spawnEnemy = function(type){
     Game.movement(mainEnemy);
   }
 };
-
-
-
-
-
-
-
-
-
+Game.bulletCollision = function(bullet, enemy){
+  bullet.kill();
+  enemy.kill();
+  //cash += 10;
+  
+};
+Game.spawnEndPoints = function(x, y){
+  var endPoint = endPoints.create(x, y, 'bullet');
+  endPoint.checkWorldBounds = true;
+  endPoint.setDepth(1);
+  endPoint.setOrigin(0, 0.5);
+};
 Game.movement = function(player){
   var x = 640;
   var y = 608;
