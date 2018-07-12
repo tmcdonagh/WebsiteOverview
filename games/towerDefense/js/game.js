@@ -1,4 +1,20 @@
-var Game = {};
+var config = {
+  type: Phaser.AUTO,
+  width: 30*32,
+  height: 21*32,
+  physics: {
+    default: 'arcade',
+    arcade: {
+    }
+  },
+  scene: {
+    preload: preload,
+    create: create,
+    update: update
+  }
+};
+
+var game = new Phaser.Game(config);
 
 
 
@@ -6,37 +22,37 @@ var firingTimer = 0;
 var enemiesLeft = 10;
 
 
-Game.preload = function(){
-  Game.scene = this; // Handy reference to the scene (alternative to `this` binding)
-  this.load.image('tileset', 'assets/gridtiles.png');
-  this.load.tilemapTiledJSON('map', 'assets/map.json');
-  this.load.image('mainEnemy', 'assets/phaserguy.png');
-  this.load.image('bullet', 'assets/bullet.png');
-  this.load.image('shop', 'assets/tdShop.png');
-  this.load.image('arrowTurret', 'assets/arrow.png');
-};
+function preload(){
+  //Game.scene = this; // Handy reference to the scene (alternative to `this` binding)
+  game = this;
+  game.load.image('tileset', 'assets/gridtiles.png');
+  game.load.tilemapTiledJSON('map', 'assets/map.json');
+  game.load.image('mainEnemy', 'assets/phaserguy.png');
+  game.load.image('bullet', 'assets/bullet.png');
+  game.load.image('shop', 'assets/tdShop.png');
+  game.load.image('arrowTurret', 'assets/arrow.png');
+}
 
-Game.create = function(){
+function create(){
   // Handles the clicks on the map to make the character move
 
-  Game.scene = this;
+  //Game.scene = this;
 
   // Runs Game.handleClick when mouse is clicked
-  this.input.on('pointerup',Game.handleClick);
+  //this.input.on('pointerup',Game.handleClick);
 
-  Game.camera = this.cameras.main;
-  Game.camera.setBounds(0, 0, 21*32, 21*32);
-  
-  //this.physics.startSystem(Phaser.Physics.ARCADE);
+  //game.camera = this.cameras.main;
+  //game.camera.setBounds(0, 0, 21*32, 21*32);
+
 
   shopScreen = this.add.image(672, 335, 'shop');
   shopScreen.setOrigin(0, 0.5);
 
 
-  mainEnemies = this.add.group();
+  mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
-  
+
   //Game.physics.enable(mainEnemies, Phaser.Physics.ARCADE);
 
 
@@ -46,14 +62,11 @@ Game.create = function(){
   bullets.enableBody = true;
   bullets.physicsBodyType = Phaser.Physics.ARCADE;
   bullets.createMultiple(30, 'bullet');
-  
-  /*
-  bullets.setAll('anchor.x', 0.5);
-  bullets.setAll('outOfBoundsKill', true);
-  bullets.setAll('checkWorldBounds', true);
-  */
 
-  endPoints = this.add.group();
+
+  //endPoints = this.add.group();
+
+  endPoints = this.physics.add.group();
   endPoints.enableBody = true;
   endPoints.physicsBodyType = Phaser.Physics.ARCADE;
   endPoints.createMultiple(2, 'bullet');
@@ -61,45 +74,34 @@ Game.create = function(){
 
 
 
-/*
-  var phaserGuy = this.add.image(32,32,'phaserguy');
-  phaserGuy.setDepth(1);
-  phaserGuy.setOrigin(0,0.5);
-  //Game.camera.startFollow(phaserGuy);
-  Game.player = phaserGuy;
-*/
-
-
-  // Display map
-  Game.map = Game.scene.make.tilemap({ key: 'map'});
-  // The first parameter is the name of the tileset in Tiled and the second parameter is the key
-  // of the tileset image used when loading the file in preload.
-  var tiles = Game.map.addTilesetImage('tiles', 'tileset');
-  Game.map.createStaticLayer(0, tiles, 0,0);
+  // Makes map 
+  map = game.add.tilemap('map');
+  var tiles = map.addTilesetImage('tiles', 'tileset');
+  map.createStaticLayer(0, tiles, 0,0);
 
   // Marker that will follow the mouse
-  Game.marker = this.add.graphics();
-  Game.marker.lineStyle(3, 0xffffff, 1);
-  Game.marker.strokeRect(0, 0, Game.map.tileWidth, Game.map.tileHeight);
+  marker = this.add.graphics();
+  marker.lineStyle(3, 0xffffff, 1);
+  marker.strokeRect(0, 0, map.tileWidth, map.tileHeight);
 
   // ### Pathfinding stuff ###
   // Initializing the pathfinder
-  Game.finder = new EasyStar.js();
+  finder = new EasyStar.js();
 
   // We create the 2D array representing all the tiles of our map
   var grid = [];
-  for(var y = 0; y < Game.map.height; y++){
+  for(var y = 0; y < map.height; y++){
     var col = [];
-    for(var x = 0; x < Game.map.width; x++){
+    for(var x = 0; x < map.width; x++){
       // In each cell we store the ID of the tile, which corresponds
       // to its index in the tileset of the map ("ID" field in Tiled)
-      col.push(Game.getTileID(x,y));
+      col.push(getTileID(x,y));
     }
     grid.push(col);
   }
-  Game.finder.setGrid(grid);
+  finder.setGrid(grid);
 
-  var tileset = Game.map.tilesets[0];
+  var tileset = map.tilesets[0];
   var properties = tileset.tileProperties;
   var acceptableTiles = [];
 
@@ -112,111 +114,113 @@ Game.create = function(){
       continue;
     }
     if(!properties[i].collide) acceptableTiles.push(i+1);
-    if(properties[i].cost) Game.finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
+    if(properties[i].cost) finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
   }
-  Game.finder.setAcceptableTiles(acceptableTiles);
+  finder.setAcceptableTiles(acceptableTiles);
 
   //Game.movement();
-  Game.marker.setVisible(false);
+  marker.setVisible(false);
 
-  Game.spawnEndPoints(655, 630);
+  spawnEndPoints(600, 620);
 
+  this.physics.add.overlap(mainEnemies, endPoints, bulletCollision, null, this);
 
-};
+}
 
-Game.update = function(){
+function update(){
 
   var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
+  this.physics.add.overlap(mainEnemies, endPoints, bulletCollision, null, this);
 
   //Rounds down to nearest tile
-  var pointerTileX = Game.map.worldToTileX(worldPoint.x);
-  var pointerTileY = Game.map.worldToTileY(worldPoint.y);
-  Game.marker.x = Game.map.tileToWorldX(pointerTileX);
-  Game.marker.y = Game.map.tileToWorldY(pointerTileY);
+  var pointerTileX = map.worldToTileX(worldPoint.x);
+  var pointerTileY = map.worldToTileY(worldPoint.y);
+  marker.x = map.tileToWorldX(pointerTileX);
+  marker.y = map.tileToWorldY(pointerTileY);
   //Game.marker.setVisible(Game.checkCollision(pointerTileX,pointerTileY));
   if(pointerTileX < 21){
-    Game.marker.setVisible(true);
+    marker.setVisible(true);
   }
   else {
-    Game.marker.setVisible(false);
+    marker.setVisible(false);
   }
-  
+
   if(this.time.now > firingTimer && enemiesLeft > 0){
-    Game.spawnEnemy(1);
+    spawnEnemy(1);
     firingTimer = this.time.now + 2000;
   }
   //have to find a fix for this
   //this.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
 
 
-};
+}
 
-Game.checkCollision = function(x,y){
-  if(!Game.map.getTileAt(x, y) == null){
-    var tile = Game.map.getTileAt(x, y);
+function checkCollision(x,y){
+  if(!map.getTileAt(x, y) == null){
+    var tile = map.getTileAt(x, y);
     return tile.properties.collide == true;
   }
   else{
-    var tile = Game.map.getTileAt(1,1);
+    var tile = map.getTileAt(1,1);
     return tile.properties.collide == true;
   }
 };
 
-Game.getTileID = function(x,y){
-  var tile = Game.map.getTileAt(x, y);
+function getTileID(x,y){
+  var tile = map.getTileAt(x, y);
   return tile.index;
 };
 
-Game.handleClick = function(pointer){
-  
+function handleClick(pointer){
+
 };
 
-Game.spawnEnemy = function(type){
+function spawnEnemy(type){
   if(type == 1){
     var mainEnemy = mainEnemies.create(0, 32, 'mainEnemy');
     //mainEnemy.anchor.setTo(0.5, 0.5);
     mainEnemy.checkWorldBounds = true;
     mainEnemy.setDepth(1);
     mainEnemy.setOrigin(0,0.5);
-    Game.movement(mainEnemy);
+
+    movement(mainEnemy);
   }
 };
-Game.bulletCollision = function(bullet, enemy){
-  bullet.kill();
+function bulletCollision(bullet, enemy){
+  //bullet.kill();
   enemy.kill();
   //cash += 10;
-  
+
 };
-Game.spawnEndPoints = function(x, y){
+function spawnEndPoints(x, y){
   var endPoint = endPoints.create(x, y, 'bullet');
   endPoint.checkWorldBounds = true;
   endPoint.setDepth(1);
   endPoint.setOrigin(0, 0.5);
 };
-Game.movement = function(player){
+function movement(player){
   var x = 640;
   var y = 608;
   var toX = Math.floor(x/32);
   var toY = Math.floor(y/32);
   var fromX = Math.floor(player.x/32);
   var fromY = Math.floor(player.y/32);
-  
-  console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
-  Game.finder.findPath(fromX, fromY, toX, toY, function( path ) {
+  //console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+
+  finder.findPath(fromX, fromY, toX, toY, function( path ) {
     if(path === null) {
       console.warn("Path was not found.");
     }
     else {
-      console.log(path);
-      Game.moveCharacter(path, player);
+      //console.log(path);
+      moveCharacter(path, player);
     }
   });
-  Game.finder.calculate();
+  finder.calculate();
 };
 
-
-Game.moveCharacter = function(path, enemy){
+function moveCharacter(path, enemy){
   // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
   var tweens = [];
   for(var i = 0; i < path.length-1; i++){
@@ -225,12 +229,13 @@ Game.moveCharacter = function(path, enemy){
     tweens.push({
       //targets: Game.player,
       targets: enemy,
-      x: {value: ex*Game.map.tileWidth, duration: 800},
-      y: {value: ey*Game.map.tileHeight, duration: 800}
+      //x: {value: ex*map.tileWidth, duration: 800},
+      x: {value: ex*map.tileWidth, duration: 100},
+      //y: {value: ey*map.tileHeight, duration: 800}
+      y: {value: ey*map.tileHeight, duration: 100}
     });
   }
-
-  Game.scene.tweens.timeline({
+  game.tweens.timeline({
     tweens: tweens
   });
 };
