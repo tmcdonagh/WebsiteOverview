@@ -119,8 +119,14 @@ Game.update = function(){
   var pointerTileY = Game.map.worldToTileY(worldPoint.y);
   Game.marker.x = Game.map.tileToWorldX(pointerTileX);
   Game.marker.y = Game.map.tileToWorldY(pointerTileY);
-  Game.marker.setVisible(Game.checkCollision(pointerTileX,pointerTileY));
-
+  //Game.marker.setVisible(Game.checkCollision(pointerTileX,pointerTileY));
+  if(pointerTileX < 21){
+    Game.marker.setVisible(true);
+  }
+  else {
+    Game.marker.setVisible(false);
+  }
+  
   if(this.time.now > firingTimer && enemiesLeft > 0){
     Game.spawnEnemy(1);
     firingTimer = this.time.now + 2000;
@@ -129,8 +135,14 @@ Game.update = function(){
 };
 
 Game.checkCollision = function(x,y){
-  var tile = Game.map.getTileAt(x, y);
-  return tile.properties.collide == true;
+  if(!Game.map.getTileAt(x, y) == null){
+    var tile = Game.map.getTileAt(x, y);
+    return tile.properties.collide == true;
+  }
+  else{
+    var tile = Game.map.getTileAt(1,1);
+    return tile.properties.collide == true;
+  }
 };
 
 Game.getTileID = function(x,y){
