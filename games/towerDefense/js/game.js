@@ -17,7 +17,8 @@ var config = {
 var game = new Phaser.Game(config);
 
 
-
+var livingArrowTurrets = [];
+var spawnTimer = 0;
 var firingTimer = 0;
 var enemiesLeft = 10;
 var lives = 10;
@@ -114,7 +115,7 @@ function create(){
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
   mainEnemies.createMultiple(2500, 'mainEnemies');
 
-  bullets = this.add.group();
+  bullets = this.physics.add.group();
   bullets.enableBody = true;
   bullets.physicsBodyType = Phaser.Physics.ARCADE;
   bullets.createMultiple(30, 'bullet');
@@ -127,9 +128,25 @@ function create(){
 
   this.input.on('gameobjectdown', function (pointer, gameObject) {
 
-    gameObject.destroy();
+    //gameObject.destroy();
+    //detectionCircle.visible = false;
 
   });
+
+  detectionCircle = this.add.image(5000, 5000, 'detectionCircle');
+  detectionCircle.visible = false;
+  
+  this.input.on('gameobjectover', function(pointer, gameObject){
+    if(!arrowFollow){
+      detectionCircle.visible = true;
+      detectionCircle.x = gameObject.x;
+      detectionCircle.y = gameObject.y;
+    }
+  });
+  this.input.on('gameobjectout', function(pointer, gameObject){
+    detectionCircle.visible = false;
+  });
+
 
 }
 /* ***** End of Create function ***** */
@@ -160,12 +177,15 @@ function update(){
   }
 
 
-  if(this.time.now > firingTimer && enemiesLeft > 0){
+  if(this.time.now > spawnTimer && enemiesLeft > 0){
     spawnEnemy(1);
-    firingTimer = this.time.now + 2000;
+    spawnTimer = this.time.now + 2000;
   }
-  //have to find a fix for this
-  //this.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
+
+  if(game.time.now > firingTimer){
+    arrowFire();  
+  }
+
 
 
 }
@@ -189,7 +209,7 @@ function getTileID(x,y){
 };
 
 function handleClick(pointer){
-  console.log('(' + pointer.x + ', ' + pointer.y + ')');
+  //console.log('(' + pointer.x + ', ' + pointer.y + ')');
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
   }
@@ -204,19 +224,21 @@ function handleClick(pointer){
 };
 
 function placeArrow(x, y){
+  var canPlace = true;
   xTile = Math.floor(x/32);
   yTile = Math.floor(y/32);
-  //console.log(xTile + ' ' + yTile);
   if(cash >= 100){ 	
-    // need to add something that prevents turrets on turrets
-    var canPlace = false;
+    var canPlace = true;
     this.arrowTurrets.children.each(function(arrowTurret){
-      console.log(arrowTurret.x);
-      if(Math.floor(arrowTurret.x/32) != xTile && Math.floor(arrowTurret.y/32) != yTile){
+      console.log(Math.floor(arrowTurret.x/32));
+      console.log(xTile);
+      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile){
+        canPlace = false;
       }
+
     }, this);
-    console.log(getTileID(xTile, yTile));
-    if(getTileID(xTile, yTile) == 15){
+    //console.log(getTileID(xTile, yTile));
+    if(getTileID(xTile, yTile) == 15 && canPlace == true){
     
       var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret').setInteractive();
       cash -= 100;
@@ -240,6 +262,16 @@ function spawnEnemy(type){
     movement(mainEnemy);
   }
 };
+function arrowFire(){
+  //bullet = bullets.getFirstExists(false); //Doesn't work cuz Phaser 3
+  livingArrowTurrets.length = 0;
+  /*arrowTurrets.forEachAlive(function(arrowTurret){
+    livingTurrets.push(arrowTurret);
+  });
+  */
+};
+
+
 function bulletCollision(bullet, enemy){
   bullet.destroy();
   enemy.destroy();
