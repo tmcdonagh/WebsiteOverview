@@ -35,12 +35,13 @@ function preload(){
   game.load.image('arrowTurret', 'assets/arrow.png');
   game.load.image('endPoint', 'assets/endPoint.png');
   game.load.image('dock', 'assets/dock.png');
+  game.load.image('detectionCircle', 'assets/detectionCircle.png');
 }
-  // Supposed to fix switching tabs issue but doesn't work
-  //stage.disableVisibilityChange = true;
 
 
 function create(){
+
+  create = this; 
 
   // Makes map
   map = game.add.tilemap('map');
@@ -106,11 +107,12 @@ function create(){
   arrowTurrets.enableBody = true;
   arrowTurrets.physicsBodyType = Phaser.Physics.ARCADE;
   
+  
 
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
-  mainEnemies.createMultiple(25, 'mainEnemies');
+  mainEnemies.createMultiple(2500, 'mainEnemies');
 
   bullets = this.add.group();
   bullets.enableBody = true;
@@ -121,8 +123,13 @@ function create(){
   endPoints.enableBody = true;
   endPoints.physicsBodyType = Phaser.Physics.ARCADE;
   endPoints.createMultiple(2, 'endPoint');
-
   spawnEndPoints(660, 630);
+
+  this.input.on('gameobjectdown', function (pointer, gameObject) {
+
+    gameObject.destroy();
+
+  });
 
 }
 /* ***** End of Create function ***** */
@@ -130,7 +137,6 @@ function create(){
 function update(){
 
   this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
-
 
 
 
@@ -203,14 +209,22 @@ function placeArrow(x, y){
   //console.log(xTile + ' ' + yTile);
   if(cash >= 100){ 	
     // need to add something that prevents turrets on turrets
+    var canPlace = false;
+    this.arrowTurrets.children.each(function(arrowTurret){
+      console.log(arrowTurret.x);
+      if(Math.floor(arrowTurret.x/32) != xTile && Math.floor(arrowTurret.y/32) != yTile){
+      }
+    }, this);
     console.log(getTileID(xTile, yTile));
     if(getTileID(xTile, yTile) == 15){
     
-      var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret');
+      var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret').setInteractive();
       cash -= 100;
       cashText.setText('$' + cash);
     }
+
   }
+  
   
 };
 
