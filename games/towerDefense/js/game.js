@@ -108,8 +108,6 @@ function create(){
   arrowTurrets.enableBody = true;
   arrowTurrets.physicsBodyType = Phaser.Physics.ARCADE;
   
-  
-
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
@@ -133,18 +131,18 @@ function create(){
 
   });
 
-  detectionCircle = this.add.image(5000, 5000, 'detectionCircle');
-  detectionCircle.visible = false;
+  mainDetectionCircle = this.add.image(5000, 5000, 'detectionCircle');
+  mainDetectionCircle.visible = false;
   
   this.input.on('gameobjectover', function(pointer, gameObject){
     if(!arrowFollow){
-      detectionCircle.visible = true;
-      detectionCircle.x = gameObject.x;
-      detectionCircle.y = gameObject.y;
+      mainDetectionCircle.visible = true;
+      mainDetectionCircle.x = gameObject.x;
+      mainDetectionCircle.y = gameObject.y;
     }
   });
   this.input.on('gameobjectout', function(pointer, gameObject){
-    detectionCircle.visible = false;
+    mainDetectionCircle.visible = false;
   });
 
 
@@ -154,6 +152,7 @@ function create(){
 function update(){
 
   this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
+//here
 
 
 
