@@ -55,6 +55,9 @@ function preload(){
   game.load.image('endPoint', 'assets/endPoint.png');
   game.load.image('dock', 'assets/dock.png');
   game.load.image('detectionCircle', 'assets/detectionCircle.png');
+  game.load.image('mainDetectionCircle', 'assets/mainDetectionCircle.png');
+  game.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
+  game.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
   game.load.image('arrowHelp', 'assets/arrowHelp.png');
 }
 
@@ -157,6 +160,13 @@ function create(){
   mainDetectionCircle = this.add.image(5000, 5000, 'detectionCircle');
   mainDetectionCircle.visible = false;
 
+  redDetectionCircle = this.add.image(5000, 5000, 'redDetectionCircle');
+  redDetectionCircle.visible = false;
+
+  greenDetectionCircle = this.add.image(5000, 5000, 'greenDetectionCircle');
+  greenDetectionCircle.visible = false;
+
+
   arrowHelp = this.add.image(815, 575, 'arrowHelp');
 
   
@@ -207,9 +217,21 @@ function update(){
   if(arrowFollow){
     arrowTurretButton.x = this.input.activePointer.x;
     arrowTurretButton.y = this.input.activePointer.y;
-    mainDetectionCircle.x = this.input.activePointer.x;
-    mainDetectionCircle.y = this.input.activePointer.y;
-    mainDetectionCircle.visible = true;
+    //mainDetectionCircle.x = this.input.activePointer.x;
+    //mainDetectionCircle.y = this.input.activePointer.y;
+    //mainDetectionCircle.visible = true;
+
+    if(getTileID(this.input.activePointer.x, this.input.activePointer.y) == 15){
+      greenDetectionCircle.x = this.input.activePointer.x;
+      greenDetectionCircle.y = this.input.activePointer.y;
+      greenDetectionCircle.visible = true
+    }
+    else{
+      redDetectionCircle.x = this.input.activePointer.x;
+      redDetectionCircle.y = this.input.activePointer.y;
+      redDetectionCircle.visible = true;
+  
+    }
   }
 
 
@@ -263,7 +285,9 @@ function handleClick(pointer){
     arrowFollow = false;
     arrowTurretButton.x = 23*32;
     arrowTurretButton.y = 8*32;
-    mainDetectionCircle.visible = false;
+    //mainDetectionCircle.visible = false;
+    redDetectionCircle.visible = false;
+    greenDetectionCircle.visible = false;
   }
   else if(arrowFollow){
     placeArrow(pointer.x, pointer.y);
