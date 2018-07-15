@@ -127,9 +127,9 @@ function create(){
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret')
   arrowTurretButton.inputEnabled = true;
 
-  sellDock = this.add.image(23*32, 6.5*32, 'sellDock');
-  sellIcon = this.add.image(23*32, 6.5*32, 'sellIcon');
-  sellIcon.inputEnable = true;
+  sellDock = this.add.image(23*32, 6*32, 'sellDock');
+  sellIcon = this.add.image(23*32, 6*32, 'sellIcon');
+  sellIcon.inputEnabled = true;
   
   arrowTurrets = this.physics.add.group();
   arrowTurrets.enableBody = true;
@@ -201,8 +201,14 @@ function update(){
 
   var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
 
-  if(this.input.activePointer.x <= 762 && this.input.activePointer.x >= 713 && this.input.activePointer.y >= 233 && this.input.activePointer.y <= 283){
+  pointerX = this.input.activePointer.x;
+  pointerY = this.input.activePointer.y;
+
+  if(pointerX <= 762 && pointerX >= 713 && pointerY >= 233 && pointerY <= 283){
     arrowHelp.visible = true;
+  }
+  else if(pointerX <= 762 && pointerX >= 713 && pointerY >= 168 && pointerY <= 220){
+    //sellHelp.visible = true;
   }
   else {
     arrowHelp.visible = false;
