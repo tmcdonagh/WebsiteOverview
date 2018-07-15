@@ -139,14 +139,19 @@ function create(){
   mainDetectionCircle.visible = false;
   
   this.input.on('gameobjectover', function(pointer, gameObject){
-    if(!arrowFollow){
+    if(!arrowFollow && pointer.x <= 672){
       mainDetectionCircle.visible = true;
       mainDetectionCircle.x = gameObject.x;
       mainDetectionCircle.y = gameObject.y;
     }
+    else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283){
+      arrowHelp.visible = true;
+    }
   });
   this.input.on('gameobjectout', function(pointer, gameObject){
     mainDetectionCircle.visible = false;
+    arrowHelp.visible = false;
+    
   });
 
 
@@ -156,9 +161,7 @@ function create(){
 function update(){
 
   this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
-
-  //this.physics.add.collider(detectionCircles, mainEnemies, turnTurret, null, this);
-
+  this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
 
   var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
 
@@ -177,6 +180,9 @@ function update(){
   if(arrowFollow){
     arrowTurretButton.x = this.input.activePointer.x;
     arrowTurretButton.y = this.input.activePointer.y;
+    mainDetectionCircle.x = this.input.activePointer.x;
+    mainDetectionCircle.y = this.input.activePointer.y;
+    mainDetectionCircle.visible = true;
   }
 
 
@@ -230,6 +236,7 @@ function handleClick(pointer){
     arrowFollow = false;
     arrowTurretButton.x = 23*32;
     arrowTurretButton.y = 8*32;
+    mainDetectionCircle.visible = false;
   }
   else if(arrowFollow){
     placeArrow(pointer.x, pointer.y);
@@ -243,8 +250,6 @@ function placeArrow(x, y){
   if(cash >= 100){ 	
     var canPlace = true;
     this.arrowTurrets.children.each(function(arrowTurret){
-      console.log(Math.floor(arrowTurret.x/32));
-      console.log(xTile);
       if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile){
         canPlace = false;
       }
@@ -284,7 +289,6 @@ function arrowFire(){
     var enemy = getEnemy(arrowTurret.x, arrowTurret.y, 75);
     if(enemy) {
       var angle = Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
-      //addBullet(arrowTurret.x, arrowTurret.y, angle);
       arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
 
       // Fires Bullet
@@ -298,7 +302,7 @@ function arrowFire(){
         var dy = Math.sin(angle);
         bullet.body.velocity.x = dx*1000;
         bullet.body.velocity.y = dy*1000;
-        firingTimer = create.time.now + 2000;
+        firingTimer = create.time.now + 5000;
       }
 
 
@@ -310,9 +314,11 @@ function arrowFire(){
 
 
 function bulletCollision(bullet, enemy){
+  bullet.setActive(false);
   bullet.destroy();
   enemy.destroy();
-  //cash += 10;
+  cash += 10;
+  cashText.setText('$' + cash);
 
 };
 function endPointCollision(endPoint, enemy){
