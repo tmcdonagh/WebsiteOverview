@@ -103,7 +103,6 @@ function create(){
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret')
   arrowTurretButton.inputEnabled = true;
   
-
   arrowTurrets = this.physics.add.group();
   arrowTurrets.enableBody = true;
   arrowTurrets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -123,6 +122,11 @@ function create(){
   endPoints.physicsBodyType = Phaser.Physics.ARCADE;
   endPoints.createMultiple(2, 'endPoint');
   spawnEndPoints(660, 630);
+
+  detectionCircles = this.physics.add.group();
+  detectionCircles.enableBody = true;
+  detectionCircles.physicsBodyType = Phaser.Physics.ARCADE;
+ 
 
   this.input.on('gameobjectdown', function (pointer, gameObject) {
 
@@ -152,8 +156,8 @@ function create(){
 function update(){
 
   this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
-//here
 
+  //this.physics.add.collider(detectionCircles, mainEnemies, turnTurret, null, this);
 
 
   var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
@@ -181,9 +185,7 @@ function update(){
     spawnTimer = this.time.now + 2000;
   }
 
-  if(game.time.now > firingTimer){
-    arrowFire();  
-  }
+  arrowFire();
 
 
 
@@ -206,6 +208,17 @@ function getTileID(x,y){
   var tile = map.getTileAt(x, y);
   return tile.index;
 };
+
+function getEnemy(x, y, distance){
+   var enemyUnits = mainEnemies.getChildren();
+   for(var i = 0; i < enemyUnits.length; i++){
+     if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance){
+       return enemyUnits[i];
+     }
+   }
+   return false;
+
+}
 
 function handleClick(pointer){
   //console.log('(' + pointer.x + ', ' + pointer.y + ')');
@@ -240,6 +253,8 @@ function placeArrow(x, y){
     if(getTileID(xTile, yTile) == 15 && canPlace == true){
     
       var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret').setInteractive();
+      var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
+      detectionCircle.visible = false;
       cash -= 100;
       cashText.setText('$' + cash);
     }
@@ -262,12 +277,18 @@ function spawnEnemy(type){
   }
 };
 function arrowFire(){
-  //bullet = bullets.getFirstExists(false); //Doesn't work cuz Phaser 3
-  livingArrowTurrets.length = 0;
-  /*arrowTurrets.forEachAlive(function(arrowTurret){
-    livingTurrets.push(arrowTurret);
-  });
-  */
+
+  this.arrowTurrets.children.each(function(arrowTurret){
+
+    var enemy = getEnemy(arrowTurret.x, arrowTurret.y, 100);
+    if(enemy) {
+      var angle = Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
+      //addBullet(arrowTurret.x, arrowTurret.y, angle);
+      arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+    }
+
+  }, this); 
+
 };
 
 
