@@ -1,3 +1,20 @@
+// Things to add:
+//   -Enemy Health Bar
+//   -Turret Cooldown Meter
+//   -Lazer Beam Turret
+//   -Blockades
+//   -Better right menu (With square for help text)
+//   -New Sprite for enemies and turrets
+//   -New enemies
+//   -Figure out how to center the game on screen
+//   -Start Menu
+//   -Pause Button
+//   -Levels
+//   -Level Text
+
+
+
+
 var config = {
   type: Phaser.AUTO,
   width: 30*32,
@@ -37,6 +54,7 @@ function preload(){
   game.load.image('endPoint', 'assets/endPoint.png');
   game.load.image('dock', 'assets/dock.png');
   game.load.image('detectionCircle', 'assets/detectionCircle.png');
+  game.load.image('arrowHelp', 'assets/arrowHelp.png');
 }
 
 
@@ -137,6 +155,9 @@ function create(){
 
   mainDetectionCircle = this.add.image(5000, 5000, 'detectionCircle');
   mainDetectionCircle.visible = false;
+
+  arrowHelp = this.add.image(815, 575, 'arrowHelp');
+
   
   this.input.on('gameobjectover', function(pointer, gameObject){
     if(!arrowFollow && pointer.x <= 672){
@@ -144,14 +165,9 @@ function create(){
       mainDetectionCircle.x = gameObject.x;
       mainDetectionCircle.y = gameObject.y;
     }
-    else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283){
-      arrowHelp.visible = true;
-    }
   });
   this.input.on('gameobjectout', function(pointer, gameObject){
     mainDetectionCircle.visible = false;
-    arrowHelp.visible = false;
-    
   });
 
 
@@ -164,6 +180,13 @@ function update(){
   this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
 
   var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
+
+  if(this.input.activePointer.x <= 762 && this.input.activePointer.x >= 713 && this.input.activePointer.y >= 233 && this.input.activePointer.y <= 283){
+    arrowHelp.visible = true;
+  }
+  else {
+    arrowHelp.visible = false;
+  }
 
   //Rounds down to nearest tile
   var pointerTileX = map.worldToTileX(worldPoint.x);
@@ -259,6 +282,7 @@ function placeArrow(x, y){
     if(getTileID(xTile, yTile) == 15 && canPlace == true){
     
       var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret').setInteractive();
+      arrowTurret.firingTimer = 0;
       var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
       detectionCircle.visible = false;
       cash -= 100;
@@ -292,17 +316,18 @@ function arrowFire(){
       arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
 
       // Fires Bullet
-      if(create.time.now > firingTimer){
+      if(create.time.now > arrowTurret.firingTimer){
         var bullet = bullets.create(arrowTurret.x, arrowTurret.y, 'bullet');
         bullet.checkWorldBounds = true;
-        bullet.killOnOutOfBounds = true;
+        bullet.outOfBoundsKill = true;
         bullet.setDepth(1);
         bullet.setOrigin(0, 0.5);
         var dx = Math.cos(angle);
         var dy = Math.sin(angle);
         bullet.body.velocity.x = dx*1000;
         bullet.body.velocity.y = dy*1000;
-        firingTimer = create.time.now + 5000;
+        arrowTurret.firingTimer = create.time.now + 5000;
+        //console.log(arrowTurrets.active());
       }
 
 
