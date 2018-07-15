@@ -186,6 +186,7 @@ function update(){
   }
 
   arrowFire();
+  create = this;
 
 
 
@@ -280,11 +281,27 @@ function arrowFire(){
 
   this.arrowTurrets.children.each(function(arrowTurret){
 
-    var enemy = getEnemy(arrowTurret.x, arrowTurret.y, 100);
+    var enemy = getEnemy(arrowTurret.x, arrowTurret.y, 75);
     if(enemy) {
       var angle = Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
       //addBullet(arrowTurret.x, arrowTurret.y, angle);
       arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+
+      // Fires Bullet
+      if(create.time.now > firingTimer){
+        var bullet = bullets.create(arrowTurret.x, arrowTurret.y, 'bullet');
+        bullet.checkWorldBounds = true;
+        bullet.killOnOutOfBounds = true;
+        bullet.setDepth(1);
+        bullet.setOrigin(0, 0.5);
+        var dx = Math.cos(angle);
+        var dy = Math.sin(angle);
+        bullet.body.velocity.x = dx*1000;
+        bullet.body.velocity.y = dy*1000;
+        firingTimer = create.time.now + 2000;
+      }
+
+
     }
 
   }, this); 
