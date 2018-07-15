@@ -39,8 +39,9 @@ var spawnTimer = 0;
 var firingTimer = 0;
 var enemiesLeft = 10;
 var lives = 10;
-var cash = 1000
+var cash = 200;
 arrowFollow = false;
+var arrowCost = 100;
 
 
 function preload(){
@@ -115,7 +116,7 @@ function create(){
 
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
   livesText = game.add.text(25.5*32, 3.75*32, lives, {font: '18px Arial'});
-  arrowCost = game.add.text(22.3*32, 8.9*32, '$100', {font: '18px Arial'});
+  arrowCost = game.add.text(22.3*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret')
@@ -170,14 +171,17 @@ function create(){
     mainDetectionCircle.visible = false;
   });
 
+  this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
+  this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
+
 
 }
 /* ***** End of Create function ***** */
 
 function update(){
 
-  this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
-  this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
+  //this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
+  //this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
 
   var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
 
