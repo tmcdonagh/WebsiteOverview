@@ -157,7 +157,7 @@ function create(){
 
   });
 
-  mainDetectionCircle = this.add.image(5000, 5000, 'detectionCircle');
+  mainDetectionCircle = this.add.image(5000, 5000, 'mainDetectionCircle');
   mainDetectionCircle.visible = false;
 
   redDetectionCircle = this.add.image(5000, 5000, 'redDetectionCircle');
@@ -221,17 +221,23 @@ function update(){
     //mainDetectionCircle.y = this.input.activePointer.y;
     //mainDetectionCircle.visible = true;
 
-    if(getTileID(this.input.activePointer.x, this.input.activePointer.y) == 15){
+    arrowTileX = Math.floor(this.input.activePointer.x/32);
+    arrowTileY = Math.floor(this.input.activePointer.y/32);
+
+    if(getTileID(arrowTileX, arrowTileY) == 15 && cash >= 100){
       greenDetectionCircle.x = this.input.activePointer.x;
       greenDetectionCircle.y = this.input.activePointer.y;
-      greenDetectionCircle.visible = true
+      greenDetectionCircle.visible = true;
+      redDetectionCircle.visible = false;
     }
     else{
       redDetectionCircle.x = this.input.activePointer.x;
       redDetectionCircle.y = this.input.activePointer.y;
       redDetectionCircle.visible = true;
+      greenDetectionCircle.visible = false;
   
     }
+    console.log(getTileID(1,1));
   }
 
 
@@ -262,7 +268,9 @@ function checkCollision(x,y){
 
 function getTileID(x,y){
   var tile = map.getTileAt(x, y);
-  return tile.index;
+  if(tile){
+    return tile.index;
+  }
 };
 
 function getEnemy(x, y, distance){
