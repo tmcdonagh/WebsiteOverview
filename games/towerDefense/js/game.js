@@ -54,6 +54,8 @@ function preload(){
   game.load.image('arrowTurret', 'assets/arrow.png');
   game.load.image('endPoint', 'assets/endPoint.png');
   game.load.image('dock', 'assets/dock.png');
+  game.load.image('sellDock', 'assets/sellDock.png');
+  game.load.image('sellIcon', 'assets/sellIcon.png');
   game.load.image('detectionCircle', 'assets/detectionCircle.png');
   game.load.image('mainDetectionCircle', 'assets/mainDetectionCircle.png');
   game.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
@@ -124,6 +126,10 @@ function create(){
   arrowDock = this.add.image(23*32, 8*32, 'dock');
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret')
   arrowTurretButton.inputEnabled = true;
+
+  sellDock = this.add.image(23*32, 6.5*32, 'sellDock');
+  sellIcon = this.add.image(23*32, 6.5*32, 'sellIcon');
+  sellIcon.inputEnable = true;
   
   arrowTurrets = this.physics.add.group();
   arrowTurrets.enableBody = true;
