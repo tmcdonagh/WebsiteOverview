@@ -154,7 +154,6 @@ function create(){
   detectionCircles = this.physics.add.group();
   detectionCircles.enableBody = true;
   detectionCircles.physicsBodyType = Phaser.Physics.ARCADE;
- 
 
   this.input.on('gameobjectdown', function (pointer, gameObject) {
 
@@ -172,9 +171,7 @@ function create(){
   greenDetectionCircle = this.add.image(5000, 5000, 'greenDetectionCircle');
   greenDetectionCircle.visible = false;
 
-
   arrowHelp = this.add.image(815, 575, 'arrowHelp');
-
   
   this.input.on('gameobjectover', function(pointer, gameObject){
     if(!arrowFollow && pointer.x <= 672){
