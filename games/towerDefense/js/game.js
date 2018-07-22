@@ -40,7 +40,8 @@ var firingTimer = 0;
 var enemiesLeft = 10;
 var lives = 10;
 var cash = 200;
-arrowFollow = false;
+var arrowFollow = false;
+var sellFollow = false;
 var arrowCost = 100;
 
 
@@ -226,9 +227,6 @@ function update(){
   if(arrowFollow){
     arrowTurretButton.x = this.input.activePointer.x;
     arrowTurretButton.y = this.input.activePointer.y;
-    //mainDetectionCircle.x = this.input.activePointer.x;
-    //mainDetectionCircle.y = this.input.activePointer.y;
-    //mainDetectionCircle.visible = true;
 
     arrowTileX = Math.floor(this.input.activePointer.x/32);
     arrowTileY = Math.floor(this.input.activePointer.y/32);
@@ -246,7 +244,11 @@ function update(){
       greenDetectionCircle.visible = false;
   
     }
-    console.log(getTileID(1,1));
+    //console.log(getTileID(1,1));
+  }
+  else if(sellFollow){
+    sellIcon.x = this.input.activePointer.x + 20;
+    sellIcon.y = this.input.activePointer.y + 20;
   }
 
 
@@ -297,6 +299,12 @@ function handleClick(pointer){
   //console.log('(' + pointer.x + ', ' + pointer.y + ')');
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
+    sellFollow = false;
+  }
+  else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 168 && pointer.y <= 220 && sellFollow == false){
+    sellFollow = true;
+    arrowFollow = false;
+
   }
   else if(pointer.x >= 672){
     arrowFollow = false;
@@ -305,6 +313,10 @@ function handleClick(pointer){
     //mainDetectionCircle.visible = false;
     redDetectionCircle.visible = false;
     greenDetectionCircle.visible = false;
+
+    sellFollow = false;
+    sellIcon.x = 23*32;
+    sellIcon.y = 6*32;
   }
   else if(arrowFollow){
     placeArrow(pointer.x, pointer.y);
