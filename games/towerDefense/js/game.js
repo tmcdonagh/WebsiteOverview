@@ -231,7 +231,7 @@ function update(){
     arrowTileX = Math.floor(this.input.activePointer.x/32);
     arrowTileY = Math.floor(this.input.activePointer.y/32);
 
-    if(getTileID(arrowTileX, arrowTileY) == 15 && cash >= 100){
+    if(getTileID(arrowTileX, arrowTileY) == 15 && cash >= 100 && tileChecker(arrowTileX, arrowTileY) == true){
       greenDetectionCircle.x = this.input.activePointer.x;
       greenDetectionCircle.y = this.input.activePointer.y;
       greenDetectionCircle.visible = true;
@@ -350,6 +350,22 @@ function placeArrow(x, y){
   
   
 };
+
+function tileChecker(tileX, tileY){
+  var able = true;
+  this.arrowTurrets.children.each(function(arrowTurret){
+    if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY){
+      //return false;
+      able = false;
+    }
+  });
+  if(able){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 
 
 function spawnEnemy(type){
