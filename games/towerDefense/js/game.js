@@ -11,6 +11,8 @@
 //   -Pause Button
 //   -Levels
 //   -Level Text
+//   -Enemies spawn is messed up where they can pile up when framerate is low or when tab is changed
+
 
 
 
@@ -21,8 +23,8 @@ var config = {
   height: 21*32,
   physics: {
     default: 'arcade',
-    arcade: {
-    }
+             arcade: {
+             }
   },
   scene: {
     preload: preload,
@@ -126,16 +128,16 @@ function create(){
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret')
-  arrowTurretButton.inputEnabled = true;
+    arrowTurretButton.inputEnabled = true;
 
   sellDock = this.add.image(23*32, 6*32, 'sellDock');
   sellIcon = this.add.image(23*32, 6*32, 'sellIcon');
   sellIcon.inputEnabled = true;
-  
+
   arrowTurrets = this.physics.add.group();
   arrowTurrets.enableBody = true;
   arrowTurrets.physicsBodyType = Phaser.Physics.ARCADE;
-  
+
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
@@ -173,7 +175,7 @@ function create(){
   greenDetectionCircle.visible = false;
 
   arrowHelp = this.add.image(815, 575, 'arrowHelp');
-  
+
   this.input.on('gameobjectover', function(pointer, gameObject){
     if(!arrowFollow && pointer.x <= 672){
       mainDetectionCircle.visible = true;
@@ -242,7 +244,7 @@ function update(){
       redDetectionCircle.y = this.input.activePointer.y;
       redDetectionCircle.visible = true;
       greenDetectionCircle.visible = false;
-  
+
     }
     //console.log(getTileID(1,1));
   }
@@ -285,13 +287,13 @@ function getTileID(x,y){
 };
 
 function getEnemy(x, y, distance){
-   var enemyUnits = mainEnemies.getChildren();
-   for(var i = 0; i < enemyUnits.length; i++){
-     if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance){
-       return enemyUnits[i];
-     }
-   }
-   return false;
+  var enemyUnits = mainEnemies.getChildren();
+  for(var i = 0; i < enemyUnits.length; i++){
+    if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance){
+      return enemyUnits[i];
+    }
+  }
+  return false;
 
 }
 
@@ -321,6 +323,9 @@ function handleClick(pointer){
   else if(arrowFollow){
     placeArrow(pointer.x, pointer.y);
   }
+  else if(sellFollow){
+    sellTurret(Math.floor(pointer.x/32), Math.floor(pointer.y/32));
+  }
 };
 
 function placeArrow(x, y){
@@ -337,18 +342,29 @@ function placeArrow(x, y){
     }, this);
     //console.log(getTileID(xTile, yTile));
     if(getTileID(xTile, yTile) == 15 && canPlace == true){
-    
+
       var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret').setInteractive();
+      arrowTurret.isAlive = true;
       arrowTurret.firingTimer = 0;
       var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
       detectionCircle.visible = false;
       cash -= 100;
       cashText.setText('$' + cash);
     }
-
   }
-  
-  
+};
+
+function sellTurret(tileX, tileY){
+  this.arrowTurrets.children.each(function(arrowTurret){
+    if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY){
+      arrowTurret.destroy();
+      arrowTurret.isAlive = false;
+      cash += 80;
+      cashText.setText('$' + cash);
+      mainDetectionCircle.visible = false;
+    }
+  }, this);
+
 };
 
 function tileChecker(tileX, tileY){
@@ -382,30 +398,32 @@ function spawnEnemy(type){
 function arrowFire(){
 
   this.arrowTurrets.children.each(function(arrowTurret){
+    if(arrowTurret.isAlive){
 
-    var enemy = getEnemy(arrowTurret.x, arrowTurret.y, 75);
-    if(enemy) {
-      var angle = Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
-      arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+      var enemy = getEnemy(arrowTurret.x, arrowTurret.y, 75);
+      if(enemy) {
+        var angle = Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
+        arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
 
-      // Fires Bullet
-      if(create.time.now > arrowTurret.firingTimer){
-        var bullet = bullets.create(arrowTurret.x, arrowTurret.y, 'bullet');
-        bullet.checkWorldBounds = true;
-        bullet.outOfBoundsKill = true;
-        bullet.setDepth(1);
-        bullet.setOrigin(0, 0.5);
-        var dx = Math.cos(angle);
-        var dy = Math.sin(angle);
-        bullet.body.velocity.x = dx*1000;
-        bullet.body.velocity.y = dy*1000;
-        arrowTurret.firingTimer = create.time.now + 5000;
-        //console.log(arrowTurrets.active());
+        // Fires Bullet
+        if(create.time.now > arrowTurret.firingTimer){
+          var bullet = bullets.create(arrowTurret.x, arrowTurret.y, 'bullet');
+          bullet.checkWorldBounds = true;
+          bullet.outOfBoundsKill = true;
+          bullet.setDepth(1);
+          bullet.setOrigin(0, 0.5);
+          var dx = Math.cos(angle);
+          var dy = Math.sin(angle);
+          bullet.body.velocity.x = dx*1000;
+          bullet.body.velocity.y = dy*1000;
+          arrowTurret.firingTimer = create.time.now + 5000;
+          //console.log(arrowTurrets.active());
+        }
+
+
       }
 
-
     }
-
   }, this); 
 
 };
@@ -423,7 +441,7 @@ function endPointCollision(endPoint, enemy){
   lives--;
   enemy.destroy();
   livesText.setText(lives);  
-  
+
 };
 function spawnEndPoints(x, y){
   var endPoint = endPoints.create(x, y, 'endPoint');
