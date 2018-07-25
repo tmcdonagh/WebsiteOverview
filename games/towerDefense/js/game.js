@@ -45,6 +45,8 @@ var cash = 200;
 var arrowFollow = false;
 var sellFollow = false;
 var arrowCost = 100;
+var level = 1;
+var addedEnemies = 0;
 
 
 function preload(){
@@ -122,13 +124,14 @@ function create(){
   shopScreen = this.add.image(672, 335, 'shop');
   shopScreen.setOrigin(0, 0.5);
 
+  levelText = game.add.text(26.5*32, 0.75*32, 'Level ' + level, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
   livesText = game.add.text(25.5*32, 3.75*32, lives, {font: '18px Arial'});
   arrowCost = game.add.text(22.3*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
-  arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret')
-    arrowTurretButton.inputEnabled = true;
+  arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret');
+  arrowTurretButton.inputEnabled = true;
 
   sellDock = this.add.image(23*32, 6*32, 'sellDock');
   sellIcon = this.add.image(23*32, 6*32, 'sellIcon');
@@ -254,13 +257,14 @@ function update(){
   }
 
 
-  if(this.time.now > spawnTimer && enemiesLeft > 0){
+  if(this.time.now > spawnTimer && enemiesLeft > 0 && enemiesLeft > 0){
     spawnEnemy(1);
+    enemiesLeft--;
     spawnTimer = this.time.now + 2000;
   }
 
   arrowFire();
-  create = this;
+  //create = this;
 
 
 
@@ -328,6 +332,21 @@ function handleClick(pointer){
   }
 };
 
+function checkIfAllDead(){
+  var count = 0;
+  this.mainEnemies.children.each(function(mainEnemy){
+    if(mainEnemy.isAlive){
+      count++;
+    }
+  }, this);
+  if(count != 0){
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+
 function placeArrow(x, y){
   var canPlace = true;
   xTile = Math.floor(x/32);
@@ -387,6 +406,7 @@ function tileChecker(tileX, tileY){
 function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
     var mainEnemy = mainEnemies.create(0, 32, 'mainEnemy');
+    mainEnemy.isAlive = true;
     //mainEnemy.anchor.setTo(0.5, 0.5);
     mainEnemy.checkWorldBounds = true;
     mainEnemy.setDepth(1);
@@ -396,6 +416,7 @@ function spawnEnemy(type){
   }
 };
 function arrowFire(){
+  
 
   this.arrowTurrets.children.each(function(arrowTurret){
     if(arrowTurret.isAlive){
@@ -425,22 +446,40 @@ function arrowFire(){
 
     }
   }, this); 
+  if(checkIfAllDead() == true){
+    changeLevel();
+  }
 
 };
+function changeLevel(){
+  level++;
+  levelText.setText('Level ' + level);
+  addedEnemies += 2;
+  enemiesLeft = 10 + addedEnemies;
+}
 
 
 function bulletCollision(bullet, enemy){
   bullet.setActive(false);
   bullet.destroy();
   enemy.destroy();
+  enemy.isAlive = false;
   cash += 10;
   cashText.setText('$' + cash);
+
+  if(checkIfAllDead == true){
+    changeLevel();
+  }
 
 };
 function endPointCollision(endPoint, enemy){
   lives--;
   enemy.destroy();
+  enemy.isAlive = false;
   livesText.setText(lives);  
+  if(checkIfAllDead == true){
+    changeLevel();
+  }
 
 };
 function spawnEndPoints(x, y){
