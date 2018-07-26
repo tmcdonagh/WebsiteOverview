@@ -56,6 +56,7 @@ function preload(){
   this.load.image('tileset', 'assets/gridtiles.png');
   this.load.tilemapTiledJSON('map', 'assets/map.json');
   this.load.image('mainEnemy', 'assets/phaserguy.png');
+  this.load.image('blueEnemy', 'assets/blueAlien.png');
   this.load.image('redEnemy', 'assets/redAlien.png');
   this.load.image('greenEnemy', 'assets/greenAlien.png');
   this.load.image('bullet', 'assets/bullet.png');
