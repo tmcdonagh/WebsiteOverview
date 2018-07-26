@@ -71,6 +71,7 @@ function preload(){
   this.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
   this.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
   this.load.image('arrowHelp', 'assets/arrowHelp.png');
+  //this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', 32, 32);
 }
 
 
