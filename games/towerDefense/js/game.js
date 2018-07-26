@@ -257,10 +257,16 @@ function update(){
   }
 
 
-  if(this.time.now > spawnTimer && enemiesLeft > 0 && enemiesLeft > 0){
+  if(this.time.now > spawnTimer && enemiesLeft > 0){
     spawnEnemy(1);
     enemiesLeft--;
     spawnTimer = this.time.now + 2000;
+  }
+  if(this.time.now > spawnTimer && enemiesLeft <= 0){
+
+    if(checkIfAllDead == true){
+      changeLevel();
+    }
   }
 
   arrowFire();
@@ -333,17 +339,19 @@ function handleClick(pointer){
 };
 
 function checkIfAllDead(){
-  var count = 0;
-  this.mainEnemies.children.each(function(mainEnemy){
-    if(mainEnemy.isAlive){
-      count++;
+  if(enemiesLeft == 0){
+    var count = 0;
+    this.mainEnemies.children.each(function(mainEnemy){
+      if(mainEnemy.isAlive){
+        count++;
+      }
+    }, this);
+    if(count != 0){
+      return false;
     }
-  }, this);
-  if(count != 0){
-    return false;
-  }
-  else {
-    return true;
+    else {
+      return true;
+    }
   }
 }
 
@@ -416,7 +424,7 @@ function spawnEnemy(type){
   }
 };
 function arrowFire(){
-  
+
 
   this.arrowTurrets.children.each(function(arrowTurret){
     if(arrowTurret.isAlive){
@@ -466,11 +474,11 @@ function bulletCollision(bullet, enemy){
   enemy.isAlive = false;
   cash += 10;
   cashText.setText('$' + cash);
-
-  if(checkIfAllDead == true){
-    changeLevel();
-  }
-
+  /*
+     if(checkIfAllDead == true){
+     changeLevel();
+     }
+     */
 };
 function endPointCollision(endPoint, enemy){
   lives--;
