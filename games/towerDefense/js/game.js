@@ -54,6 +54,8 @@ function preload(){
   game.load.image('tileset', 'assets/gridtiles.png');
   game.load.tilemapTiledJSON('map', 'assets/map.json');
   game.load.image('mainEnemy', 'assets/phaserguy.png');
+  game.load.image('redEnemy', 'assets/redAlien.png');
+  game.load.image('greenEnemy', 'assets/greenAlien.png');
   game.load.image('bullet', 'assets/bullet.png');
   game.load.image('shop', 'assets/tdShop.png');
   game.load.image('arrowTurret', 'assets/arrow.png');
@@ -413,7 +415,8 @@ function tileChecker(tileX, tileY){
 
 function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
-    var mainEnemy = mainEnemies.create(0, 32, 'mainEnemy');
+    //var mainEnemy = mainEnemies.create(0, 32, 'mainEnemy');
+    var mainEnemy = mainEnemies.create(0, 32, 'redEnemy');
     mainEnemy.isAlive = true;
     //mainEnemy.anchor.setTo(0.5, 0.5);
     mainEnemy.checkWorldBounds = true;
