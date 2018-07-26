@@ -34,6 +34,8 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+//this.stage.disableVisibilityChange = true;
+var outside = this;
 
 
 var livingArrowTurrets = [];
@@ -51,23 +53,23 @@ var addedEnemies = 0;
 
 function preload(){
   game = this;
-  game.load.image('tileset', 'assets/gridtiles.png');
-  game.load.tilemapTiledJSON('map', 'assets/map.json');
-  game.load.image('mainEnemy', 'assets/phaserguy.png');
-  game.load.image('redEnemy', 'assets/redAlien.png');
-  game.load.image('greenEnemy', 'assets/greenAlien.png');
-  game.load.image('bullet', 'assets/bullet.png');
-  game.load.image('shop', 'assets/tdShop.png');
-  game.load.image('arrowTurret', 'assets/arrow.png');
-  game.load.image('endPoint', 'assets/endPoint.png');
-  game.load.image('dock', 'assets/dock.png');
-  game.load.image('sellDock', 'assets/sellDock.png');
-  game.load.image('sellIcon', 'assets/sellIcon.png');
-  game.load.image('detectionCircle', 'assets/detectionCircle.png');
-  game.load.image('mainDetectionCircle', 'assets/mainDetectionCircle.png');
-  game.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
-  game.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
-  game.load.image('arrowHelp', 'assets/arrowHelp.png');
+  this.load.image('tileset', 'assets/gridtiles.png');
+  this.load.tilemapTiledJSON('map', 'assets/map.json');
+  this.load.image('mainEnemy', 'assets/phaserguy.png');
+  this.load.image('redEnemy', 'assets/redAlien.png');
+  this.load.image('greenEnemy', 'assets/greenAlien.png');
+  this.load.image('bullet', 'assets/bullet.png');
+  this.load.image('shop', 'assets/tdShop.png');
+  this.load.image('arrowTurret', 'assets/arrow.png');
+  this.load.image('endPoint', 'assets/endPoint.png');
+  this.load.image('dock', 'assets/dock.png');
+  this.load.image('sellDock', 'assets/sellDock.png');
+  this.load.image('sellIcon', 'assets/sellIcon.png');
+  this.load.image('detectionCircle', 'assets/detectionCircle.png');
+  this.load.image('mainDetectionCircle', 'assets/mainDetectionCircle.png');
+  this.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
+  this.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
+  this.load.image('arrowHelp', 'assets/arrowHelp.png');
 }
 
 
@@ -260,9 +262,17 @@ function update(){
 
 
   if(this.time.now > spawnTimer && enemiesLeft > 0){
-    spawnEnemy(1);
-    enemiesLeft--;
-    spawnTimer = this.time.now + 2000;
+    var canSpawn = true;
+    outside.mainEnemies.children.each(function(mainEnemy){
+      if(Math.floor(mainEnemy.x/32) <= 1 && Math.floor(mainEnemy.y/32) <= 2){
+        canSpawn = false;
+      }
+    }, this);
+    if(canSpawn){
+      spawnEnemy(1);
+      enemiesLeft--;
+      spawnTimer = this.time.now + 2000;
+    }
   }
   if(this.time.now > spawnTimer && enemiesLeft <= 0){
 
@@ -421,7 +431,7 @@ function spawnEnemy(type){
     //mainEnemy.anchor.setTo(0.5, 0.5);
     mainEnemy.checkWorldBounds = true;
     mainEnemy.setDepth(1);
-    mainEnemy.setOrigin(0,0.5);
+    mainEnemy.setOrigin(0,0);
 
     movement(mainEnemy);
   }
