@@ -387,7 +387,8 @@ function placeArrow(x, y){
   if(cash >= 100){ 	
     var canPlace = true;
     this.arrowTurrets.children.each(function(arrowTurret){
-      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile){
+      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true){
+        
         canPlace = false;
       }
 
@@ -422,7 +423,7 @@ function sellTurret(tileX, tileY){
 function tileChecker(tileX, tileY){
   var able = true;
   this.arrowTurrets.children.each(function(arrowTurret){
-    if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY){
+    if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY && arrowTurret.isAlive == true){
       //return false;
       able = false;
     }
