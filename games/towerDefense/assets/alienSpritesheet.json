@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "alienSpritesheet.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 136,
+				"h": 28
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "blueAlien.png",
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 32,
+						"h": 26
+					},
+					"rotated": false,
+					"trimmed": true,
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 4,
+						"w": 32,
+						"h": 26
+					},
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "greenAlien.png",
+					"frame": {
+						"x": 35,
+						"y": 1,
+						"w": 32,
+						"h": 26
+					},
+					"rotated": false,
+					"trimmed": true,
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 4,
+						"w": 32,
+						"h": 26
+					},
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "redAlien.png",
+					"frame": {
+						"x": 69,
+						"y": 1,
+						"w": 32,
+						"h": 26
+					},
+					"rotated": false,
+					"trimmed": true,
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 4,
+						"w": 32,
+						"h": 26
+					},
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "yellowAlien.png",
+					"frame": {
+						"x": 103,
+						"y": 1,
+						"w": 32,
+						"h": 26
+					},
+					"rotated": false,
+					"trimmed": true,
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 4,
+						"w": 32,
+						"h": 26
+					},
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:1ae5a8ad9d899eb3f13d7519594c7ca7:b87345f9b081160c09902d3b548954c6:97c5b9eced1a86fe6ee56758ac360195$"
+	}
+}

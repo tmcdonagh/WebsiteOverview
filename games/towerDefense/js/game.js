@@ -71,7 +71,8 @@ function preload(){
   this.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
   this.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
   this.load.image('arrowHelp', 'assets/arrowHelp.png');
-  //this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', 32, 32);
+  //this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 32, frameHeight: 32 });
+  this.load.multiatlas('enemy', 'assets/alienSpritesheet.json', 'assets');
 }
 
 
@@ -151,6 +152,12 @@ function create(){
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
   mainEnemies.createMultiple(2500, 'mainEnemies');
+
+  
+  testEnemies = this.physics.add.group();
+  testEnemies.enableBody = true;
+  testEnemies.physicsBodyType = Phaser.Physics.ARCADE;
+  testEnemies.createMultiple(2500, 'enemy');
 
   bullets = this.physics.add.group();
   bullets.enableBody = true;
@@ -323,6 +330,10 @@ function getEnemy(x, y, distance){
 
 function handleClick(pointer){
   //console.log('(' + pointer.x + ', ' + pointer.y + ')');
+  
+
+
+
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
     sellFollow = false;
