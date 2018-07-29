@@ -71,14 +71,32 @@ function preload(){
   this.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
   this.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
   this.load.image('arrowHelp', 'assets/arrowHelp.png');
-  //this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 32, frameHeight: 32 });
-  this.load.multiatlas('enemy', 'assets/alienSpritesheet.json', 'assets');
+  this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 34, frameHeight: 28 });
+  //this.load.multiatlas('enemy', 'assets/alienSpritesheet.json', 'assets');
 }
 
 
 function create(){
 
   create = this; 
+
+  //Animations
+  this.anims.create({
+    key: 'red',
+    frames: this.anims.generateFrameNumbers('enemy', { start: 2, end: 2 })
+  });
+  this.anims.create({
+    key: 'green',
+    frames: this.anims.generateFrameNumbers('enemy', { start: 1, end: 1 })
+  });
+  this.anims.create({
+    key: 'blue',
+    frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 0 })
+  });
+  this.anims.create({
+    key: 'yellow',
+    frames: this.anims.generateFrameNumbers('enemy', { start: 3, end: 3 }),
+  });
 
   // Makes map
   map = game.add.tilemap('map');
@@ -152,12 +170,6 @@ function create(){
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
   mainEnemies.createMultiple(2500, 'mainEnemies');
-
-  
-  testEnemies = this.physics.add.group();
-  testEnemies.enableBody = true;
-  testEnemies.physicsBodyType = Phaser.Physics.ARCADE;
-  testEnemies.createMultiple(2500, 'enemy');
 
   bullets = this.physics.add.group();
   bullets.enableBody = true;
@@ -329,10 +341,6 @@ function getEnemy(x, y, distance){
 }
 
 function handleClick(pointer){
-  //console.log('(' + pointer.x + ', ' + pointer.y + ')');
-  
-
-
 
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
@@ -388,7 +396,7 @@ function placeArrow(x, y){
     var canPlace = true;
     this.arrowTurrets.children.each(function(arrowTurret){
       if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true){
-        
+
         canPlace = false;
       }
 
@@ -439,10 +447,58 @@ function tileChecker(tileX, tileY){
 
 function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
-    //var mainEnemy = mainEnemies.create(0, 32, 'mainEnemy');
-    var mainEnemy = mainEnemies.create(0, 32, 'redEnemy');
+    //var mainEnemy = mainEnemies.create(0, 32, 'redEnemy');
+    var mainEnemy = mainEnemies.create(0, 32, 'enemy');
+    mainEnemy.anims.play('red', true);
+    mainEnemy.hp = 1;
+    // Levels
+    // 1: All Red
+    // 2: Half Red Half green
+    // 3: All Green
+    // 4: Half Green Half Blue
+    // 5: All Blue
+    // 6: Half Blue Half Yellow
+    // 7: All Yellow
+    if(level >= 2){
+      if(enemiesLeft % 2 == 0){
+        mainEnemy.anims.play('green');
+        mainEnemy.hp = 2;
+      }
+      else{
+        mainEnemy.anims.play('red');
+        mainEnemy.hp = 2;
+      }
+      if(level >= 3){
+        mainEnemy.anims.play('green');
+        mainEnemy.hp = 2;
+        
+        if(level >= 4){
+          if(enemiesLeft % 2 == 0){
+            mainEnemy.anims.play('green');
+            mainEnemy.hp = 2;
+          }
+          else{
+            mainEnemy.anims.play('blue');
+            mainEnemy.hp = 3;
+          }
+          if(level >= 5){
+            mainEnemy.anims.play('blue');
+            mainEnemy.hp = 3;
+            if(level >= 6){
+              if(enemiesLeft % 2 == 0){
+                mainEnemy.anims.play('yellow');
+                mainEnemy.hp = 4;
+              }
+              if(level >= 7){
+                mainEnemy.anims.play('yellow');
+                mainEnemy.hp = 4;
+              }
+            }
+          }
+        }
+      }
+    }
     mainEnemy.isAlive = true;
-    //mainEnemy.anchor.setTo(0.5, 0.5);
     mainEnemy.checkWorldBounds = true;
     mainEnemy.setDepth(1);
     mainEnemy.setOrigin(0,0);
@@ -497,10 +553,26 @@ function changeLevel(){
 function bulletCollision(bullet, enemy){
   bullet.setActive(false);
   bullet.destroy();
-  enemy.destroy();
-  enemy.isAlive = false;
-  cash += 10;
-  cashText.setText('$' + cash);
+  enemy.hp--;
+  if(enemy.hp <= 0){
+    enemy.destroy();
+    enemy.isAlive = false;
+    cash += 10;
+    cashText.setText('$' + cash);
+  }
+  else if(enemy.hp == 1){
+    enemy.anims.play('red', true);
+  }
+  else if(enemy.hp == 2){
+    enemy.anims.play('green', true);
+  }
+  else if(enemy.hp == 3){
+    enemy.anims.play('blue', true);
+  }
+  else if(enemy.hp == 4){
+    enemy.anims.play('yellow', true);
+  }
+
   /*
      if(checkIfAllDead == true){
      changeLevel();
