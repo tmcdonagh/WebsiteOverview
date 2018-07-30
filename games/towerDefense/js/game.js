@@ -47,7 +47,7 @@ var cash = 200;
 var arrowFollow = false;
 var sellFollow = false;
 var arrowCost = 100;
-var level = 1;
+var wave = 1;
 var addedEnemies = 0;
 
 
@@ -156,7 +156,7 @@ function create(){
   shopScreen = this.add.image(672, 335, 'shop');
   shopScreen.setOrigin(0, 0.5);
 
-  levelText = game.add.text(26.5*32, 0.75*32, 'Level ' + level, {font: '18px Arial'});
+  waveText = game.add.text(26.5*32, 0.75*32, 'Wave ' + wave, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
   livesText = game.add.text(25.25*32, 3.75*32, lives, {font: '18px Arial'});
   arrowCost = game.add.text(22.3*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
@@ -473,7 +473,7 @@ function spawnEnemy(type){
     // 5: All Blue
     // 6: Half Blue Half Yellow
     // 7: All Yellow
-    if(level >= 2){
+    if(wave >= 2){
       if(enemiesLeft % 2 == 0){
         mainEnemy.anims.play('green');
         mainEnemy.hp = 2;
@@ -482,11 +482,11 @@ function spawnEnemy(type){
         mainEnemy.anims.play('red');
         mainEnemy.hp = 2;
       }
-      if(level >= 3){
+      if(wave >= 3){
         mainEnemy.anims.play('green');
         mainEnemy.hp = 2;
         
-        if(level >= 4){
+        if(wave >= 4){
           if(enemiesLeft % 2 == 0){
             mainEnemy.anims.play('green');
             mainEnemy.hp = 2;
@@ -495,15 +495,15 @@ function spawnEnemy(type){
             mainEnemy.anims.play('blue');
             mainEnemy.hp = 3;
           }
-          if(level >= 5){
+          if(wave >= 5){
             mainEnemy.anims.play('blue');
             mainEnemy.hp = 3;
-            if(level >= 6){
+            if(wave >= 6){
               if(enemiesLeft % 2 == 0){
                 mainEnemy.anims.play('yellow');
                 mainEnemy.hp = 4;
               }
-              if(level >= 7){
+              if(wave >= 7){
                 mainEnemy.anims.play('yellow');
                 mainEnemy.hp = 4;
               }
@@ -557,8 +557,8 @@ function arrowFire(){
 
 };
 function changeLevel(){
-  level++;
-  levelText.setText('Level ' + level);
+  wave++;
+  waveText.setText('Wave ' + wave);
   addedEnemies += 2;
   enemiesLeft = 10 + addedEnemies;
 }
