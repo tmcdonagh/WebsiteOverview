@@ -1,17 +1,17 @@
 // Things to add:
-//   -Enemy Health Bar
+// X -Enemy Health Bar
 //   -Turret Cooldown Meter
 //   -Lazer Beam Turret
 //   -Blockades
 //   -Better right menu (With square for help text)
-//   -New Sprite for enemies and turrets
-//   -New enemies
+// / -New Sprite for enemies and turrets
+// / -New enemies (Partially Done)
 //   -Figure out how to center the game on screen
 //   -Start Menu
 //   -Pause Button
-//   -Levels
+// X -Levels
 //   -Level Text
-//   -Enemies spawn is messed up where they can pile up when framerate is low or when tab is changed
+// X -Enemies spawn is messed up where they can pile up when framerate is low or when tab is changed
 
 
 
@@ -72,7 +72,6 @@ function preload(){
   this.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
   this.load.image('arrowHelp', 'assets/arrowHelp.png');
   this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 34, frameHeight: 28 });
-  //this.load.multiatlas('enemy', 'assets/alienSpritesheet.json', 'assets');
 }
 
 
@@ -100,7 +99,8 @@ function create(){
 
   // Makes map
   map = game.add.tilemap('map');
-  var tiles = map.addTilesetImage('tiles', 'tileset');
+  //var tiles = map.addTilesetImage('tiles', 'tileset');
+  tiles = map.addTilesetImage('tiles', 'tileset');
   map.createStaticLayer(0, tiles, 0,0);
 
   // Marker that will follow the mouse
@@ -151,7 +151,7 @@ function create(){
 
   levelText = game.add.text(26.5*32, 0.75*32, 'Level ' + level, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
-  livesText = game.add.text(25.5*32, 3.75*32, lives, {font: '18px Arial'});
+  livesText = game.add.text(25.25*32, 3.75*32, lives, {font: '18px Arial'});
   arrowCost = game.add.text(22.3*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
@@ -341,6 +341,12 @@ function getEnemy(x, y, distance){
 }
 
 function handleClick(pointer){
+
+
+  //var tile = map.getTileAt(Math.floor(pointer.x/32), Math.floor(pointer.y/32));
+  //console.log(tile.index);
+  //finder.setTileCost(44, 500);
+
 
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
