@@ -185,9 +185,9 @@ function create(){
 
   endPoints = this.physics.add.group();
   endPoints.enableBody = true;
-  endPoints.physicsBodyType = Phaser.Physics.ARCADE;
+  //endPoints.physicsBodyType = Phaser.Physics.ARCADE;
   endPoints.createMultiple(2, 'endPoint');
-  spawnEndPoints(660, 630);
+  spawnEndPoints(650, 630);
 
   detectionCircles = this.physics.add.group();
   detectionCircles.enableBody = true;
@@ -461,6 +461,8 @@ function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
     //var mainEnemy = mainEnemies.create(0, 32, 'redEnemy');
     var mainEnemy = mainEnemies.create(0, 32, 'enemy');
+    mainEnemy.collideWorldBounds = true;
+    mainEnemy.onOutOfBoundsKill = true;
     mainEnemy.anims.play('red', true);
     mainEnemy.hp = 1;
     // Levels
