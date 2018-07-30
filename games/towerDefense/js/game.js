@@ -550,7 +550,7 @@ function arrowFire(){
           var dy = Math.sin(angle);
           bullet.body.velocity.x = dx*1000;
           bullet.body.velocity.y = dy*1000;
-          arrowTurret.firingTimer = create.time.now + 5000;
+          arrowTurret.firingTimer = create.time.now + 5250;
         }
 
 
