@@ -185,9 +185,9 @@ function create(){
 
   endPoints = this.physics.add.group();
   endPoints.enableBody = true;
-  //endPoints.physicsBodyType = Phaser.Physics.ARCADE;
+  endPoints.physicsBodyType = Phaser.Physics.ARCADE;
   endPoints.createMultiple(2, 'endPoint');
-  spawnEndPoints(650, 630);
+  spawnEndPoints(650, 600);
 
   detectionCircles = this.physics.add.group();
   detectionCircles.enableBody = true;
@@ -607,8 +607,10 @@ function spawnEndPoints(x, y){
   var endPoint = endPoints.create(x, y, 'endPoint');
   endPoint.checkWorldBounds = true;
   endPoint.setDepth(1);
-  endPoint.setOrigin(0, 0.5);
+  endPoint.setOrigin(0, 0);
   endPoint.setVisible(false);
+  //endPoint.setVisible(true);
+  
 };
 function movement(player){
   var x = 640;
