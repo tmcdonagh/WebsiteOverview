@@ -265,6 +265,9 @@ function update(){
     arrowTurretButton.x = this.input.activePointer.x;
     arrowTurretButton.y = this.input.activePointer.y;
 
+    sellIcon.x = 23*32;
+    sellIcon.y = 6*32;
+
     arrowTileX = Math.floor(this.input.activePointer.x/32);
     arrowTileY = Math.floor(this.input.activePointer.y/32);
 
@@ -286,6 +289,10 @@ function update(){
   else if(sellFollow){
     sellIcon.x = this.input.activePointer.x + 20;
     sellIcon.y = this.input.activePointer.y + 20;
+    arrowTurretButton.x = 23*32;
+    arrowTurretButton.y = 8*32;
+    arrowFollow = false;
+    redDetectionCircle.visible = false;
   }
 
 
@@ -533,6 +540,7 @@ function arrowFire(){
 
         // Fires Bullet
         if(create.time.now > arrowTurret.firingTimer){
+          arrowTurret.anims.play('arrowCharge', true);
           var bullet = bullets.create(arrowTurret.x, arrowTurret.y, 'bullet');
           bullet.checkWorldBounds = true;
           bullet.outOfBoundsKill = true;
@@ -543,7 +551,6 @@ function arrowFire(){
           bullet.body.velocity.x = dx*1000;
           bullet.body.velocity.y = dy*1000;
           arrowTurret.firingTimer = create.time.now + 5000;
-          arrowTurret.anims.play('arrowCharge', true);
         }
 
 
