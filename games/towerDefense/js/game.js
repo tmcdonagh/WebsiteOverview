@@ -187,7 +187,7 @@ function create(){
   endPoints.enableBody = true;
   endPoints.physicsBodyType = Phaser.Physics.ARCADE;
   endPoints.createMultiple(2, 'endPoint');
-  spawnEndPoints(650, 600);
+  spawnEndPoints(660, 600);
 
   detectionCircles = this.physics.add.group();
   detectionCircles.enableBody = true;
@@ -610,6 +610,7 @@ function spawnEndPoints(x, y){
   endPoint.setOrigin(0, 0);
   endPoint.setVisible(false);
   //endPoint.setVisible(true);
+  endPoint.body.immovable = true;
   
 };
 function movement(player){
