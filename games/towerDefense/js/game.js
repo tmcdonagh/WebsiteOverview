@@ -72,6 +72,7 @@ function preload(){
   this.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
   this.load.image('arrowHelp', 'assets/arrowHelp.png');
   this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 34, frameHeight: 28 });
+  this.load.spritesheet('arrow', 'assets/arrowCharge.png', {frameWidth: 34, frameHeight: 34});
 }
 
 
@@ -95,6 +96,12 @@ function create(){
   this.anims.create({
     key: 'yellow',
     frames: this.anims.generateFrameNumbers('enemy', { start: 3, end: 3 }),
+  });
+
+  this.anims.create({
+    key: 'arrowCharge',
+    frames: this.anims.generateFrameNumbers('arrow', { start: 0, end: 4 }),
+    frameRate: 1,
   });
 
   // Makes map
@@ -431,7 +438,6 @@ function sellTurret(tileX, tileY){
       mainDetectionCircle.visible = false;
     }
   }, this);
-
 };
 
 function tileChecker(tileX, tileY){
@@ -535,7 +541,7 @@ function arrowFire(){
           bullet.body.velocity.x = dx*1000;
           bullet.body.velocity.y = dy*1000;
           arrowTurret.firingTimer = create.time.now + 5000;
-          //console.log(arrowTurrets.active());
+          arrowTurret.anims.play('arrowCharge', true);
         }
 
 
