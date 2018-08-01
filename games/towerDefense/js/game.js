@@ -364,6 +364,7 @@ function update(){
   }
 
   arrowFire();
+  lazerFire();
   //create = this;
 
 
@@ -564,6 +565,7 @@ function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
     //var mainEnemy = mainEnemies.create(0, 32, 'redEnemy');
     var mainEnemy = mainEnemies.create(0, 32, 'enemy');
+    mainEnemy.body.immovable = true;
     mainEnemy.collideWorldBounds = true;
     mainEnemy.onOutOfBoundsKill = true;
     mainEnemy.anims.play('red', true);
@@ -657,6 +659,12 @@ function arrowFire(){
   if(checkIfAllDead() == true){
     changeLevel();
   }
+
+};
+
+function lazerFire(){
+
+  
 
 };
 function changeLevel(){
