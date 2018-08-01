@@ -73,6 +73,9 @@ function preload(){
   this.load.image('arrowHelp', 'assets/arrowHelp.png');
   this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 34, frameHeight: 28 });
   this.load.spritesheet('arrow', 'assets/arrowCharge.png', {frameWidth: 34, frameHeight: 34});
+  this.load.spritesheet('lazerTurret', 'assets/lazerTurretCharge.png', {frameWidth: 34, frameHeight: 34});
+  this.load.image('lazer', 'assets/lazer.png');
+  this.load.image('lazerTurretButton', 'assets/lazerTurretButton.png');
 }
 
 
@@ -101,6 +104,17 @@ function create(){
   this.anims.create({
     key: 'arrowCharge',
     frames: this.anims.generateFrameNumbers('arrow', { start: 0, end: 4 }),
+    frameRate: 1,
+  });
+
+  this.anims.create({
+    key: 'lazerCharge',
+    frames: this.anims.generateFrameNumbers('lazerTurret', {start: 0, end: 7}),
+    frameRate: 1,
+  });
+  this.anims.create({
+    key: 'lazerFire',
+    frames: this.anims.generateFrameNumbers('lazerTurret', {start: 8, end: 11}),
     frameRate: 1,
   });
 
@@ -169,9 +183,17 @@ function create(){
   sellIcon = this.add.image(23*32, 6*32, 'sellIcon');
   sellIcon.inputEnabled = true;
 
+  lazerDock = this.add.image(23*32, 10.5*32, 'dock');
+  lazerTurretButton = this.add.image(23*32, 10.5*32, 'lazerTurretButton');
+  lazerTurretButton.inputEnabled = true;
+
   arrowTurrets = this.physics.add.group();
   arrowTurrets.enableBody = true;
   arrowTurrets.physicsBodyType = Phaser.Physics.ARCADE;
+
+  lazerTurrets = this.physics.add.group();
+  lazerTurrets.enableBody = true;
+  lazerTurrets.physicsBodyType = Phaser.Physics.ARCADE;
 
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
@@ -182,6 +204,11 @@ function create(){
   bullets.enableBody = true;
   bullets.physicsBodyType = Phaser.Physics.ARCADE;
   bullets.createMultiple(30, 'bullet');
+
+  lazers = this.physics.add.group();
+  lazers.enableBody = true;
+  lazers.physicsBodyType = Phaser.Physics.ARCADE;
+  lazers.createMultiple(30, 'lazer');
 
   endPoints = this.physics.add.group();
   endPoints.enableBody = true;
