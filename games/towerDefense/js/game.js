@@ -43,13 +43,14 @@ var spawnTimer = 0;
 var firingTimer = 0;
 var enemiesLeft = 10;
 var lives = 10;
-var cash = 200;
+var cash = 100;
 var arrowFollow = false;
 var sellFollow = false;
-var arrowCost = 100;
+var arrowCost = 50;
+var lazerCost = 100;
 var wave = 1;
 var addedEnemies = 0;
-
+var lazerFollow = false;
 
 function preload(){
   game = this;
@@ -73,7 +74,7 @@ function preload(){
   this.load.image('arrowHelp', 'assets/arrowHelp.png');
   this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 34, frameHeight: 28 });
   this.load.spritesheet('arrow', 'assets/arrowCharge.png', {frameWidth: 34, frameHeight: 34});
-  this.load.spritesheet('lazerTurret', 'assets/lazerTurretCharge.png', {frameWidth: 34, frameHeight: 34});
+  this.load.spritesheet('lazerTurret', 'assets/lazerCharge.png', {frameWidth: 34, frameHeight: 34});
   this.load.image('lazer', 'assets/lazer.png');
   this.load.image('lazerTurretButton', 'assets/lazerTurretButton.png');
 }
@@ -82,6 +83,9 @@ function preload(){
 function create(){
 
   create = this; 
+
+  var arrowCost = 50;
+  var lazerCost = 100;
 
   //Animations
   this.anims.create({
@@ -173,17 +177,20 @@ function create(){
   waveText = game.add.text(26.5*32, 0.75*32, 'Wave ' + wave, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
   livesText = game.add.text(25.25*32, 3.75*32, lives, {font: '18px Arial'});
-  arrowCost = game.add.text(22.3*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
+  arrowCost = game.add.text(22.5*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret');
+  arrowTurretButton.setDepth(1);
   arrowTurretButton.inputEnabled = true;
 
   sellDock = this.add.image(23*32, 6*32, 'sellDock');
   sellIcon = this.add.image(23*32, 6*32, 'sellIcon');
+  sellIcon.setDepth(1);
   sellIcon.inputEnabled = true;
 
   lazerDock = this.add.image(23*32, 10.5*32, 'dock');
+  lazerDock.setDepth(0);
   lazerTurretButton = this.add.image(23*32, 10.5*32, 'lazerTurretButton');
   lazerTurretButton.inputEnabled = true;
 
@@ -288,17 +295,30 @@ function update(){
     marker.setVisible(false);
   }
 
-  if(arrowFollow){
-    arrowTurretButton.x = this.input.activePointer.x;
-    arrowTurretButton.y = this.input.activePointer.y;
+  if(arrowFollow || lazerFollow){
+    if(arrowFollow){
+      arrowTurretButton.x = this.input.activePointer.x;
+      arrowTurretButton.y = this.input.activePointer.y;
+
+      lazerTurretButton.x = 23*32;
+      lazerTurretButton.y = 10.5*32;
+    }
+    else if(lazerFollow){
+      lazerTurretButton.x = this.input.activePointer.x;
+      lazerTurretButton.y = this.input.activePointer.y;
+
+      arrowTurretButton.x = 23*32;
+      arrowTurretButton.y = 8*32;
+    }
 
     sellIcon.x = 23*32;
     sellIcon.y = 6*32;
 
-    arrowTileX = Math.floor(this.input.activePointer.x/32);
-    arrowTileY = Math.floor(this.input.activePointer.y/32);
 
-    if(getTileID(arrowTileX, arrowTileY) == 15 && cash >= 100 && tileChecker(arrowTileX, arrowTileY) == true){
+    turretTileX = Math.floor(this.input.activePointer.x/32);
+    turretTileY = Math.floor(this.input.activePointer.y/32);
+
+    if(getTileID(turretTileX, turretTileY) == 15 && cash >= arrowCost && tileChecker(turretTileX, turretTileY) == true){
       greenDetectionCircle.x = this.input.activePointer.x;
       greenDetectionCircle.y = this.input.activePointer.y;
       greenDetectionCircle.visible = true;
@@ -387,34 +407,47 @@ function handleClick(pointer){
   //var tile = map.getTileAt(Math.floor(pointer.x/32), Math.floor(pointer.y/32));
   //console.log(tile.index);
   //finder.setTileCost(44, 500);
-
+  //console.log(pointer.x + " " + pointer.y);
 
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
     sellFollow = false;
+    lazerFollow = false;
   }
   else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 168 && pointer.y <= 220 && sellFollow == false){
     sellFollow = true;
     arrowFollow = false;
+    lazerFollow = false;
 
+  }
+  else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 312 && pointer.y <= 362 && lazerFollow == false){
+    sellFollow = false;
+    arrowFollow = false;
+    lazerFollow = true;
   }
   else if(pointer.x >= 672){
     arrowFollow = false;
     arrowTurretButton.x = 23*32;
     arrowTurretButton.y = 8*32;
-    //mainDetectionCircle.visible = false;
     redDetectionCircle.visible = false;
     greenDetectionCircle.visible = false;
 
     sellFollow = false;
     sellIcon.x = 23*32;
     sellIcon.y = 6*32;
+
+    lazerFollow = false;
+    lazerTurretButton.x = 23*32;
+    lazerTurretButton.y = 10.5*32;
   }
   else if(arrowFollow){
     placeArrow(pointer.x, pointer.y);
   }
   else if(sellFollow){
     sellTurret(Math.floor(pointer.x/32), Math.floor(pointer.y/32));
+  }
+  else if(lazerFollow){
+    placeLazer(pointer.x, pointer.y);
   }
 };
 
@@ -439,7 +472,7 @@ function placeArrow(x, y){
   var canPlace = true;
   xTile = Math.floor(x/32);
   yTile = Math.floor(y/32);
-  if(cash >= 100){ 	
+  if(cash >= arrowCost){ 	
     var canPlace = true;
     this.arrowTurrets.children.each(function(arrowTurret){
       if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true){
@@ -456,18 +489,54 @@ function placeArrow(x, y){
       arrowTurret.firingTimer = 0;
       var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
       detectionCircle.visible = false;
-      cash -= 100;
+      cash -= arrowCost;
       cashText.setText('$' + cash);
     }
   }
 };
 
+function placeLazer(x, y){
+
+  var canPlace = true;
+  xTile = Math.floor(x/32);
+  yTile = Math.floor(y/32);
+  if(cash >= arrowCost){   
+    var canPlace = true;
+    this.arrowTurrets.children.each(function(arrowTurret){
+      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true){
+
+        canPlace = false;
+      }
+
+    }, this);
+    this.lazerTurrets.children.each(function(lazerTurret){
+      if(Math.floor(lazerTurret.x/32) == xTile && Math.floor(lazerTurret.y/32) == yTile && lazerTurret.isAlive == true){
+        canPlace = false;
+      }
+
+    }, this);
+    //console.log(getTileID(xTile, yTile));
+    if(getTileID(xTile, yTile) == 15 && canPlace == true){
+
+      var lazerTurret = lazerTurrets.create(xTile*32 + 15, yTile*32 + 15, 'lazerTurret').setInteractive();
+      lazerTurret.anims.play('lazerCharge', true);
+      lazerTurret.isAlive = true;
+      lazerTurret.firingTimer = 0;
+      var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
+      detectionCircle.visible = false;
+      cash -= lazerCost;
+      cashText.setText('$' + cash);
+    }
+  }
+
+};
+
 function sellTurret(tileX, tileY){
   this.arrowTurrets.children.each(function(arrowTurret){
-    if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY){
+    if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY && arrowTurret.isAlive == true){
       arrowTurret.destroy();
       arrowTurret.isAlive = false;
-      cash += 80;
+      cash += Math.floor(arrowCost*0.8);
       cashText.setText('$' + cash);
       mainDetectionCircle.visible = false;
     }
@@ -514,12 +583,12 @@ function spawnEnemy(type){
       }
       else{
         mainEnemy.anims.play('red');
-        mainEnemy.hp = 2;
+        mainEnemy.hp = 1;
       }
       if(wave >= 3){
         mainEnemy.anims.play('green');
         mainEnemy.hp = 2;
-        
+
         if(wave >= 4){
           if(enemiesLeft % 2 == 0){
             mainEnemy.anims.play('green');
@@ -601,12 +670,14 @@ function changeLevel(){
 function bulletCollision(bullet, enemy){
   bullet.setActive(false);
   bullet.destroy();
+  cash += 5;
+  cashText.setText('$' + cash);
   enemy.hp--;
   if(enemy.hp <= 0){
     enemy.destroy();
     enemy.isAlive = false;
-    cash += 10;
-    cashText.setText('$' + cash);
+    //cash += 10;
+    //cashText.setText('$' + cash);
   }
   else if(enemy.hp == 1){
     enemy.anims.play('red', true);
@@ -645,7 +716,7 @@ function spawnEndPoints(x, y){
   endPoint.setVisible(false);
   //endPoint.setVisible(true);
   endPoint.body.immovable = true;
-  
+
 };
 function movement(player){
   var x = 640;
