@@ -53,7 +53,7 @@ var lazerFollow = false;
 function preload(){
   game = this;
   this.load.image('tileset', 'assets/gridtiles.png');
-  this.load.tilemapTiledJSON('map', 'assets/map.json');
+  this.load.tilemapTiledJSON('map', 'assets/newMap.json');
   this.load.image('mainEnemy', 'assets/phaserguy.png');
   this.load.image('blueEnemy', 'assets/blueAlien.png');
   this.load.image('redEnemy', 'assets/redAlien.png');
@@ -175,7 +175,7 @@ function create(){
   waveText = game.add.text(26.5*32, 0.75*32, 'Wave ' + wave, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
   livesText = game.add.text(25.25*32, 3.75*32, lives, {font: '18px Arial'});
-  arrowCostText = game.add.text(22.5*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
+  arrowCostText = game.add.text(22.5*32, 8.8*32, '$' + arrowCost, {font: '18px Arial'});
   lazerCostText = game.add.text(22.3*32, 11.3*32, '$' + lazerCost, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
@@ -405,10 +405,30 @@ function getEnemy(x, y, distance){
 function handleClick(pointer){
 
 
-  //var tile = map.getTileAt(Math.floor(pointer.x/32), Math.floor(pointer.y/32));
+  var tile = map.getTileAt(Math.floor(pointer.x/32), Math.floor(pointer.y/32));
   //console.log(tile.index);
   //finder.setTileCost(44, 500);
   //console.log(pointer.x + " " + pointer.y);
+  //finder.setTileCost(Math.floor(pointer.x/32), Math.floor(pointer.y/32), 15);
+
+  console.log(tile.x + " " + tile.y);
+
+  var grid = [];
+  for(var y = 0; y < map.height; y++){
+    var col = [];
+    for(var x = 0; x < map.width; x++){
+      if(tile.x == x && tile.y == y){
+        col.push(15);
+      }
+      else{
+        col.push(getTileID(x,y));
+      }
+
+    }
+    grid.push(col);
+  }
+  finder.setGrid(grid);
+
 
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
