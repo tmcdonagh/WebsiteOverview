@@ -1,7 +1,7 @@
 // Things to add:
 // X -Enemy Health Bar
-//   -Turret Cooldown Meter
-//   -Lazer Beam Turret
+// X -Turret Cooldown Meter
+// X -Lazer Beam Turret
 //   -Blockades
 //   -Better right menu (With square for help text)
 // / -New Sprite for enemies and turrets
@@ -10,7 +10,7 @@
 //   -Start Menu
 //   -Pause Button
 // X -Levels
-//   -Level Text
+// X -Level Text
 // X -Enemies spawn is messed up where they can pile up when framerate is low or when tab is changed
 
 
@@ -46,8 +46,6 @@ var lives = 10;
 var cash = 100;
 var arrowFollow = false;
 var sellFollow = false;
-var arrowCost = 50;
-var lazerCost = 100;
 var wave = 1;
 var addedEnemies = 0;
 var lazerFollow = false;
@@ -79,13 +77,13 @@ function preload(){
   this.load.image('lazerTurretButton', 'assets/lazerTurretButton.png');
 }
 
+var arrowCost = 50;
+var lazerCost = 100;
 
 function create(){
 
   create = this; 
 
-  var arrowCost = 50;
-  var lazerCost = 100;
 
   //Animations
   this.anims.create({
@@ -177,7 +175,8 @@ function create(){
   waveText = game.add.text(26.5*32, 0.75*32, 'Wave ' + wave, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
   livesText = game.add.text(25.25*32, 3.75*32, lives, {font: '18px Arial'});
-  arrowCost = game.add.text(22.5*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
+  arrowCostText = game.add.text(22.5*32, 8.9*32, '$' + arrowCost, {font: '18px Arial'});
+  lazerCostText = game.add.text(22.3*32, 11.3*32, '$' + lazerCost, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret');
@@ -257,6 +256,7 @@ function create(){
   });
 
   this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
+  this.physics.add.overlap(lazers, mainEnemies, lazerCollision, null, this);
   this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
 
 
@@ -723,12 +723,13 @@ function bulletCollision(bullet, enemy){
   else if(enemy.hp == 4){
     enemy.anims.play('yellow', true);
   }
-
-  /*
-     if(checkIfAllDead == true){
-     changeLevel();
-     }
-     */
+};
+function lazerCollision(lazer, enemy){
+  cash += 5;
+  cashText.setText('$' + cash);
+  enemy.hp--;
+  enemy.destroy();
+  enemy.isAlive = false;
 };
 function endPointCollision(endPoint, enemy){
   lives--;
