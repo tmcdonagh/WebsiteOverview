@@ -53,7 +53,7 @@ var lazerFollow = false;
 function preload(){
   game = this;
   this.load.image('tileset', 'assets/gridtiles.png');
-  this.load.tilemapTiledJSON('map', 'assets/newMap.json');
+  this.load.tilemapTiledJSON('map', 'assets/map.json');
   this.load.image('mainEnemy', 'assets/phaserguy.png');
   this.load.image('blueEnemy', 'assets/blueAlien.png');
   this.load.image('redEnemy', 'assets/redAlien.png');
@@ -411,14 +411,14 @@ function handleClick(pointer){
   //console.log(pointer.x + " " + pointer.y);
   //finder.setTileCost(Math.floor(pointer.x/32), Math.floor(pointer.y/32), 15);
 
-  console.log(tile.x + " " + tile.y);
-
+  //console.log(tile.x + " " + tile.y);
+/*
   var grid = [];
   for(var y = 0; y < map.height; y++){
     var col = [];
     for(var x = 0; x < map.width; x++){
       if(tile.x == x && tile.y == y){
-        col.push(15);
+        col.push(4);
       }
       else{
         col.push(getTileID(x,y));
@@ -428,7 +428,7 @@ function handleClick(pointer){
     grid.push(col);
   }
   finder.setGrid(grid);
-
+*/
 
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
