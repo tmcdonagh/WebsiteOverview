@@ -75,6 +75,7 @@ function preload(){
   this.load.spritesheet('lazerTurret', 'assets/lazerCharge.png', {frameWidth: 34, frameHeight: 34});
   this.load.image('lazer', 'assets/lazer.png');
   this.load.image('lazerTurretButton', 'assets/lazerTurretButton.png');
+  this.load.image('startScreen', 'assets/startScreen.png');
 }
 
 var arrowCost = 50;
@@ -83,6 +84,8 @@ var lazerCost = 100;
 function create(){
 
   create = this; 
+
+  game.paused = true;
 
 
   //Animations
@@ -259,115 +262,116 @@ function create(){
   this.physics.add.overlap(lazers, mainEnemies, lazerCollision, null, this);
   this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
 
+  startScreen = this.add.image(10.5*32, 12*32, 'startScreen');
+  startScreen.visible = true;
+
 
 }
 /* ***** End of Create function ***** */
 
 function update(){
 
-  //this.physics.add.collider(endPoints, mainEnemies, endPointCollision, null, this);
-  //this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
-
   var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
-
   pointerX = this.input.activePointer.x;
   pointerY = this.input.activePointer.y;
 
-  if(pointerX <= 762 && pointerX >= 713 && pointerY >= 233 && pointerY <= 283){
-    arrowHelp.visible = true;
-  }
-  else if(pointerX <= 762 && pointerX >= 713 && pointerY >= 168 && pointerY <= 220){
-    //sellHelp.visible = true;
-  }
-  else {
-    arrowHelp.visible = false;
-  }
 
-  //Rounds down to nearest tile
-  var pointerTileX = map.worldToTileX(worldPoint.x);
-  var pointerTileY = map.worldToTileY(worldPoint.y);
-  marker.x = map.tileToWorldX(pointerTileX);
-  marker.y = map.tileToWorldY(pointerTileY);
-  if(pointerTileX < 21){
-    marker.setVisible(true);
-  }
-  else {
-    marker.setVisible(false);
-  }
-
-  if(arrowFollow || lazerFollow){
-    if(arrowFollow){
-      arrowTurretButton.x = this.input.activePointer.x;
-      arrowTurretButton.y = this.input.activePointer.y;
-
-      lazerTurretButton.x = 23*32;
-      lazerTurretButton.y = 10.5*32;
+  if(game.paused == false){
+    if(pointerX <= 762 && pointerX >= 713 && pointerY >= 233 && pointerY <= 283){
+      arrowHelp.visible = true;
     }
-    else if(lazerFollow){
-      lazerTurretButton.x = this.input.activePointer.x;
-      lazerTurretButton.y = this.input.activePointer.y;
+    else if(pointerX <= 762 && pointerX >= 713 && pointerY >= 168 && pointerY <= 220){
+      //sellHelp.visible = true;
+    }
+    else {
+      arrowHelp.visible = false;
+    }
 
+    //Rounds down to nearest tile
+    var pointerTileX = map.worldToTileX(worldPoint.x);
+    var pointerTileY = map.worldToTileY(worldPoint.y);
+    marker.x = map.tileToWorldX(pointerTileX);
+    marker.y = map.tileToWorldY(pointerTileY);
+    if(pointerTileX < 21){
+      marker.setVisible(true);
+    }
+    else {
+      marker.setVisible(false);
+    }
+
+    if(arrowFollow || lazerFollow){
+      if(arrowFollow){
+        arrowTurretButton.x = this.input.activePointer.x;
+        arrowTurretButton.y = this.input.activePointer.y;
+
+        lazerTurretButton.x = 23*32;
+        lazerTurretButton.y = 10.5*32;
+      }
+      else if(lazerFollow){
+        lazerTurretButton.x = this.input.activePointer.x;
+        lazerTurretButton.y = this.input.activePointer.y;
+
+        arrowTurretButton.x = 23*32;
+        arrowTurretButton.y = 8*32;
+      }
+
+      sellIcon.x = 23*32;
+      sellIcon.y = 6*32;
+
+
+      turretTileX = Math.floor(this.input.activePointer.x/32);
+      turretTileY = Math.floor(this.input.activePointer.y/32);
+
+      if(getTileID(turretTileX, turretTileY) == 15 && cash >= arrowCost && tileChecker(turretTileX, turretTileY) == true){
+        greenDetectionCircle.x = this.input.activePointer.x;
+        greenDetectionCircle.y = this.input.activePointer.y;
+        greenDetectionCircle.visible = true;
+        redDetectionCircle.visible = false;
+      }
+      else{
+        redDetectionCircle.x = this.input.activePointer.x;
+        redDetectionCircle.y = this.input.activePointer.y;
+        redDetectionCircle.visible = true;
+        greenDetectionCircle.visible = false;
+
+      }
+      //console.log(getTileID(1,1));
+    }
+    else if(sellFollow){
+      sellIcon.x = this.input.activePointer.x + 20;
+      sellIcon.y = this.input.activePointer.y + 20;
       arrowTurretButton.x = 23*32;
       arrowTurretButton.y = 8*32;
-    }
-
-    sellIcon.x = 23*32;
-    sellIcon.y = 6*32;
-
-
-    turretTileX = Math.floor(this.input.activePointer.x/32);
-    turretTileY = Math.floor(this.input.activePointer.y/32);
-
-    if(getTileID(turretTileX, turretTileY) == 15 && cash >= arrowCost && tileChecker(turretTileX, turretTileY) == true){
-      greenDetectionCircle.x = this.input.activePointer.x;
-      greenDetectionCircle.y = this.input.activePointer.y;
-      greenDetectionCircle.visible = true;
+      arrowFollow = false;
       redDetectionCircle.visible = false;
     }
-    else{
-      redDetectionCircle.x = this.input.activePointer.x;
-      redDetectionCircle.y = this.input.activePointer.y;
-      redDetectionCircle.visible = true;
-      greenDetectionCircle.visible = false;
-
-    }
-    //console.log(getTileID(1,1));
-  }
-  else if(sellFollow){
-    sellIcon.x = this.input.activePointer.x + 20;
-    sellIcon.y = this.input.activePointer.y + 20;
-    arrowTurretButton.x = 23*32;
-    arrowTurretButton.y = 8*32;
-    arrowFollow = false;
-    redDetectionCircle.visible = false;
-  }
 
 
-  if(this.time.now > spawnTimer && enemiesLeft > 0){
-    var canSpawn = true;
-    outside.mainEnemies.children.each(function(mainEnemy){
-      if(Math.floor(mainEnemy.x/32) <= 1 && Math.floor(mainEnemy.y/32) <= 2){
-        canSpawn = false;
+    if(this.time.now > spawnTimer && enemiesLeft > 0){
+      var canSpawn = true;
+      outside.mainEnemies.children.each(function(mainEnemy){
+        if(Math.floor(mainEnemy.x/32) <= 1 && Math.floor(mainEnemy.y/32) <= 2){
+          canSpawn = false;
+        }
+      }, this);
+      if(canSpawn){
+        spawnEnemy(1);
+        enemiesLeft--;
+        spawnTimer = this.time.now + 2000;
       }
-    }, this);
-    if(canSpawn){
-      spawnEnemy(1);
-      enemiesLeft--;
-      spawnTimer = this.time.now + 2000;
     }
-  }
-  if(this.time.now > spawnTimer && enemiesLeft <= 0){
+    if(this.time.now > spawnTimer && enemiesLeft <= 0){
 
-    if(checkIfAllDead == true){
-      changeLevel();
+      if(checkIfAllDead == true){
+        changeLevel();
+      }
     }
+
+    arrowFire();
+    lazerFire();
+    //create = this;
+
   }
-
-  arrowFire();
-  lazerFire();
-  //create = this;
-
-
 
 }
 
@@ -404,6 +408,15 @@ function getEnemy(x, y, distance){
 
 function handleClick(pointer){
 
+  if(game.paused == true){
+    if(pointerX >= 231 && pointerX <= 441 && pointerY >= 345 && pointerY <= 381){
+      game.paused = false;
+      startScreen.visible = false;
+    }
+    else if(pointerX >= 231 && pointerX <= 441 && pointerY >= 389 && pointerY <= 425){
+      console.log('Tutorial Not Implemented yet');
+    }
+  }
 
   var tile = map.getTileAt(Math.floor(pointer.x/32), Math.floor(pointer.y/32));
   //console.log(tile.index);
@@ -412,23 +425,23 @@ function handleClick(pointer){
   //finder.setTileCost(Math.floor(pointer.x/32), Math.floor(pointer.y/32), 15);
 
   //console.log(tile.x + " " + tile.y);
-/*
-  var grid = [];
-  for(var y = 0; y < map.height; y++){
-    var col = [];
-    for(var x = 0; x < map.width; x++){
-      if(tile.x == x && tile.y == y){
-        col.push(4);
-      }
-      else{
-        col.push(getTileID(x,y));
-      }
+  /*
+     var grid = [];
+     for(var y = 0; y < map.height; y++){
+     var col = [];
+     for(var x = 0; x < map.width; x++){
+     if(tile.x == x && tile.y == y){
+     col.push(4);
+     }
+     else{
+     col.push(getTileID(x,y));
+     }
 
-    }
-    grid.push(col);
-  }
-  finder.setGrid(grid);
-*/
+     }
+     grid.push(col);
+     }
+     finder.setGrid(grid);
+     */
 
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
