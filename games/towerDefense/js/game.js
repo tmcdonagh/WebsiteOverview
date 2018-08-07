@@ -73,6 +73,8 @@ function preload(){
   this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 34, frameHeight: 28 });
   this.load.spritesheet('arrow', 'assets/arrowCharge.png', {frameWidth: 34, frameHeight: 34});
   this.load.spritesheet('lazerTurret', 'assets/lazerCharge.png', {frameWidth: 34, frameHeight: 34});
+  this.load.spritesheet('fireTurret', 'assets/fireTurretSpritesheet.png', {frameWidth: 98, frameHeight: 98});
+  this.load.image('fireTurretButton', 'assets/fireTurretButton.png');
   this.load.image('lazer', 'assets/lazer.png');
   this.load.image('lazerTurretButton', 'assets/lazerTurretButton.png');
   this.load.image('startScreen', 'assets/startScreen.png');
@@ -121,6 +123,17 @@ function create(){
     key: 'lazerInitial',
     frames: this.anims.generateFrameNumbers('lazerTurret', {start: 11, end: 11}),
     frameRate: 1,
+  });
+  
+  this.anims.create({
+    key: 'fireTurretCharge',
+    frames: this.anims.generateFrameNumbers('fireTurret', {start: 0, end: 10}),
+    frameRate: 2,
+  });
+  this.anims.create({
+    key: 'fireTurretFire',
+    frames: this.anims.generateFrameNumbers('fireTurret', {start: 10, end: 17}),
+    frameRate: 4,
   });
 
   // Makes map
@@ -195,6 +208,11 @@ function create(){
   lazerDock.setDepth(0);
   lazerTurretButton = this.add.image(23*32, 10.5*32, 'lazerTurretButton');
   lazerTurretButton.inputEnabled = true;
+
+  fireTurretDock = this.add.image(25.75*32, 8*32, 'dock');
+  fireTurretDock.setDepth(0);
+  fireTurretButton = this.add.image(25.85*32, 8.1*32, 'fireTurretButton');
+  fireTurretButton.inputEnabled = true;
 
   arrowTurrets = this.physics.add.group();
   arrowTurrets.enableBody = true;
