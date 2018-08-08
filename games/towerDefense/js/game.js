@@ -49,6 +49,8 @@ var sellFollow = false;
 var wave = 1;
 var addedEnemies = 0;
 var lazerFollow = false;
+var fireTurretFollow = false;
+
 
 function preload(){
   game = this;
@@ -222,6 +224,10 @@ function create(){
   lazerTurrets.enableBody = true;
   lazerTurrets.physicsBodyType = Phaser.Physics.ARCADE;
 
+  fireTurrets = this.physics.add.group();
+  fireTurrets.enableBody = true;
+  fireTurrets.physicsBodyType = Phaser.Physics.ARCADE;
+
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
@@ -317,20 +323,24 @@ function update(){
       marker.setVisible(false);
     }
 
-    if(arrowFollow || lazerFollow){
+    if(arrowFollow || lazerFollow || fireTurretFollow){
       if(arrowFollow){
         arrowTurretButton.x = this.input.activePointer.x;
         arrowTurretButton.y = this.input.activePointer.y;
 
-        lazerTurretButton.x = 23*32;
-        lazerTurretButton.y = 10.5*32;
+        resetButtonsExcept("arrowTurretButton");
       }
       else if(lazerFollow){
         lazerTurretButton.x = this.input.activePointer.x;
         lazerTurretButton.y = this.input.activePointer.y;
 
-        arrowTurretButton.x = 23*32;
-        arrowTurretButton.y = 8*32;
+        resetButtonsExcept("lazerTurretButton");
+      }
+      else if(fireTurretFollow){
+        fireTurretButton.x = this.input.activePointer.x;
+        fireTurretButton.y = this.input.activePointer.y;
+
+        resetButtonsExcept("fireTurretButton");
       }
 
       sellIcon.x = 23*32;
@@ -358,9 +368,9 @@ function update(){
     else if(sellFollow){
       sellIcon.x = this.input.activePointer.x + 20;
       sellIcon.y = this.input.activePointer.y + 20;
-      arrowTurretButton.x = 23*32;
-      arrowTurretButton.y = 8*32;
-      arrowFollow = false;
+
+      resetButtonsExcept("sellButton");
+
       redDetectionCircle.visible = false;
     }
 
@@ -394,6 +404,30 @@ function update(){
 }
 
 /* ***** End of Update Function ***** */
+
+function resetButtonsExcept(except){
+  if(except != "arrowTurretButton"){
+    arrowTurretButton.x = 23*32;
+    arrowTurretButton.y = 8*32;
+    arrowFollow = false;
+  }
+  if(except != "lazerTurretButton"){
+    lazerTurretButton.x = 23*32;
+    lazerTurretButton.y = 10.5*32;
+    lazerFollow = false;
+  }
+  if(except != "fireTurretButton"){
+    fireTurretButton.x = 25.85*32;
+    fireTurretButton.y = 8.1*32;
+    fireTurretFollow = false;
+  }
+  if(except != "sellButton"){
+    sellIcon.x = 23*32;
+    sellIcon.y = 6*32;
+    sellFollow = false;
+  }
+
+};
 
 function checkCollision(x,y){
   if(!map.getTileAt(x, y) == null){
@@ -477,20 +511,18 @@ function handleClick(pointer){
     arrowFollow = false;
     lazerFollow = true;
   }
-  else if(pointer.x >= 672){
+  else if(pointer.x <= 850 && pointer.x >= 800 && pointer.y >= 233 && pointer.y <= 282){
+    sellFollow = false;
     arrowFollow = false;
-    arrowTurretButton.x = 23*32;
-    arrowTurretButton.y = 8*32;
+    lazerFollow = false;
+    fireTurretFollow = true;
+  }
+  else if(pointer.x >= 672){
     redDetectionCircle.visible = false;
     greenDetectionCircle.visible = false;
 
-    sellFollow = false;
-    sellIcon.x = 23*32;
-    sellIcon.y = 6*32;
+    resetButtonsExcept("");
 
-    lazerFollow = false;
-    lazerTurretButton.x = 23*32;
-    lazerTurretButton.y = 10.5*32;
   }
   else if(arrowFollow){
     placeArrow(pointer.x, pointer.y);
