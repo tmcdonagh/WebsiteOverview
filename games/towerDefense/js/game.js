@@ -136,11 +136,11 @@ function create(){
   this.anims.create({
     key: 'fireTurretFire',
     frames: this.anims.generateFrameNumbers('fireTurret', {start: 10, end: 17}),
-    frameRate: 4,
+    frameRate: 30,
   });
   this.anims.create({
     key: 'fireTurretInitial',
-    frames: this.anims.generateFrameNumbers('fireTurret', {start: 0, end: 0}),
+    frames: this.anims.generateFrameNumbers('fireTurret', {start: 10, end: 10}),
     frameRate: 1,
   });
 
@@ -381,6 +381,14 @@ function update(){
       redDetectionCircle.visible = false;
     }
 
+    outside.lazerTurrets.children.each(function(lazerTurret){
+      if(lazerTurret.isAiming){
+        lazerTurret.initAngle = Phaser.Math.Angle.Between(lazerTurret.x, lazerTurret.y, this.input.activePointer.x, this.input.activePointer.y);
+        lazerTurret.angle = (lazerTurret.initAngle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+      }
+    }, this);
+
+
 
     if(this.time.now > spawnTimer && enemiesLeft > 0){
       var canSpawn = true;
@@ -404,6 +412,7 @@ function update(){
 
     arrowFire();
     lazerFire();
+    fireTurretFire();
     //create = this;
 
   }
@@ -546,6 +555,13 @@ function handleClick(pointer){
   else if(fireTurretFollow){
     placeFire(pointer.x, pointer.y);
   }
+  else{
+    outside.lazerTurrets.children.each(function(lazerTurret){
+      if(lazerTurret.isAiming){
+        lazerTurret.isAiming = false;
+      }
+    }, this);
+  }
 };
 
 function checkIfAllDead(){
@@ -618,14 +634,22 @@ function placeLazer(x, y){
       var lazerTurret = lazerTurrets.create(xTile*32 + 15, yTile*32 + 15, 'lazerTurret').setInteractive();
       lazerTurret.anims.play('lazerInitial', true);
       lazerTurret.isAlive = true;
+      lazerTurret.isAiming = true; //makes turret aim to mouse
       lazerTurret.firingTimer = 0;
       var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
       detectionCircle.visible = false;
       cash -= lazerCost;
       cashText.setText('$' + cash);
+
+      lazerFollow = false;
+      greenDetectionCircle.visible = false;
+      redDetectionCircle.visible = false;
+      lazerTurretButton.x = 23*32;
+      lazerTurretButton.y = 10.5*32;
+
+
     }
   }
-
 };
 
 function placeFire(x, y){
@@ -768,7 +792,7 @@ function arrowFire(){
 
       var enemy = getEnemy(arrowTurret.x, arrowTurret.y, 75);
       if(enemy) {
-        var angle = 0.2 + Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
+        var angle = Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
         arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
 
         // Fires Bullet
@@ -779,8 +803,8 @@ function arrowFire(){
           bullet.outOfBoundsKill = true;
           bullet.setDepth(1);
           bullet.setOrigin(0, 0.5);
-          var dx = 0.2 + Math.cos(angle);
-          var dy = 0.2 + Math.sin(angle);
+          var dx = Math.cos(angle);
+          var dy = Math.sin(angle);
           bullet.body.velocity.x = dx*1000;
           bullet.body.velocity.y = dy*1000;
           arrowTurret.firingTimer = create.time.now + 5250;
@@ -806,18 +830,24 @@ function lazerFire(){
 
       if(enemy) {
 
-        var angle = 0.2 + Phaser.Math.Angle.Between(lazerTurret.x, lazerTurret.y, enemy.x, enemy.y);
-        lazerTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
 
-        if(create.time.now > lazerTurret.firingTimer){
+        var angle = Phaser.Math.Angle.Between(lazerTurret.x, lazerTurret.y, enemy.x, enemy.y);
+        //lazerTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+
+
+        if(create.time.now > lazerTurret.firingTimer && lazerTurret.isAiming == false){
           lazerTurret.anims.play('lazerCharge', true);
           var lazer = lazers.create(lazerTurret.x, lazerTurret.y, 'lazer');
           lazer.checkWorldBounds = true;
           lazer.outOfBoundsKill = true;
           lazer.setDepth(1);
           lazer.setOrigin(0, 0);
-          var dx = 0.2 + Math.cos(angle);
-          var dy = 0.2 + Math.sin(angle);
+          /*
+             var dx = 0.2 + Math.cos(angle);
+             var dy = 0.2 + Math.sin(angle);
+             */
+          var dx = Math.cos(lazerTurret.initAngle);
+          var dy = Math.sin(lazerTurret.initAngle);
           lazer.body.velocity.x = dx*1000;
           lazer.body.velocity.y = dy*1000;
           lazerTurret.firingTimer = create.time.now + 12250;
@@ -826,11 +856,52 @@ function lazerFire(){
     }
   }, this);
 };
+
+function fireTurretFire(){
+  this.fireTurrets.children.each(function(fireTurret){
+    var enemy = getEnemy(fireTurret.x, fireTurret.y, 75);
+    if(enemy){
+
+      if(create.time.now > fireTurret.firingTimer){
+        fireTurret.anims.play('fireTurretFire', true);
+        fireTurret.firingTimer = create.time.now + 6000;
+        outside.mainEnemies.children.each(function(enemy){
+          if(Phaser.Math.Distance.Between(enemy.x, enemy.y, fireTurret.x, fireTurret.y) <= 75){
+            enemy.hp--;
+            checkHp(enemy);         
+
+          }
+        }, this);
+
+      }
+    }
+  }, this);
+}
 function changeLevel(){
   wave++;
   waveText.setText('Wave ' + wave);
   addedEnemies += 2;
   enemiesLeft = 10 + addedEnemies;
+}
+
+function checkHp(enemy){
+  if(enemy.hp <= 0){
+    enemy.destroy();
+    enemy.isAlive = false;
+  }
+
+  else if(enemy.hp == 1){
+    enemy.anims.play('red', true);
+  }
+  else if(enemy.hp == 2){
+    enemy.anims.play('green', true);
+  }
+  else if(enemy.hp == 3){
+    enemy.anims.play('blue', true);
+  }
+  else if(enemy.hp == 4){
+    enemy.anims.play('yellow', true);
+  }
 }
 
 
