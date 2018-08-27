@@ -256,6 +256,7 @@ function create(){
   endPoints.physicsBodyType = Phaser.Physics.ARCADE;
   endPoints.createMultiple(2, 'endPoint');
   spawnEndPoints(660, 600);
+  spawnEndPoints(0, 600);
 
   detectionCircles = this.physics.add.group();
   detectionCircles.enableBody = true;
