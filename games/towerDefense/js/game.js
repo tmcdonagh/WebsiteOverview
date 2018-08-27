@@ -7,11 +7,12 @@
 // / -New Sprite for enemies and turrets
 // / -New enemies (Partially Done)
 //   -Figure out how to center the game on screen
-//   -Start Menu
+// / -Start Menu
 //   -Pause Button
 // X -Levels
 // X -Level Text
 // X -Enemies spawn is messed up where they can pile up when framerate is low or when tab is changed
+//   -Fix animation for fireturret by adding timer like the firing timer
 
 
 
@@ -50,6 +51,7 @@ var wave = 1;
 var addedEnemies = 0;
 var lazerFollow = false;
 var fireTurretFollow = false;
+var spawnRight = false;
 
 
 function preload(){
@@ -91,7 +93,6 @@ function create(){
   create = this; 
 
   game.paused = true;
-
 
   //Animations
   this.anims.create({
@@ -400,7 +401,7 @@ function update(){
       if(canSpawn){
         spawnEnemy(1);
         enemiesLeft--;
-        spawnTimer = this.time.now + 2000;
+        spawnTimer = this.time.now + 1500;
       }
     }
     if(this.time.now > spawnTimer && enemiesLeft <= 0){
@@ -723,7 +724,16 @@ function tileChecker(tileX, tileY){
 function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
     //var mainEnemy = mainEnemies.create(0, 32, 'redEnemy');
-    var mainEnemy = mainEnemies.create(0, 32, 'enemy');
+    if(wave > 4 && spawnRight){
+      var mainEnemy = mainEnemies.create(20*32, 32, 'enemy');
+      spawnRight = false;
+    }
+    else if(spawnRight == false){
+      var mainEnemy = mainEnemies.create(0, 32, 'enemy');
+      if(wave > 4){
+        spawnRight = true;
+      }
+    }
     mainEnemy.body.immovable = true;
     mainEnemy.collideWorldBounds = true;
     mainEnemy.onOutOfBoundsKill = true;
@@ -781,7 +791,12 @@ function spawnEnemy(type){
     mainEnemy.setDepth(1);
     mainEnemy.setOrigin(0,0);
 
-    movement(mainEnemy);
+    if(spawnRight){
+      movement(mainEnemy, 640, 608);
+    }
+    else {
+      movement(mainEnemy, 10, 608);
+    }
   }
 };
 function arrowFire(){
@@ -869,6 +884,8 @@ function fireTurretFire(){
           if(Phaser.Math.Distance.Between(enemy.x, enemy.y, fireTurret.x, fireTurret.y) <= 75){
             enemy.hp--;
             checkHp(enemy);         
+            cash += 5;
+            cashText.setText('$' + cash);
 
           }
         }, this);
@@ -957,9 +974,9 @@ function spawnEndPoints(x, y){
   endPoint.body.immovable = true;
 
 };
-function movement(player){
-  var x = 640;
-  var y = 608;
+function movement(player, x, y){
+  //var x = 640;
+  //var y = 608;
   var toX = Math.floor(x/32);
   var toY = Math.floor(y/32);
   var fromX = Math.floor(player.x/32);
