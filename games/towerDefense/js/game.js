@@ -13,6 +13,8 @@
 // X -Level Text
 // X -Enemies spawn is messed up where they can pile up when framerate is low or when tab is changed
 //   -Fix animation for fireturret by adding timer like the firing timer
+// X -Turret Count
+//   -Make it so you can buy new turret slots
 
 
 
@@ -53,6 +55,7 @@ var lazerFollow = false;
 var fireTurretFollow = false;
 var spawnRight = false;
 var turretCount = 0;
+var maxTurretCount = 10;
 
 
 function preload(){
@@ -204,6 +207,7 @@ function create(){
   arrowCostText = game.add.text(22.5*32, 8.8*32, '$' + arrowCost, {font: '18px Arial'});
   lazerCostText = game.add.text(22.3*32, 11.3*32, '$' + lazerCost, {font: '18px Arial'});
   fireCostText = game.add.text(25.1*32, 8.8*32, '$' + fireCost, {font: '18px Arial'});
+  turretCountText = game.add.text(22*32, 5*32, 'Turrets: ' + turretCount + '/' + maxTurretCount, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret');
@@ -360,7 +364,7 @@ function update(){
       turretTileX = Math.floor(this.input.activePointer.x/32);
       turretTileY = Math.floor(this.input.activePointer.y/32);
 
-      if(getTileID(turretTileX, turretTileY) == 15 && cash >= arrowCost && tileChecker(turretTileX, turretTileY) == true){
+      if(getTileID(turretTileX, turretTileY) == 15 && cash >= arrowCost && tileChecker(turretTileX, turretTileY) == true && turretCount < maxTurretCount){
         greenDetectionCircle.x = this.input.activePointer.x;
         greenDetectionCircle.y = this.input.activePointer.y;
         greenDetectionCircle.visible = true;
@@ -593,22 +597,26 @@ function checkIfAllDead(){
 function placeArrow(x, y){
   xTile = Math.floor(x/32);
   yTile = Math.floor(y/32);
-  if(cash >= arrowCost && tileChecker(xTile, yTile) == true && getTileID(xTile, yTile) == 15){ 	
+  if(cash >= arrowCost && tileChecker(xTile, yTile) == true && getTileID(xTile, yTile) == 15 && turretCount < maxTurretCount){ 	
     var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret').setInteractive();
     arrowTurret.isAlive = true;
     arrowTurret.firingTimer = 0;
     var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
     detectionCircle.visible = false;
     cash -= arrowCost;
-    cashText.setText('$' + cash);
     turretCount++;
+    resetText();
   }
+}
+function resetText(){
+  cashText.setText('$' + cash);
+  turretCountText.setText('Turrets: ' + turretCount + '/' + maxTurretCount);
 }
 
 function placeLazer(x, y){
   xTile = Math.floor(x/32);
   yTile = Math.floor(y/32);
-  if(cash >= lazerCost && tileChecker(xTile, yTile) == true && getTileID(xTile, yTile) == 15){   
+  if(cash >= lazerCost && tileChecker(xTile, yTile) == true && getTileID(xTile, yTile) == 15 && turretCount < maxTurretCount){   
     var lazerTurret = lazerTurrets.create(xTile*32 + 15, yTile*32 + 15, 'lazerTurret').setInteractive();
     lazerTurret.anims.play('lazerInitial', true);
     lazerTurret.isAlive = true;
@@ -626,6 +634,7 @@ function placeLazer(x, y){
     lazerTurretButton.y = 10.5*32;
 
     turretCount++;
+    resetText();
 
   }
 }
@@ -637,7 +646,7 @@ function placeFire(x, y){
   if(cash >= arrowCost){   
     var canPlace = true;
     this.arrowTurrets.children.each(function(arrowTurret){
-      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true){
+      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true && turretCount < maxTurretCount){
 
         canPlace = false;
       }
@@ -668,6 +677,7 @@ function placeFire(x, y){
     cashText.setText('$' + cash);
 
     turretCount++;
+    resetText();
   }
 }
 
