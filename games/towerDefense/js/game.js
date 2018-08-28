@@ -52,6 +52,7 @@ var addedEnemies = 0;
 var lazerFollow = false;
 var fireTurretFollow = false;
 var spawnRight = false;
+var turretCount = 0;
 
 
 function preload(){
@@ -209,8 +210,8 @@ function create(){
   arrowTurretButton.setDepth(1);
   arrowTurretButton.inputEnabled = true;
 
-  sellDock = this.add.image(23*32, 6*32, 'sellDock');
-  sellIcon = this.add.image(23*32, 6*32, 'sellIcon');
+  sellDock = this.add.image(23*32, 13*32, 'sellDock');
+  sellIcon = this.add.image(23*32, 13*32, 'sellIcon');
   sellIcon.setDepth(1);
   sellIcon.inputEnabled = true;
 
@@ -353,7 +354,7 @@ function update(){
       }
 
       sellIcon.x = 23*32;
-      sellIcon.y = 6*32;
+      sellIcon.y = 13*32;
 
 
       turretTileX = Math.floor(this.input.activePointer.x/32);
@@ -393,19 +394,19 @@ function update(){
     if(this.time.now > spawnTimer && enemiesLeft > 0){
       var canSpawn = true;
       outside.mainEnemies.children.each(function(mainEnemy){
-        if(Math.floor(mainEnemy.x/32) <= 1 && Math.floor(mainEnemy.y/32) <= 2){
+        if(Math.floor(mainEnemy.x/32) <= 1 && Math.floor(mainEnemy.y/32) <=11){
           canSpawn = false;
         }
       }, this);
       if(canSpawn && wave <= 3){
         spawnEnemy(1);
         enemiesLeft--;
-        spawnTimer = this.time.now + 1500;
+        spawnTimer = this.time.now + 2000;
       }
       else if(canSpawn){
         spawnEnemy(1);
         enemiesLeft--;
-        spawnTimer = this.time.now + 500;
+        spawnTimer = this.time.now + 1000;
       }
     }
     if(this.time.now > spawnTimer && enemiesLeft <= 0){
@@ -447,7 +448,7 @@ function resetButtonsExcept(except){
   }
   if(except != "sellButton"){
     sellIcon.x = 23*32;
-    sellIcon.y = 6*32;
+    sellIcon.y = 13*32;
     sellFollow = false;
   }
 
@@ -525,7 +526,7 @@ function handleClick(pointer){
     lazerFollow = false;
     fireTurretFollow = false;
   }
-  else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 168 && pointer.y <= 220 && sellFollow == false){
+  else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 393 && pointer.y <= 442 && sellFollow == false){
     sellFollow = true;
     arrowFollow = false;
     lazerFollow = false;
@@ -600,6 +601,7 @@ function placeArrow(x, y){
     detectionCircle.visible = false;
     cash -= arrowCost;
     cashText.setText('$' + cash);
+    turretCount++;
   }
 }
 
@@ -623,6 +625,7 @@ function placeLazer(x, y){
     lazerTurretButton.x = 23*32;
     lazerTurretButton.y = 10.5*32;
 
+    turretCount++;
 
   }
 }
@@ -663,6 +666,8 @@ function placeFire(x, y){
     detectionCircle.visible = false;
     cash -= fireCost;
     cashText.setText('$' + cash);
+
+    turretCount++;
   }
 }
 
@@ -675,6 +680,7 @@ function sellTurret(tileX, tileY){
       cash += Math.floor(arrowCost*0.8);
       cashText.setText('$' + cash);
       mainDetectionCircle.visible = false;
+      turretCount++;
     }
   }, this);
   this.lazerTurrets.children.each(function(lazerTurret){
@@ -684,6 +690,7 @@ function sellTurret(tileX, tileY){
       cash += Math.floor(lazerCost*0.8);
       cashText.setText('$' + cash);
       mainDetectionCircle.visible = false;
+      turretCount++;
     }
   }, this);
   this.fireTurrets.children.each(function(fireTurret){
@@ -692,6 +699,7 @@ function sellTurret(tileX, tileY){
       fireTurret.isAlive = false;
       cash += Math.floor(fireCost*0.8);
       mainDetectionCircle.visible = false;
+      turretCount++;
     }
   }, this);
 };
@@ -955,13 +963,13 @@ function lazerCollision(lazer, enemy){
     cash += 5;
     cashText.setText('$' + cash);
     enemy.hp--;
-    
+
     if(enemy.hp > 0){
       cash += 5;
       cashText.setText('$' + cash);
       enemy.hp--;
     }
-    
+
     checkHp(enemy);
     enemy.invulnTimer = create.time.now + 500;
   }
