@@ -688,9 +688,9 @@ function sellTurret(tileX, tileY){
       arrowTurret.destroy();
       arrowTurret.isAlive = false;
       cash += Math.floor(arrowCost*0.8);
-      cashText.setText('$' + cash);
       mainDetectionCircle.visible = false;
-      turretCount++;
+      turretCount--;
+      resetText();
     }
   }, this);
   this.lazerTurrets.children.each(function(lazerTurret){
@@ -698,9 +698,9 @@ function sellTurret(tileX, tileY){
       lazerTurret.destroy();
       lazerTurret.isAlive = false;
       cash += Math.floor(lazerCost*0.8);
-      cashText.setText('$' + cash);
       mainDetectionCircle.visible = false;
-      turretCount++;
+      turretCount--;
+      resetText();
     }
   }, this);
   this.fireTurrets.children.each(function(fireTurret){
@@ -709,7 +709,8 @@ function sellTurret(tileX, tileY){
       fireTurret.isAlive = false;
       cash += Math.floor(fireCost*0.8);
       mainDetectionCircle.visible = false;
-      turretCount++;
+      turretCount--;
+      resetText();
     }
   }, this);
 };
