@@ -390,8 +390,6 @@ function update(){
       }
     }, this);
 
-
-
     if(this.time.now > spawnTimer && enemiesLeft > 0){
       var canSpawn = true;
       outside.mainEnemies.children.each(function(mainEnemy){
@@ -399,10 +397,15 @@ function update(){
           canSpawn = false;
         }
       }, this);
-      if(canSpawn){
+      if(canSpawn && wave <= 3){
         spawnEnemy(1);
         enemiesLeft--;
         spawnTimer = this.time.now + 1500;
+      }
+      else if(canSpawn){
+        spawnEnemy(1);
+        enemiesLeft--;
+        spawnTimer = this.time.now + 500;
       }
     }
     if(this.time.now > spawnTimer && enemiesLeft <= 0){
@@ -587,75 +590,42 @@ function checkIfAllDead(){
 }
 
 function placeArrow(x, y){
-  var canPlace = true;
   xTile = Math.floor(x/32);
   yTile = Math.floor(y/32);
-  if(cash >= arrowCost){ 	
-    var canPlace = true;
-    this.arrowTurrets.children.each(function(arrowTurret){
-      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true){
-
-        canPlace = false;
-      }
-
-    }, this);
-    //console.log(getTileID(xTile, yTile));
-    if(getTileID(xTile, yTile) == 15 && canPlace == true){
-
-      var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret').setInteractive();
-      arrowTurret.isAlive = true;
-      arrowTurret.firingTimer = 0;
-      var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
-      detectionCircle.visible = false;
-      cash -= arrowCost;
-      cashText.setText('$' + cash);
-    }
+  if(cash >= arrowCost && tileChecker(xTile, yTile) == true && getTileID(xTile, yTile) == 15){ 	
+    var arrowTurret = arrowTurrets.create(xTile*32 + 15, yTile*32 + 15, 'arrowTurret').setInteractive();
+    arrowTurret.isAlive = true;
+    arrowTurret.firingTimer = 0;
+    var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
+    detectionCircle.visible = false;
+    cash -= arrowCost;
+    cashText.setText('$' + cash);
   }
-};
+}
 
 function placeLazer(x, y){
-
-  var canPlace = true;
   xTile = Math.floor(x/32);
   yTile = Math.floor(y/32);
-  if(cash >= arrowCost){   
-    var canPlace = true;
-    this.arrowTurrets.children.each(function(arrowTurret){
-      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true){
+  if(cash >= lazerCost && tileChecker(xTile, yTile) == true && getTileID(xTile, yTile) == 15){   
+    var lazerTurret = lazerTurrets.create(xTile*32 + 15, yTile*32 + 15, 'lazerTurret').setInteractive();
+    lazerTurret.anims.play('lazerInitial', true);
+    lazerTurret.isAlive = true;
+    lazerTurret.isAiming = true; //makes turret aim to mouse
+    lazerTurret.firingTimer = 0;
+    var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
+    detectionCircle.visible = false;
+    cash -= lazerCost;
+    cashText.setText('$' + cash);
 
-        canPlace = false;
-      }
-
-    }, this);
-    this.lazerTurrets.children.each(function(lazerTurret){
-      if(Math.floor(lazerTurret.x/32) == xTile && Math.floor(lazerTurret.y/32) == yTile && lazerTurret.isAlive == true){
-        canPlace = false;
-      }
-
-    }, this);
-    //console.log(getTileID(xTile, yTile));
-    if(getTileID(xTile, yTile) == 15 && canPlace == true){
-
-      var lazerTurret = lazerTurrets.create(xTile*32 + 15, yTile*32 + 15, 'lazerTurret').setInteractive();
-      lazerTurret.anims.play('lazerInitial', true);
-      lazerTurret.isAlive = true;
-      lazerTurret.isAiming = true; //makes turret aim to mouse
-      lazerTurret.firingTimer = 0;
-      var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
-      detectionCircle.visible = false;
-      cash -= lazerCost;
-      cashText.setText('$' + cash);
-
-      lazerFollow = false;
-      greenDetectionCircle.visible = false;
-      redDetectionCircle.visible = false;
-      lazerTurretButton.x = 23*32;
-      lazerTurretButton.y = 10.5*32;
+    lazerFollow = false;
+    greenDetectionCircle.visible = false;
+    redDetectionCircle.visible = false;
+    lazerTurretButton.x = 23*32;
+    lazerTurretButton.y = 10.5*32;
 
 
-    }
   }
-};
+}
 
 function placeFire(x, y){
   var canPlace = true;
@@ -725,7 +695,7 @@ function tileChecker(tileX, tileY){
       able = false;
     }
   }, this);
-  this.fireTurrets.children.each(function(fireTurrets){
+  this.fireTurrets.children.each(function(fireTurret){
     if(Math.floor(fireTurret.x/32) == tileX && Math.floor(fireTurret.y/32) == tileY && fireTurret.isAlive == true){
       able = false;
     }
@@ -741,7 +711,6 @@ function tileChecker(tileX, tileY){
 
 function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
-    //var mainEnemy = mainEnemies.create(0, 32, 'redEnemy');
     if(wave > 3 && spawnRight){
       var mainEnemy = mainEnemies.create(20*32, 32, 'enemy');
       spawnRight = false;
@@ -757,6 +726,8 @@ function spawnEnemy(type){
     mainEnemy.onOutOfBoundsKill = true;
     mainEnemy.anims.play('red', true);
     mainEnemy.hp = 1;
+
+    mainEnemy.invulnTimer = create.time.now;
     // Levels
     // 1: All Red
     // 2: Half Red Half green
@@ -859,7 +830,7 @@ function lazerFire(){
   this.lazerTurrets.children.each(function(lazerTurret){
     if(lazerTurret.isAlive){
 
-    var enemy = getEnemy(lazerTurret.x, lazerTurret.y, 75);
+      var enemy = getEnemy(lazerTurret.x, lazerTurret.y, 75);
 
       if(enemy) {
 
@@ -966,11 +937,20 @@ function bulletCollision(bullet, enemy){
   }
 };
 function lazerCollision(lazer, enemy){
-  cash += 5;
-  cashText.setText('$' + cash);
-  enemy.hp--;
-  enemy.destroy();
-  enemy.isAlive = false;
+  if(enemy.invulnTimer < create.time.now){
+    cash += 5;
+    cashText.setText('$' + cash);
+    enemy.hp--;
+    
+    if(enemy.hp > 0){
+      cash += 5;
+      cashText.setText('$' + cash);
+      enemy.hp--;
+    }
+    
+    checkHp(enemy);
+    enemy.invulnTimer = create.time.now + 500;
+  }
 };
 function endPointCollision(endPoint, enemy){
   lives--;
