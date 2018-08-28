@@ -256,7 +256,7 @@ function create(){
   endPoints.physicsBodyType = Phaser.Physics.ARCADE;
   endPoints.createMultiple(2, 'endPoint');
   spawnEndPoints(660, 600);
-  spawnEndPoints(0, 600);
+  spawnEndPoints(-40, 600);
 
   detectionCircles = this.physics.add.group();
   detectionCircles.enableBody = true;
@@ -417,6 +417,9 @@ function update(){
     fireTurretFire();
     //create = this;
 
+  }
+  else if(game.paused == true){
+    arrowHelp.visible = false;
   }
 
 }
@@ -681,7 +684,8 @@ function placeFire(x, y){
   }
   if(getTileID(xTile, yTile) == 15 && canPlace == true){
 
-    var fireTurret = fireTurrets.create(xTile*32 + 15, yTile*32 + 15, 'fireTurret').setInteractive();
+    var fireTurret = fireTurrets.create(xTile*32 - 30, yTile*32 - 30, 'fireTurret').setInteractive();
+    fireTurret.setOrigin(0);
     fireTurret.anims.play('fireTurretInitial', true);
     fireTurret.isAlive = true;
     fireTurret.firingTimer = 0;
@@ -703,6 +707,9 @@ function sellTurret(tileX, tileY){
       mainDetectionCircle.visible = false;
     }
   }, this);
+  this.lazerTurrets.children.each(function(lazerTurret){
+    //add here what is above
+  }, this);
 };
 
 function tileChecker(tileX, tileY){
@@ -713,6 +720,16 @@ function tileChecker(tileX, tileY){
       able = false;
     }
   });
+  this.lazerTurrets.children.each(function(lazerTurret){
+    if(Math.floor(lazerTurret.x/32) == tileX && Math.floor(lazerTurret.y/32) == tileY && lazerTurret.isAlive == true){
+      able = false;
+    }
+  }, this);
+  this.fireTurrets.children.each(function(fireTurrets){
+    if(Math.floor(fireTurret.x/32) == tileX && Math.floor(fireTurret.y/32) == tileY && fireTurret.isAlive == true){
+      able = false;
+    }
+  }, this);
   if(able){
     return true;
   }
@@ -725,13 +742,13 @@ function tileChecker(tileX, tileY){
 function spawnEnemy(type){
   if(type == 1 && mainEnemies.countActive(true) <= 20){
     //var mainEnemy = mainEnemies.create(0, 32, 'redEnemy');
-    if(wave > 4 && spawnRight){
+    if(wave > 3 && spawnRight){
       var mainEnemy = mainEnemies.create(20*32, 32, 'enemy');
       spawnRight = false;
     }
     else if(spawnRight == false){
       var mainEnemy = mainEnemies.create(0, 32, 'enemy');
-      if(wave > 4){
+      if(wave > 3){
         spawnRight = true;
       }
     }
@@ -792,7 +809,7 @@ function spawnEnemy(type){
     mainEnemy.setDepth(1);
     mainEnemy.setOrigin(0,0);
 
-    if(spawnRight){
+    if(!spawnRight){
       movement(mainEnemy, 640, 608);
     }
     else {
@@ -842,7 +859,7 @@ function lazerFire(){
   this.lazerTurrets.children.each(function(lazerTurret){
     if(lazerTurret.isAlive){
 
-      var enemy = getEnemy(lazerTurret.x, lazerTurret.y, 75);
+    var enemy = getEnemy(lazerTurret.x, lazerTurret.y, 75);
 
       if(enemy) {
 
@@ -990,14 +1007,16 @@ function movement(player, x, y){
       console.warn("Path was not found.");
     }
     else {
+      var speed = 800;
+      speed += (wave*10);
       //console.log(path);
-      moveCharacter(path, player);
+      moveCharacter(path, player, speed);
     }
   });
   finder.calculate();
 };
 
-function moveCharacter(path, enemy){
+function moveCharacter(path, enemy, speed){
   // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
   var tweens = [];
   for(var i = 0; i < path.length-1; i++){
@@ -1006,8 +1025,8 @@ function moveCharacter(path, enemy){
     tweens.push({
       //targets: Game.player,
       targets: enemy,
-      x: {value: ex*map.tileWidth, duration: 800},
-      y: {value: ey*map.tileHeight, duration: 800}
+      x: {value: ex*map.tileWidth, duration: speed},
+      y: {value: ey*map.tileHeight, duration: speed}
     });
   }
   game.tweens.timeline({
