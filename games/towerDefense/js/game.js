@@ -678,7 +678,21 @@ function sellTurret(tileX, tileY){
     }
   }, this);
   this.lazerTurrets.children.each(function(lazerTurret){
-    //add here what is above
+    if(Math.floor(lazerTurret.x/32) == tileX && Math.floor(lazerTurret.y/32) == tileY && lazerTurret.isAlive == true){
+      lazerTurret.destroy();
+      lazerTurret.isAlive = false;
+      cash += Math.floor(lazerCost*0.8);
+      cashText.setText('$' + cash);
+      mainDetectionCircle.visible = false;
+    }
+  }, this);
+  this.fireTurrets.children.each(function(fireTurret){
+    if(Math.floor(fireTurret.x/32) == tileX && Math.floor(fireTurret.y/32) == tileY && fireTurret.isAlive == true){
+      fireTurret.destroy();
+      fireTurret.isAlive = false;
+      cash += Math.floor(fireCost*0.8);
+      mainDetectionCircle.visible = false;
+    }
   }, this);
 };
 
@@ -866,7 +880,7 @@ function fireTurretFire(){
     var enemy = getEnemy(fireTurret.x, fireTurret.y, 75);
     if(enemy){
 
-      if(create.time.now > fireTurret.firingTimer){
+      if(create.time.now > fireTurret.firingTimer && fireTurret.isAlive == true){
         fireTurret.anims.play('fireTurretFire', true);
         fireTurret.firingTimer = create.time.now + 6000;
         outside.mainEnemies.children.each(function(enemy){
