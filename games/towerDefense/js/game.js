@@ -207,7 +207,7 @@ function create(){
   arrowCostText = game.add.text(22.5*32, 8.8*32, '$' + arrowCost, {font: '18px Arial'});
   lazerCostText = game.add.text(22.3*32, 11.3*32, '$' + lazerCost, {font: '18px Arial'});
   fireCostText = game.add.text(25.1*32, 8.8*32, '$' + fireCost, {font: '18px Arial'});
-  turretCountText = game.add.text(22*32, 5*32, 'Turrets: ' + turretCount + '/' + maxTurretCount, {font: '18px Arial'});
+  turretCountText = game.add.text(22.2*32, 5.5*32, 'Turrets: ' + turretCount + '/' + maxTurretCount, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret');
@@ -228,6 +228,7 @@ function create(){
   fireTurretDock.setDepth(0);
   fireTurretButton = this.add.image(25.85*32, 8.1*32, 'fireTurretButton');
   fireTurretButton.inputEnabled = true;
+
 
   arrowTurrets = this.physics.add.group();
   arrowTurrets.enableBody = true;
