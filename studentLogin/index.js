@@ -2,7 +2,7 @@ var idNums = [];
 var table = document.createElement('table');
 function login(id) {
 
-  if(id % 1 == 0){
+  if(id % 1 == 0 && id != ""){
     idNums.push(id);
   }
 
