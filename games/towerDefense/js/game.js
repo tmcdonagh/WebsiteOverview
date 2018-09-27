@@ -245,7 +245,7 @@ function create(){
   mainEnemies = this.physics.add.group();
   mainEnemies.enableBody = true;
   mainEnemies.physicsBodyType = Phaser.Physics.ARCADE;
-  mainEnemies.createMultiple(2500, 'mainEnemies');
+  mainEnemies.createMultiple(250, 'mainEnemies');
 
   bullets = this.physics.add.group();
   bullets.enableBody = true;
@@ -755,6 +755,7 @@ function spawnEnemy(type){
         spawnRight = true;
       }
     }
+    
     mainEnemy.body.immovable = true;
     mainEnemy.collideWorldBounds = true;
     mainEnemy.onOutOfBoundsKill = true;
