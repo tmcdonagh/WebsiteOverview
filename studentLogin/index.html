@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>McDonagh Corp</title>
+    <!-- Imports css files and icon in tab name (although I don't think the favicon works rn) -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="stylesheet" type="text/css" href="/menu.css">
+    <link rel="icon" type="img/ico" href="/favicon.ico">
+  </head>
+  <body>
+
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="/">Home</a>
+      <a href="/games">Games</a>
+      <a href="/emulators">Emulators</a>
+    </div>
+
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+
+    <script type="text/javascript" src="/nav.js"></script>
+    <center>
+      <div class="main">
+        <h1><b>Student Sign In</b></h1>
+        <input name="loginBox" type="text" id="loginBox" />
+        <input name="loginButton" onclick="login(document.getElementsByName('loginBox')[0].value)" type="button" value="Log In" />
+        <input name="logoutButton" onclick="logout(document.getElementsByName('loginBox')[0].value)" type="button" value="Log Out"
+                                                                                                                   />
+        <script src="index.js"></script>
+        <p id="list"></p>
+      </div>
+    </center>
+  </body>
+</html> 
+
