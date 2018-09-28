@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Student Sign-Out</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <center>
+      <h1>Teacher Login</h1>
+    </center>
+  </head>
+
+  <body>
+
+    <!--Collect Resources for Firebase-->
+    <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-database.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script>
+    <script>
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyBtrJDxY3wRXMXS3L-vG-NW87mgS0a_fjg",
+  authDomain: "student-sign-out-ef1b3.firebaseapp.com",
+  databaseURL: "https://student-sign-out-ef1b3.firebaseio.com",
+  projectId: "student-sign-out-ef1b3",
+  storageBucket: "student-sign-out-ef1b3.appspot.com",
+  messagingSenderId: "1023120418734"
+};
+firebase.initializeApp(config);
+
+    </script>
+
+    <script src="script.js"></script>
+
+
+
+    <div class="content">
+      <form id="inputForm">
+        ID Number: <br/><input type="text" name="name" id="uniqueID" />
+      </form>
+      <button id="btn" onclick="submit();clearThis()">submit</button>
+
+      <p id="list"></p>
+
+
+    </div>
+
+  </body>
+
+</html>
