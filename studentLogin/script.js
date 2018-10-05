@@ -1,5 +1,8 @@
 var idNums = [];
 var firebaseRef = firebase.database().ref();
+var uid = "";
+
+
 
 firebaseRef.on('value', function (snapshot) {
   // Clears idNums array
@@ -12,7 +15,8 @@ firebaseRef.on('value', function (snapshot) {
 
   // Builds an html paragraph to display list
   var list = "";
-  console.log(idNums.length);
+
+
   for (var i = 0; i < idNums.length; i++) {
     list += "" + idNums[i] + "<br>";
   }
@@ -34,18 +38,19 @@ firebaseRef.on('value', function (snapshot) {
   });
 });
 
-
 function submit() {
   //connect to db
   var nameValue = document.getElementById("uniqueID").value;
 
   //append value to db based on input
-  if (nameValue.length == 5 && !isNaN(nameValue)) {
+  if (nameValue.length == 5 && !isNaN(nameValue) && uid == "y3sQku8bE6TYuHTKxm5Ebp3PCD32") {
     firebaseRef.push(nameValue);
+    console.log(uid);
     //alert("You have successfully signed out!")
   }
   else {
-    console.log(nameValue)
+    console.log(nameValue);
+
     //alert("Sorry! Your input " + "(" + nameValue + ")" + " was invalid")
   }
 
@@ -67,23 +72,39 @@ $(document).ready(function () {
 });
 
 
-/*
 var provider = new firebase.auth.GoogleAuthProvider();
+
 firebase.auth().signInWithPopup(provider).then(function (result) {
-// This gives you a Google Access Token. You can use it to access the Google API.
-    var token = result.credential.accessToken;
-// The signed-in user info.
-    var user = result.user;
-// ...
+  // This gives you a Google Access Token. You can use it to access the Google API.
+  var token = result.credential.accessToken;
+  // The signed-in user info.
+  var user = result.user;
+
+  uid = user.uid;
+  if (uid == "y3sQku8bE6TYuHTKxm5Ebp3PCD32"){
+    document.getElementById("btn").disabled = false;
+  }
+
+  // ...
+
 }).catch(function (error) {
-// Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-// The email of the user's account used.
-    var email = error.email;
-// The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-// ...
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+  // ...
+  console.log("Authentication Error");
 });
-*/
+
+firebase.auth().onAuthStateChanged(function (user){
+  if (user) {
+    console.log("current user uid = " + user.uid);
+
+
+  }
+});
+
 

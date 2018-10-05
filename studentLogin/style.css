@@ -1,12 +1,36 @@
+/*
 .content {
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+position: absolute;
+left: 50%;
+top: 30%;
+-webkit-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
 
 }
-
+ */
 body {
   background: cornflowerblue;
 }
+/*
+button {
+
+border: 2px solid black;
+color: black;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+background: white;
+}
+ */
+.button {
+  background-color: #001f3f;
+  border: 2px solid black;
+  color: white;
+  padding: 32px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+}
+

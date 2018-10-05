@@ -35,21 +35,29 @@ var config = {
   messagingSenderId: "1023120418734"
 };
 firebase.initializeApp(config);
-
     </script>
 
     <script src="script.js"></script>
 
 
 
-    <div class="content">
-      <form id="inputForm">
-        ID Number: <br/><input type="text" name="name" id="uniqueID" />
-      </form>
-      <button id="btn" onclick="submit();clearThis()">submit</button>
+    <div>
+      <center>
+        <h3>ID Number: </h3>
+        <div class="display: inline;">
+          <form id="inputForm">
+            <input type="text" name="name" id="uniqueID" />
+          </form>
+        </div>
+        <div style="display: inline;">
+          <button id="btn" onclick="submit();clearThis()" disabled>Submit</button>
+        </div>
+        <div class="clearfix"></div>
+        <br>
+        <p id="list"></p>
 
-      <p id="list"></p>
 
+      </center>
 
     </div>
 
