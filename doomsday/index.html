@@ -57,7 +57,7 @@ var x = setInterval(function() {
   // Display the result in the element with id="demo"
   document.getElementById("demo").innerHTML = days + "d " + hours + "h "
     + minutes + "m " + seconds + "s ";
-  var perc = 100*(days/27010);
+  var perc = 100*((days+hours/24+minutes/1440+seconds/86400)/27010);
   document.getElementById("percentage").innerHTML = perc + "% left";
   // If the count down is finished, write some text
   if (distance < 0) {
