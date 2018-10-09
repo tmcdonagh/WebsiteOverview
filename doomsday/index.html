@@ -29,7 +29,11 @@
     </div>
 
     <!-- Display the countdown timer in an element -->
-    <p id="demo"></p>
+    <center>
+      <p id="demo"></p>
+      <p id="percentage"></p>
+    
+    </center>
 
     <script>
 // Set the date we're counting down to
@@ -53,7 +57,8 @@ var x = setInterval(function() {
   // Display the result in the element with id="demo"
   document.getElementById("demo").innerHTML = days + "d " + hours + "h "
     + minutes + "m " + seconds + "s ";
-
+  var perc = 100*(days/27010);
+  document.getElementById("percentage").innerHTML = perc + "% left";
   // If the count down is finished, write some text
   if (distance < 0) {
     clearInterval(x);
