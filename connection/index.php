@@ -37,14 +37,14 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, firstname, lastname FROM MyGuests";
+$sql = "SELECT status, time FROM logs";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-  echo "<table><tr><th>ID</th><th>Name</th></tr>";
+  echo "<table><tr><th>Status</th><th>Date</th></tr>";
   // output data of each row
   while($row = $result->fetch_assoc()) {
-    echo "<tr><td>".$row["id"]."</td><td>".$row["firstname"]." ".$row["lastname"]."</td></tr>";
+    echo "<tr><td>".$row["status"]."</td><td>".$row["time"]."</td></tr>";
   }
   echo "</table>";
 } else {
