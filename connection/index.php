@@ -26,7 +26,7 @@
         <h1>McDonagh Corp</h1>
 <?php
 $servername = "10.0.0.84";
-$username = "root";
+$username = "test";
 $password = "test";
 $dbname = "clouddb";
 
