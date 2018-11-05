@@ -57,13 +57,17 @@ if ($memConn->connect_error) {
   die("Connection failed: " . $memConn->connect_error);
 }
 
-$memSql = "SELECT * FROM mem ORDER BY time DESC LIMIT 1;"
+$memSql = "SELECT * FROM mem ORDER BY time DESC LIMIT 1;";
 $memResult = $memConn->query($memSql);
 
+
 if ($memResult->num_rows > 0){
-  echo "<center><p>";
-  echo $memResult->fetch_assoc();
-  echo "</p></center>";
+  echo "<table><tr><th>Status</th><th>Date</th></tr>";
+  while($row = $memResult->fetch_assoc()){
+
+    echo "<tr><td>".$row["free"]."</td><td>".$row["available"]."</td><td>".$rowp"time"]."</tr>";
+  }
+  echo "</table>";
 }
 else{
   echo "No Memory Data";
