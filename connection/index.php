@@ -52,8 +52,13 @@ if ($result->num_rows > 0) {
 }
 $conn->close();
 
+$memConn = new mysqli($servername, $username, $password, $dbname, 2162);
+if ($memConn->connect_error) {
+  die("Connection failed: " . $memConn->connect_error);
+}
+
 $memSql = "SELECT * FROM mem ORDER BY time DESC LIMIT 1;"
-$memResult = $conn->query($memSql);
+$memResult = $memConn->query($memSql);
 
 if ($memResult->num_rows > 0){
   echo "<center><p>";
@@ -63,7 +68,7 @@ if ($memResult->num_rows > 0){
 else{
   echo "No Memory Data";
 }
-$conn->close();
+$memConn->close();
 ?> 
 
 
