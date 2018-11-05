@@ -62,10 +62,10 @@ $memResult = $memConn->query($memSql);
 
 
 if ($memResult->num_rows > 0){
-  echo "<table><tr><th>Status</th><th>Date</th></tr>";
+  echo "<table><tr><th>Free</th><th>Total</th><th>Time</th></tr>";
   while($row = $memResult->fetch_assoc()){
 
-    echo "<tr><td>".$row["free"]."</td><td>".$row["available"]."</td><td>".$rowp"time"]."</tr>";
+    echo "<tr><td>".$row["free"]."</td><td>".$row["total"]."</td><td>".$row["time"]."</tr>";
   }
   echo "</table>";
 }
