@@ -51,6 +51,19 @@ if ($result->num_rows > 0) {
   echo "0 results";
 }
 $conn->close();
+
+$memSql = "SELECT * FROM mem ORDER BY time DESC LIMIT 1;"
+$memResult = $conn->query($memSql);
+
+if ($memResult->num_rows > 0){
+  echo "<center><p>";
+  echo $memResult->fetch_assoc();
+  echo "</p></center>";
+}
+else{
+  echo "No Memory Data";
+}
+$conn->close();
 ?> 
 
 
