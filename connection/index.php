@@ -62,6 +62,7 @@ $memResult = $memConn->query($memSql);
 
 
 if ($memResult->num_rows > 0){
+  echo "<h2>Memory</h2>"
   echo "<table><tr><th>Free</th><th>Total</th><th>Time</th></tr>";
   while($row = $memResult->fetch_assoc()){
 
