@@ -41,6 +41,7 @@ $sql = "SELECT status, time FROM logs";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
+  echo "<h2>Memory</h2>";
   echo "<table><tr><th>Status</th><th>Date</th></tr>";
   // output data of each row
   while($row = $result->fetch_assoc()) {
