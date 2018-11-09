@@ -1,86 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>McDonagh Corp</title>
-    <!-- Imports css and favicon -->
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/menu.css">
-    <link rel="icon" type="img/ico" href="/favicon.ico">
+<head>
+<title>McDonagh Corp</title>
+<!-- Imports css and favicon -->
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/menu.css">
+<link rel="icon" type="img/ico" href="/favicon.ico">
+<script src="js/jquery-3.3.1.min.js"></script>
 
-  </head>
-  <body>
+</head>
+<body>
 
-    <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="/">Home</a>
-      <a href="/games">Games</a>
-      <a href="/emulators">Emulators</a>
-    </div>
+<div id="mySidenav" class="sidenav">
+<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+<a href="/">Home</a>
+<a href="/games">Games</a>
+<a href="/emulators">Emulators</a>
+</div>
 
-    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
 
-    <script type="text/javascript" src="/nav.js"></script>
-    <div id="main">
-      <center>
-        <h1>McDonagh Corp</h1>
-<?php
-$servername = "10.0.0.84";
-$username = "test";
-$password = "test";
-$dbname = "clouddb";
+<script type="text/javascript" src="/nav.js"></script>
+<div id="main">
+<center>
+<h1>McDonagh Corp</h1>
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname, 2162);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+<p id="mem">Loading...</p>
+
+<script type="text/javascript">
+var statusIntervalId = window.setInterval(update, 1000);
+
+function update() {
+  $.ajax({
+  url: 'check.php',
+    dataType: 'text',
+    success: function(data) {
+      document.getElementById("mem").innerHTML = data;
+    }
+  });
 }
 
-$sql = "SELECT status, time FROM logs";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  echo "<h2>Memory</h2>";
-  echo "<table><tr><th>Status</th><th>Date</th></tr>";
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    echo "<tr><td>".$row["status"]."</td><td>".$row["time"]."</td></tr>";
-  }
-  echo "</table>";
-} else {
-  echo "No connection loss data";
-}
-$conn->close();
-
-$memConn = new mysqli($servername, $username, $password, $dbname, 2162);
-if ($memConn->connect_error) {
-  die("Connection failed: " . $memConn->connect_error);
-}
-
-$memSql = "SELECT * FROM mem ORDER BY time DESC LIMIT 1;";
-$memResult = $memConn->query($memSql);
-
-
-if ($memResult->num_rows > 0){
-  echo "<h2>Memory</h2>";
-  echo "<table><tr><th>Free</th><th>Total</th><th>Time</th></tr>";
-  while($row = $memResult->fetch_assoc()){
-
-    echo "<tr><td>".$row["free"]."</td><td>".$row["total"]."</td><td>".$row["time"]."</tr>";
-  }
-  echo "</table>";
-}
-else{
-  echo "No Memory Data";
-}
-$memConn->close();
-?> 
-
-
-
-      </center>
-    </div>
-  </body>
+</script>
+</center>
+</div>
+</body>
 </html> 
-
