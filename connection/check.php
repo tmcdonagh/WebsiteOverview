@@ -16,7 +16,7 @@ function getDBData(){
   $result = $conn->query($sql);
 
   if ($result->num_rows > 0) {
-    echo "<h2>Memory</h2>";
+    echo "<h2>Connection Loss Data</h2>";
     echo "<table><tr><th>Status</th><th>Date</th></tr>";
     // output data of each row
     while($row = $result->fetch_assoc()) {
@@ -39,10 +39,10 @@ function getDBData(){
 
   if ($memResult->num_rows > 0){
     echo "<h2>Memory</h2>";
-    echo "<table><tr><th>Free</th><th>Total</th><th>Time</th></tr>";
+    echo "<table><tr><th>Free</th><th>Available</th><th>Total</th><th>Time</th></tr>";
     while($row = $memResult->fetch_assoc()){
 
-      echo "<tr><td>".$row["free"]."</td><td>".$row["total"]."</td><td>".$row["time"]."</tr>";
+      echo "<tr><td>".$row["free"]."</td><td>".$row["available"]."</td><td>".$row["total"]."</td><td>".$row["time"]."</tr>";
     }
     echo "</table>";
   }
