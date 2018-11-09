@@ -29,7 +29,7 @@
 <p id="mem">Loading...</p>
 
 <script type="text/javascript">
-var statusIntervalId = window.setInterval(update, 1000);
+var statusIntervalId = window.setInterval(update, 2000);
 
 function update() {
   $.ajax({
