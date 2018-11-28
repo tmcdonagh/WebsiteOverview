@@ -45,6 +45,12 @@ function getDBData(){
       echo "<tr><td>".$row["free"]."</td><td>".$row["available"]."</td><td>".$row["total"]."</td><td>".$row["time"]."</tr>";
     }
     echo "</table>";
+    while($row = $memResult->fetch_assoc()){
+    echo "<script>
+      var free = ".$row["free"].";
+      console.log(free);";
+    }
+      
   }
   else{
     echo "No Memory Data";
