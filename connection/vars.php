@@ -13,14 +13,18 @@ function getVars(){
   $memResult = $memConn->query($memSql);
 
   if ($memResult->num_rows > 0){
-    $free = $row["free"];
+    while($row = $memResult->fetch_assoc()){
+      $free = $row["free"];
+      $total = $row["total"];
+    }
   }
   else{
   }
   $memConn->close();
 
   $memData = new \stdClass();
-  $memData->free = "100";
+  $memData->free = preg_replace("/[^0-9]/", "", $free);
+  $memData->total = preg_replace("/[^0-9]/", "", $total);
 
   $JSON = json_encode($memData);
   echo $JSON;

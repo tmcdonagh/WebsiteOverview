@@ -53,6 +53,7 @@ xmlhttp.onreadystatechange = function() {
     //var myObj = JSON.parse(this.responseText);
     //var memData = this.responseText;
     var memData = JSON.parse(this.responseText);
+    window.total = memData.total;
     console.log(memData.free);
     data.push(memData.free);
   }
@@ -81,7 +82,8 @@ function displayGraphExample(id, width, height, interpolation, animate, updateDe
   // X scale will fit values from 0-10 within pixels 0-100
   var x = d3.scale.linear().domain([0, 48]).range([-5, width]); // starting point is -5 so the first value doesn't show and slides off the edge as part of the transition
   // Y scale will fit values from 0-10 within pixels 0-100
-  var y = d3.scale.linear().domain([0, 200]).range([0, height]);
+  
+  var y = d3.scale.linear().domain([0, 24679856]).range([0, height]);
 
   // create a line object that represents the SVN line we're creating
   var line = d3.svg.line()
