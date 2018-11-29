@@ -39,18 +39,10 @@ function getDBData(){
 
   if ($memResult->num_rows > 0){
     echo "<h2>Memory</h2>";
-    echo "<table><tr><th>Free</th><th>Available</th><th>Total</th><th>Time</th></tr>";
+    $free = $row["free"];
     while($row = $memResult->fetch_assoc()){
-
-      echo "<tr><td>".$row["free"]."</td><td>".$row["available"]."</td><td>".$row["total"]."</td><td>".$row["time"]."</tr>";
+      echo $row["free"];
     }
-    echo "</table>";
-    while($row = $memResult->fetch_assoc()){
-    echo "<script>
-      var free = ".$row["free"].";
-      console.log(free);";
-    }
-      
   }
   else{
     echo "No Memory Data";
