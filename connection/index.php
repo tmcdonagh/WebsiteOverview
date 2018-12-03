@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="/menu.css">
 <link rel="icon" type="img/ico" href="/favicon.ico">
 <script src="js/jquery-3.3.1.min.js"></script>
-<script src="http://mbostock.github.com/d3/d3.v2.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
 <style>
       /* tell the SVG path to be a thin blue line without any area fill */
       path {
@@ -36,8 +36,14 @@
 
 <p id="mem">Loading...</p>
 
+
+<div id="graph3" class="aGraph" style="width:300px; height:100px;"></div>
+
+<div id="freeGraph" class="aGraph" style="width:300px; height:100px;"></div>
+
 <script type="text/javascript">
 var statusIntervalId = window.setInterval(update, 2000);
+window.freeMem = [];
 
 function update() {
   $.ajax({
@@ -55,7 +61,10 @@ xmlhttp.onreadystatechange = function() {
     var memData = JSON.parse(this.responseText);
     window.total = memData.total;
     console.log(memData.free);
+    data.length = 0;
     data.push(memData.free);
+    window.freeMem = memData.freeMem;
+    redrawWithAnimation();
   }
 };
 xmlhttp.open("GET", "vars.php", true);
@@ -63,11 +72,89 @@ xmlhttp.send();
 
 
 }
-</script>
+function redrawWithAnimation() {
+  // update with animation
+  graph.selectAll("path")
+    .data([data]) // set the new data
+    .attr("transform", "translate(" + x(1) + ")") // set the transform to the right by x(1) pixels (6 for the scale we've set) to hide the new value
+    .attr("d", line) // apply the new data values ... but the new value is hidden at this point off the right of the canvas
+    .transition() // start a transition to bring the new value into view
+    .ease("linear")
+    .duration(transitionDelay) // for this demo we want a continual slide so set this to the same as the setInterval amount below
+    .attr("transform", "translate(" + x(0) + ")"); // animate a slide to the left back to x(0) pixels to reveal the new value
+}
 
-<div id="graph3" class="aGraph" style="width:300px; height:100px;"></div>
+function showFreeMem(id, width, height, updateDelay, transitionDelay) {
 
-<script>
+  window.data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10];
+  var data = window.data;
+
+  var margin = {top: 50, right: 50, bottom: 50, left: 50}
+  , width = window.innerWidth - margin.left - margin.right // Use the window's width 
+  , height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+
+  // The number of datapoints
+  var n = 50;
+
+  // 5. X scale will use the index of our data
+  var xScale = d3.scaleLinear()
+    .domain([0, n-1]) // input
+    .range([0, width]); // output
+
+  // 6. Y scale will use the randomly generate number 
+  var yScale = d3.scaleLinear()
+    .domain([0, 10]) // input 
+    .range([height, 0]); // output 
+
+  // 7. d3's line generator
+  var line = d3.line()
+    .x(function(d, i) { return xScale(i); }) // set the x values for the line generator
+    .y(function(d) { return yScale(d.y); }) // set the y values for the line generator 
+    //.curve(d3.curveMonotoneX) // apply smoothing to the line
+
+    // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
+    //var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
+    var dataset = d3.range(n).map(function(d) { return { "y": window.freeMem[+d] } })
+
+    // 1. Add the SVG to the page and employ #2
+    var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // 3. Call the x axis in a group tag
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+
+  // 4. Call the y axis in a group tag
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+
+  // 9. Append the path, bind the data, and call the line generator 
+  svg.append("path")
+    .datum(dataset) // 10. Binds data to the line 
+    .attr("class", "line") // Assign a class for styling 
+    .attr("d", line); // 11. Calls the line generator 
+
+  function redrawWithAnimation() {
+    // update with animation
+    graph.selectAll("path")
+      .data([data]) // set the new data
+      .attr("transform", "translate(" + x(1) + ")") // set the transform to the right by x(1) pixels (6 for the scale we've set) to hide the new value
+      .attr("d", line) // apply the new data values ... but the new value is hidden at this point off the right of the canvas
+      .transition() // start a transition to bring the new value into view
+      .ease("linear")
+      .duration(transitionDelay) // for this demo we want a continual slide so set this to the same as the setInterval amount below
+      .attr("transform", "translate(" + x(0) + ")"); // animate a slide to the left back to x(0) pixels to reveal the new value
+
+  }
+
+}
+showFreeMem("#freeGraph", 300, 100, 1000, 1000);
 
 
 function displayGraphExample(id, width, height, interpolation, animate, updateDelay, transitionDelay) {
@@ -80,13 +167,14 @@ function displayGraphExample(id, width, height, interpolation, animate, updateDe
   var data = window.data;
 
   // X scale will fit values from 0-10 within pixels 0-100
-  var x = d3.scale.linear().domain([0, 48]).range([-5, width]); // starting point is -5 so the first value doesn't show and slides off the edge as part of the transition
+  var x = d3.scaleLinear().domain([0, 48]).range([-5, width]); // starting point is -5 so the first value doesn't show and slides off the edge as part of the transition
   // Y scale will fit values from 0-10 within pixels 0-100
-  
-  var y = d3.scale.linear().domain([0, 24679856]).range([0, height]);
+
+  var y = d3.scaleLinear().domain([0, 24679856]).range([0, height]);
+
 
   // create a line object that represents the SVN line we're creating
-  var line = d3.svg.line()
+  var line = d3.line()
     // assign the X function to plot our line as we wish
     .x(function(d,i) { 
       // verbose logging to show what's actually being done
@@ -100,12 +188,14 @@ function displayGraphExample(id, width, height, interpolation, animate, updateDe
         // return the Y coordinate where we want to plot this datapoint
         return y(d); 
       })
-        .interpolate(interpolation)
+        .curve(d3.curveBasis);
+  //.interpolate(interpolation)
 
-        // display the line by appending an svg:path element with the data line we created above
-        graph.append("svg:path").attr("d", line(data));
+  // display the line by appending an svg:path element with the data line we created above
+  graph.append("svg:path").attr("d", line(data));
   // or it can be done like this
   //graph.selectAll("path").data([data]).enter().append("svg:path").attr("d", line);
+
 
 
   function redrawWithAnimation() {
