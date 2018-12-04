@@ -61,10 +61,12 @@ xmlhttp.onreadystatechange = function() {
     var memData = JSON.parse(this.responseText);
     window.total = memData.total;
     console.log(memData.free);
-    data.length = 0;
-    data.push(memData.free);
+    //data.length = 0;
+    //data.push(memData.free);
     window.freeMem = memData.freeMem;
-    redrawWithAnimation();
+    $('svg').remove();
+    showFreeMem("#freeGraph", 300, 100, 1000, 1000, window.freeMem);
+
   }
 };
 xmlhttp.open("GET", "vars.php", true);
@@ -72,22 +74,13 @@ xmlhttp.send();
 
 
 }
-function redrawWithAnimation() {
-  // update with animation
-  graph.selectAll("path")
-    .data([data]) // set the new data
-    .attr("transform", "translate(" + x(1) + ")") // set the transform to the right by x(1) pixels (6 for the scale we've set) to hide the new value
-    .attr("d", line) // apply the new data values ... but the new value is hidden at this point off the right of the canvas
-    .transition() // start a transition to bring the new value into view
-    .ease("linear")
-    .duration(transitionDelay) // for this demo we want a continual slide so set this to the same as the setInterval amount below
-    .attr("transform", "translate(" + x(0) + ")"); // animate a slide to the left back to x(0) pixels to reveal the new value
-}
 
-function showFreeMem(id, width, height, updateDelay, transitionDelay) {
+function showFreeMem(id, width, height, updateDelay, transitionDelay, data) {
 
-  window.data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10];
-  var data = window.data;
+
+
+  //window.data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10];
+  //var data = window.freeMem;
 
   var margin = {top: 50, right: 50, bottom: 50, left: 50}
   , width = window.innerWidth - margin.left - margin.right // Use the window's width 
@@ -103,7 +96,7 @@ function showFreeMem(id, width, height, updateDelay, transitionDelay) {
 
   // 6. Y scale will use the randomly generate number 
   var yScale = d3.scaleLinear()
-    .domain([0, 10]) // input 
+    .domain([0, 24311700]) // input 
     .range([height, 0]); // output 
 
   // 7. d3's line generator
@@ -140,24 +133,24 @@ function showFreeMem(id, width, height, updateDelay, transitionDelay) {
     .attr("class", "line") // Assign a class for styling 
     .attr("d", line); // 11. Calls the line generator 
 
-  function redrawWithAnimation() {
-    // update with animation
-    graph.selectAll("path")
-      .data([data]) // set the new data
-      .attr("transform", "translate(" + x(1) + ")") // set the transform to the right by x(1) pixels (6 for the scale we've set) to hide the new value
-      .attr("d", line) // apply the new data values ... but the new value is hidden at this point off the right of the canvas
-      .transition() // start a transition to bring the new value into view
-      .ease("linear")
-      .duration(transitionDelay) // for this demo we want a continual slide so set this to the same as the setInterval amount below
-      .attr("transform", "translate(" + x(0) + ")"); // animate a slide to the left back to x(0) pixels to reveal the new value
+/*
+  function redraw() {
+    plot(window.freeMem, svg);
 
   }
 
+
+
+  setInterval(function() {
+    redraw();
+  }, updateDelay);
+ */
 }
-showFreeMem("#freeGraph", 300, 100, 1000, 1000);
 
+showFreeMem("#freeGraph", 300, 100, 1000, 1000, window.freeMem);
 
-function displayGraphExample(id, width, height, interpolation, animate, updateDelay, transitionDelay) {
+/*
+  function displayGraphExample(id, width, height, interpolation, animate, updateDelay, transitionDelay) {
   // create an SVG element inside the #graph div that fills 100% of the div
   var graph = d3.select(id).append("svg:svg").attr("width", "100%").attr("height", "100%");
 
@@ -209,7 +202,6 @@ function displayGraphExample(id, width, height, interpolation, animate, updateDe
       .duration(transitionDelay) // for this demo we want a continual slide so set this to the same as the setInterval amount below
       .attr("transform", "translate(" + x(0) + ")"); // animate a slide to the left back to x(0) pixels to reveal the new value
 
-    /* thanks to 'barrym' for examples of transform: https://gist.github.com/1137131 */
   }
 
   function redrawWithoutAnimation() {
@@ -229,8 +221,8 @@ function displayGraphExample(id, width, height, interpolation, animate, updateDe
     }
   }, updateDelay);
 }
+ */
 
-displayGraphExample("#graph3", 300, 100, "linear", true, 1000, 1000);
 </script>
 </center>
 </div>

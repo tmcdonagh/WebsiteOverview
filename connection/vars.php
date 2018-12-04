@@ -10,7 +10,7 @@ function getVars(){
   if ($memConn->connect_error) {
     die("Connection failed: " . $memConn->connect_error);
   }
-  $memSql = "SELECT * FROM mem ORDER BY time DESC LIMIT 50;";
+  $memSql = "SELECT * FROM mem ORDER BY time ASC LIMIT 50;";
   $memResult = $memConn->query($memSql);
 
   if ($memResult->num_rows > 0){

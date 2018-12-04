@@ -33,6 +33,12 @@ function getDBData(){
     die("Connection failed: " . $memConn->connect_error);
   }
 
+  
+  /*
+  $memInit = "SELECT * FROM mem ORDER BY time DESC LIMIT 50;";
+  $memInitResult = $memConn->query($memInit);
+   */
+
   $memSql = "SELECT * FROM mem ORDER BY time DESC LIMIT 1;";
   $memResult = $memConn->query($memSql);
 
