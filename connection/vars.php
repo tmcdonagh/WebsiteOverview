@@ -17,8 +17,9 @@ function getVars(){
     while($row = $memResult->fetch_assoc()){
       $free = $row["free"];
       $total = $row["total"];
-      $free = preg_replace("/[^0-9]/", "", $free);
-      array_push($freeMem, $free);
+      $free = preg_replace("/[^0-9]/", "", $free); // Removes KB ending
+      $free = floor($free / 1000); // Converts KB to MB
+      array_push($freeMem, $free); 
     }
   }
   else{

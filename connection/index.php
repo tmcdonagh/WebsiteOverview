@@ -36,9 +36,6 @@
 
 <p id="mem">Loading...</p>
 
-
-<div id="graph3" class="aGraph" style="width:300px; height:100px;"></div>
-
 <div id="freeGraph" class="aGraph" style="width:300px; height:100px;"></div>
 
 <script type="text/javascript">
@@ -65,7 +62,7 @@ xmlhttp.onreadystatechange = function() {
     //data.push(memData.free);
     window.freeMem = memData.freeMem;
     $('svg').remove();
-    showFreeMem("#freeGraph", 300, 100, 1000, 1000, window.freeMem);
+    showFreeMem("#freeGraph", 300, 200, 1000, 1000, window.freeMem);
 
   }
 };
@@ -77,14 +74,9 @@ xmlhttp.send();
 
 function showFreeMem(id, width, height, updateDelay, transitionDelay, data) {
 
-
-
-  //window.data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10];
-  //var data = window.freeMem;
-
   var margin = {top: 50, right: 50, bottom: 50, left: 50}
-  , width = window.innerWidth - margin.left - margin.right // Use the window's width 
-  , height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+  //, width = window.innerWidth - margin.left - margin.right // Use the window's width 
+  //, height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
 
   // The number of datapoints
   var n = 50;
@@ -96,7 +88,7 @@ function showFreeMem(id, width, height, updateDelay, transitionDelay, data) {
 
   // 6. Y scale will use the randomly generate number 
   var yScale = d3.scaleLinear()
-    .domain([0, 24311700]) // input 
+    .domain([0, 24311]) // input 
     .range([height, 0]); // output 
 
   // 7. d3's line generator
@@ -133,96 +125,8 @@ function showFreeMem(id, width, height, updateDelay, transitionDelay, data) {
     .attr("class", "line") // Assign a class for styling 
     .attr("d", line); // 11. Calls the line generator 
 
-/*
-  function redraw() {
-    plot(window.freeMem, svg);
-
-  }
-
-
-
-  setInterval(function() {
-    redraw();
-  }, updateDelay);
- */
 }
-
-showFreeMem("#freeGraph", 300, 100, 1000, 1000, window.freeMem);
-
-/*
-  function displayGraphExample(id, width, height, interpolation, animate, updateDelay, transitionDelay) {
-  // create an SVG element inside the #graph div that fills 100% of the div
-  var graph = d3.select(id).append("svg:svg").attr("width", "100%").attr("height", "100%");
-
-  // create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
-  //var data = [3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 3, 6, 3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 9];
-  window.data = [];
-  var data = window.data;
-
-  // X scale will fit values from 0-10 within pixels 0-100
-  var x = d3.scaleLinear().domain([0, 48]).range([-5, width]); // starting point is -5 so the first value doesn't show and slides off the edge as part of the transition
-  // Y scale will fit values from 0-10 within pixels 0-100
-
-  var y = d3.scaleLinear().domain([0, 24679856]).range([0, height]);
-
-
-  // create a line object that represents the SVN line we're creating
-  var line = d3.line()
-    // assign the X function to plot our line as we wish
-    .x(function(d,i) { 
-      // verbose logging to show what's actually being done
-      //console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
-      // return the X coordinate where we want to plot this datapoint
-      return x(i); 
-    })
-      .y(function(d) { 
-        // verbose logging to show what's actually being done
-        //console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
-        // return the Y coordinate where we want to plot this datapoint
-        return y(d); 
-      })
-        .curve(d3.curveBasis);
-  //.interpolate(interpolation)
-
-  // display the line by appending an svg:path element with the data line we created above
-  graph.append("svg:path").attr("d", line(data));
-  // or it can be done like this
-  //graph.selectAll("path").data([data]).enter().append("svg:path").attr("d", line);
-
-
-
-  function redrawWithAnimation() {
-    // update with animation
-    graph.selectAll("path")
-      .data([data]) // set the new data
-      .attr("transform", "translate(" + x(1) + ")") // set the transform to the right by x(1) pixels (6 for the scale we've set) to hide the new value
-      .attr("d", line) // apply the new data values ... but the new value is hidden at this point off the right of the canvas
-      .transition() // start a transition to bring the new value into view
-      .ease("linear")
-      .duration(transitionDelay) // for this demo we want a continual slide so set this to the same as the setInterval amount below
-      .attr("transform", "translate(" + x(0) + ")"); // animate a slide to the left back to x(0) pixels to reveal the new value
-
-  }
-
-  function redrawWithoutAnimation() {
-    // static update without animation
-    graph.selectAll("path")
-      .data([data]) // set the new data
-      .attr("d", line); // apply the new data values
-  }
-
-  setInterval(function() {
-    var v = data.shift(); // remove the first element of the array
-    data.push(v); // add a new element to the array (we're just taking the number we just shifted off the front and appending to the end)
-    if(animate) {
-      redrawWithAnimation();
-    } else {
-      redrawWithoutAnimation();
-    }
-  }, updateDelay);
-}
- */
-
+showFreeMem("#freeGraph", 300, 200, 1000, 1000, window.freeMem);
 </script>
 </center>
 </div>
