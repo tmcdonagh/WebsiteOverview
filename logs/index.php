@@ -37,7 +37,8 @@
 <p id="mem">Loading...</p>
 
 <div id="cpuGraph" class="aGraph" style="width:300px; height:100px;"></div>
-<div id="memGraph" class="aGraph" style="width:300px; height:100px;"></div>
+<br>
+<div id="memGraph" class="bGraph" style="width:300px; height:100px;"></div>
 
 <script type="text/javascript">
 var statusIntervalId = window.setInterval(update, 2000);
