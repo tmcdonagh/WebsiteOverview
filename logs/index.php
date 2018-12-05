@@ -45,7 +45,7 @@ window.usedMem = [];
 
 function update() {
   $.ajax({
-  url: 'check.php',
+  url: 'connection.php',
     dataType: 'text',
     success: function(data) {
       document.getElementById("mem").innerHTML = data;
@@ -129,6 +129,14 @@ function showMem(id, width, height, updateDelay, transitionDelay, data) {
     .datum(dataset) // 10. Binds data to the line 
     .attr("class", "line") // Assign a class for styling 
     .attr("d", line); // 11. Calls the line generator 
+
+  // Adds Title
+  svg.append("text")
+    .attr("x", (width / 2))             
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")  
+    .style("font-size", "16px") 
+    .text("RAM Usage: " + data[49] + "MB");
 
 }
 showMem("#freeGraph", 300, 200, 1000, 1000, window.freeMem);
