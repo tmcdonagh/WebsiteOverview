@@ -36,7 +36,8 @@
 
 <p id="mem">Loading...</p>
 
-<div id="freeGraph" class="aGraph" style="width:300px; height:100px;"></div>
+<div id="cpuGraph" class="aGraph" style="width:300px; height:100px;"></div>
+<div id="memGraph" class="aGraph" style="width:300px; height:100px;"></div>
 
 <script type="text/javascript">
 var statusIntervalId = window.setInterval(update, 2000);
@@ -56,12 +57,18 @@ xmlhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
     //var myObj = JSON.parse(this.responseText);
     //var memData = this.responseText;
-    var memData = JSON.parse(this.responseText);
-    window.total = memData.total;
-    window.freeMem = memData.freeMem;
-    window.usedMem = memData.usedMem;
+    var varsData = JSON.parse(this.responseText);
+
+    // Make arrays public so other functions can use them
+    window.total = varsData.total;
+    window.freeMem = varsData.freeMem;
+
+    
+
+    // Delete old graph before creating new one
     $('svg').remove();
-    showMem("#freeGraph", 300, 200, 1000, 1000, window.usedMem);
+    showGraph("#memGraph", 300, 200, 1000, 1000, varsData.usedMem, varsData.total, "mem");
+    showGraph("#cpuGraph", 300, 200, 1000, 1000, varsData.cpuPerc, 100, "cpu");
 
   }
 };
@@ -71,10 +78,14 @@ xmlhttp.send();
 
 }
 
-function showMem(id, width, height, updateDelay, transitionDelay, data) {
+function showGraph(id, width, height, updateDelay, transitionDelay, data, totalY, type) {
 
-  console.log(window.usedMem);
-  console.log(window.freeMem);
+  // Types:
+  // cpu
+  // mem
+
+  //console.log(window.usedMem);
+  //console.log(window.freeMem);
 
   var margin = {top: 50, right: 50, bottom: 50, left: 50}
   //, width = window.innerWidth - margin.left - margin.right // Use the window's width 
@@ -90,7 +101,7 @@ function showMem(id, width, height, updateDelay, transitionDelay, data) {
 
   // 6. Y scale will use the randomly generate number 
   var yScale = d3.scaleLinear()
-    .domain([0, 24311]) // input 
+    .domain([0, totalY]) // input 
     .range([height, 0]); // output 
 
   // 7. d3's line generator
@@ -128,7 +139,7 @@ function showMem(id, width, height, updateDelay, transitionDelay, data) {
     .attr("d", line); // 11. Calls the line generator 
 
   // Adds Title
-  if(data[49] != undefined){
+  if(data[49] != undefined && type == "mem"){
     svg.append("text")
       .attr("x", (width / 2))             
       .attr("y", 0 - (margin.top / 2))
@@ -136,18 +147,27 @@ function showMem(id, width, height, updateDelay, transitionDelay, data) {
       .style("font-size", "16px") 
       .text("RAM Usage: " + data[49] + "MB");
   }
+  else if(data[49] != undefined && type == "cpu"){
+    svg.append("text")
+      .attr("x", (width / 2))             
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")  
+      .style("font-size", "16px") 
+      .text("CPU Usage: " + data[49] + "%");
+  }
   else{
     svg.append("text")
       .attr("x", (width / 2))             
       .attr("y", 0 - (margin.top / 2))
       .attr("text-anchor", "middle")  
       .style("font-size", "16px") 
-      .text("RAM Usage: Loading...");
+      .text("Loading...");
 
   }
 
 }
-showMem("#freeGraph", 300, 200, 1000, 1000, window.freeMem);
+showGraph("#cpuGraph", 300, 200, 1000, 1000, window.freeMem);
+showGraph("#memGraph", 300, 200, 1000, 1000, window.freeMem);
 </script>
 </center>
 </div>
