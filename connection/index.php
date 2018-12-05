@@ -41,6 +41,7 @@
 <script type="text/javascript">
 var statusIntervalId = window.setInterval(update, 2000);
 window.freeMem = [];
+window.usedMem = [];
 
 function update() {
   $.ajax({
@@ -61,8 +62,9 @@ xmlhttp.onreadystatechange = function() {
     //data.length = 0;
     //data.push(memData.free);
     window.freeMem = memData.freeMem;
+    window.usedMem = memData.usedMem;
     $('svg').remove();
-    showFreeMem("#freeGraph", 300, 200, 1000, 1000, window.freeMem);
+    showMem("#freeGraph", 300, 200, 1000, 1000, window.usedMem);
 
   }
 };
@@ -72,7 +74,10 @@ xmlhttp.send();
 
 }
 
-function showFreeMem(id, width, height, updateDelay, transitionDelay, data) {
+function showMem(id, width, height, updateDelay, transitionDelay, data) {
+
+  console.log(window.usedMem);
+  console.log(window.freeMem);
 
   var margin = {top: 50, right: 50, bottom: 50, left: 50}
   //, width = window.innerWidth - margin.left - margin.right // Use the window's width 
@@ -99,7 +104,7 @@ function showFreeMem(id, width, height, updateDelay, transitionDelay, data) {
 
     // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
     //var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
-    var dataset = d3.range(n).map(function(d) { return { "y": window.freeMem[+d] } })
+    var dataset = d3.range(n).map(function(d) { return { "y": data[+d] } })
 
     // 1. Add the SVG to the page and employ #2
     var svg = d3.select("body").append("svg")
@@ -126,7 +131,7 @@ function showFreeMem(id, width, height, updateDelay, transitionDelay, data) {
     .attr("d", line); // 11. Calls the line generator 
 
 }
-showFreeMem("#freeGraph", 300, 200, 1000, 1000, window.freeMem);
+showMem("#freeGraph", 300, 200, 1000, 1000, window.freeMem);
 </script>
 </center>
 </div>
