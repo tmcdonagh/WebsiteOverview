@@ -58,9 +58,6 @@ xmlhttp.onreadystatechange = function() {
     //var memData = this.responseText;
     var memData = JSON.parse(this.responseText);
     window.total = memData.total;
-    console.log(memData.free);
-    //data.length = 0;
-    //data.push(memData.free);
     window.freeMem = memData.freeMem;
     window.usedMem = memData.usedMem;
     $('svg').remove();
@@ -131,12 +128,23 @@ function showMem(id, width, height, updateDelay, transitionDelay, data) {
     .attr("d", line); // 11. Calls the line generator 
 
   // Adds Title
-  svg.append("text")
-    .attr("x", (width / 2))             
-    .attr("y", 0 - (margin.top / 2))
-    .attr("text-anchor", "middle")  
-    .style("font-size", "16px") 
-    .text("RAM Usage: " + data[49] + "MB");
+  if(data[49] != undefined){
+    svg.append("text")
+      .attr("x", (width / 2))             
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")  
+      .style("font-size", "16px") 
+      .text("RAM Usage: " + data[49] + "MB");
+  }
+  else{
+    svg.append("text")
+      .attr("x", (width / 2))             
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")  
+      .style("font-size", "16px") 
+      .text("RAM Usage: Loading...");
+
+  }
 
 }
 showMem("#freeGraph", 300, 200, 1000, 1000, window.freeMem);
