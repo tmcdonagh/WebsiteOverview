@@ -10,13 +10,17 @@
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <style>
-      /* tell the SVG path to be a thin blue line without any area fill */
-      path {
-        stroke: steelblue;
-        stroke-width: 1;
-        fill: none;
-      }
-    </style>
+/* tell the SVG path to be a thin blue line without any area fill */
+path {
+  stroke: steelblue;
+  stroke-width: 1;
+  fill: none;
+}
+svg {
+    display: block;
+    margin: 0 auto;
+}
+</style>
 </head>
 <body>
 
@@ -35,11 +39,6 @@
 <h1>McDonagh Corp</h1>
 
 <p id="mem">Loading...</p>
-
-<div id="cpuGraph" class="aGraph" style="width:300px; height:100px;"></div>
-<br>
-<div id="memGraph" class="bGraph" style="width:300px; height:100px;"></div>
-
 <script type="text/javascript">
 var statusIntervalId = window.setInterval(update, 2000);
 window.freeMem = [];
@@ -68,8 +67,8 @@ xmlhttp.onreadystatechange = function() {
 
     // Delete old graph before creating new one
     $('svg').remove();
-    showGraph("#memGraph", 300, 200, 1000, 1000, varsData.usedMem, varsData.total, "mem");
     showGraph("#cpuGraph", 300, 200, 1000, 1000, varsData.cpuPerc, 100, "cpu");
+    showGraph("#memGraph", 300, 200, 1000, 1000, varsData.usedMem, varsData.total, "mem");
 
   }
 };
@@ -172,5 +171,7 @@ showGraph("#memGraph", 300, 200, 1000, 1000, window.freeMem);
 </script>
 </center>
 </div>
+<div id="cpuGraph" class="aGraph"></div>
+<div id="memGraph" class="bGraph"></div>
 </body>
 </html> 
