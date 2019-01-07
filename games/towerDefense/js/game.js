@@ -12,7 +12,7 @@
 // X -Levels
 // X -Level Text
 // X -Enemies spawn is messed up where they can pile up when framerate is low or when tab is changed
-//   -Fix animation for fireturret by adding timer like the firing timer
+// / -Fix animation for fireturret by adding timer like the firing timer
 // X -Turret Count
 //   -Make it so you can buy new turret slots
 
