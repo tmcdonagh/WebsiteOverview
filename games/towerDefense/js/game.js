@@ -314,6 +314,11 @@ function create(){
         sight.x = selectedTurret.sightX;
         sight.y = selectedTurret.sightY;
       }
+      /*
+      mainDetectionCircle.visible = true;
+      mainDetectionCircle.x = gameObject.x;
+      mainDetectionCircle.y = gameObject.y;
+      */
     }
   });
 
@@ -571,6 +576,7 @@ function handleClick(pointer){
   if(selectedTurret && tileChecker(tileX, tileY) == true){
     selectedTurret = undefined;
     sight.visible = false;
+    mainDetectionCircle.visible = false;
   }
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
