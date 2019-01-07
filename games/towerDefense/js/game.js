@@ -81,7 +81,7 @@ function preload(){
   this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 34, frameHeight: 28 });
   this.load.spritesheet('arrow', 'assets/arrowCharge.png', {frameWidth: 34, frameHeight: 34});
   this.load.spritesheet('lazerTurret', 'assets/lazerCharge.png', {frameWidth: 34, frameHeight: 34});
-  this.load.spritesheet('fireTurret', 'assets/fireTurretSpritesheet.png', {frameWidth: 98, frameHeight: 98});
+  this.load.spritesheet('fireTurret', 'assets/fireTurretSpritesheet.png', {frameWidth: 32, frameHeight: 32});
   this.load.image('fireTurretButton', 'assets/fireTurretButton.png');
   this.load.image('lazer', 'assets/lazer.png');
   this.load.image('lazerTurretButton', 'assets/lazerTurretButton.png');
@@ -135,17 +135,17 @@ function create(){
 
   this.anims.create({
     key: 'fireTurretCharge',
-    frames: this.anims.generateFrameNumbers('fireTurret', {start: 0, end: 10}),
-    frameRate: 2,
+    frames: this.anims.generateFrameNumbers('fireTurret', {start: 0, end: 15}),
+    frameRate: 1,
   });
   this.anims.create({
     key: 'fireTurretFire',
-    frames: this.anims.generateFrameNumbers('fireTurret', {start: 10, end: 17}),
-    frameRate: 30,
+    frames: this.anims.generateFrameNumbers('fireTurret', {start: 0, end: 15}),
+    frameRate: 3,
   });
   this.anims.create({
     key: 'fireTurretInitial',
-    frames: this.anims.generateFrameNumbers('fireTurret', {start: 10, end: 10}),
+    frames: this.anims.generateFrameNumbers('fireTurret', {start: 15, end: 15}),
     frameRate: 1,
   });
 
@@ -644,35 +644,12 @@ function placeFire(x, y){
   var canPlace = true;
   xTile = Math.floor(x/32);
   yTile = Math.floor(y/32);
-  if(cash >= arrowCost){   
-    var canPlace = true;
-    this.arrowTurrets.children.each(function(arrowTurret){
-      if(Math.floor(arrowTurret.x/32) == xTile && Math.floor(arrowTurret.y/32) == yTile && arrowTurret.isAlive == true && turretCount < maxTurretCount){
-
-        canPlace = false;
-      }
-
-    }, this);
-    this.lazerTurrets.children.each(function(lazerTurret){
-      if(Math.floor(lazerTurret.x/32) == xTile && Math.floor(lazerTurret.y/32) == yTile && lazerTurret.isAlive == true){
-        canPlace = false;
-      }
-
-    }, this);
-    this.fireTurrets.children.each(function(fireTurret){
-      if(Math.floor(fireTurret.x/32) == xTile && Math.floor(fireTurret.y/32) == yTile && fireTurret.isAlive == true){
-        canPlace = false;
-      }
-    }, this);
-  }
-  if(getTileID(xTile, yTile) == 15 && canPlace == true){
-
-    var fireTurret = fireTurrets.create(xTile*32 - 30, yTile*32 - 30, 'fireTurret').setInteractive();
-    fireTurret.setOrigin(0);
+  if(cash >= fireCost && tileChecker(xTile, yTile) == true && getTileID(xTile, yTile) == 15 && turretCount < maxTurretCount){   
+    var fireTurret = fireTurrets.create(xTile*32+15, yTile*32+15, 'fireTurret').setInteractive();
     fireTurret.anims.play('fireTurretInitial', true);
     fireTurret.isAlive = true;
     fireTurret.firingTimer = 0;
-    var detectionCircle = detectionCircles.create(xTile*32 + 15, yTile*32 +15, 'detectionCircle').setInteractive();
+    var detectionCircle = detectionCircles.create(xTile*32+15, yTile*32+15, 'detectionCircle').setInteractive();
     detectionCircle.visible = false;
     cash -= fireCost;
     cashText.setText('$' + cash);
@@ -755,7 +732,7 @@ function spawnEnemy(type){
         spawnRight = true;
       }
     }
-    
+
     mainEnemy.body.immovable = true;
     mainEnemy.collideWorldBounds = true;
     mainEnemy.onOutOfBoundsKill = true;
