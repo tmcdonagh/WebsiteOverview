@@ -40,6 +40,7 @@ var game = new Phaser.Game(config);
 //this.stage.disableVisibilityChange = true;
 var outside = this;
 
+var selectedTurret;
 
 var livingArrowTurrets = [];
 var spawnTimer = 0;
@@ -74,6 +75,7 @@ function preload(){
   this.load.image('sellDock', 'assets/sellDock.png');
   this.load.image('sellIcon', 'assets/sellIcon.png');
   this.load.image('detectionCircle', 'assets/detectionCircle.png');
+  this.load.image('sight', 'assets/sight.png');
   this.load.image('mainDetectionCircle', 'assets/mainDetectionCircle.png');
   this.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
   this.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
@@ -278,6 +280,9 @@ function create(){
   mainDetectionCircle = this.add.image(5000, 5000, 'mainDetectionCircle');
   mainDetectionCircle.visible = false;
 
+  sight = this.add.image(5000, 5000, 'sight');
+  sight.visible = false;
+
   redDetectionCircle = this.add.image(5000, 5000, 'redDetectionCircle');
   redDetectionCircle.visible = false;
 
@@ -287,14 +292,21 @@ function create(){
   arrowHelp = this.add.image(815, 575, 'arrowHelp');
 
   this.input.on('gameobjectover', function(pointer, gameObject){
+    
     if(!arrowFollow && pointer.x <= 672){
       mainDetectionCircle.visible = true;
       mainDetectionCircle.x = gameObject.x;
       mainDetectionCircle.y = gameObject.y;
     }
+    if(gameObject.isLazer == true){
+      sight.visible = true;
+      sight.x = gameObject.sightX;
+      sight.y = gameObject.sightY;
+    }
   });
   this.input.on('gameobjectout', function(pointer, gameObject){
     mainDetectionCircle.visible = false;
+    sight.visible = false;
   });
 
   this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
@@ -393,6 +405,9 @@ function update(){
       if(lazerTurret.isAiming){
         lazerTurret.initAngle = Phaser.Math.Angle.Between(lazerTurret.x, lazerTurret.y, this.input.activePointer.x, this.input.activePointer.y);
         lazerTurret.angle = (lazerTurret.initAngle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+        sight.x = this.input.activePointer.x;
+        sight.y = this.input.activePointer.y;
+        sight.visible = true;
       }
     }, this);
 
@@ -524,7 +539,31 @@ function handleClick(pointer){
      }
      finder.setGrid(grid);
      */
+  var tileX = Math.floor(pointer.x/32);
+  var tileY = Math.floor(pointer.y/32);
 
+  if(tileChecker(tileX, tileY) == false && game.paused == false){
+    arrowTurrets.children.each(function(arrowTurret){
+      if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY && arrowTurret.isAlive == true){
+        selectedTurret = arrowTurret;
+      }
+    }, this);
+    lazerTurrets.children.each(function(lazerTurret){
+      if(Math.floor(lazerTurret.x/32) == tileX && Math.floor(lazerTurret.y/32) == tileY && lazerTurret.isAlive == true){
+        selectedTurret = lazerTurret;
+      }
+    }, this);
+    fireTurrets.children.each(function(fireTurret){
+      if(Math.floor(fireTurret.x/32) == tileX && Math.floor(fireTurret.y/32) == tileY && fireTurret.isAlive == true){
+        selectedTurret = fireTurret;
+      }
+
+    }, this);
+  }
+  if(selectedTurret){
+    console.log(selectedTurret.x);
+
+  }
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
     sellFollow = false;
@@ -573,6 +612,9 @@ function handleClick(pointer){
     outside.lazerTurrets.children.each(function(lazerTurret){
       if(lazerTurret.isAiming){
         lazerTurret.isAiming = false;
+        sight.visible = false;
+        lazerTurret.sightX = pointer.x;
+        lazerTurret.sightY = pointer.y;
       }
     }, this);
   }
@@ -633,6 +675,8 @@ function placeLazer(x, y){
     redDetectionCircle.visible = false;
     lazerTurretButton.x = 23*32;
     lazerTurretButton.y = 10.5*32;
+
+    lazerTurret.isLazer = true; 
 
     turretCount++;
     resetText();
@@ -700,7 +744,7 @@ function tileChecker(tileX, tileY){
       //return false;
       able = false;
     }
-  });
+  }, this);
   this.lazerTurrets.children.each(function(lazerTurret){
     if(Math.floor(lazerTurret.x/32) == tileX && Math.floor(lazerTurret.y/32) == tileY && lazerTurret.isAlive == true){
       able = false;
