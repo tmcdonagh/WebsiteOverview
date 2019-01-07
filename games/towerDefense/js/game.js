@@ -308,6 +308,13 @@ function create(){
   this.input.on('gameobjectout', function(pointer, gameObject){
     mainDetectionCircle.visible = false;
     sight.visible = false;
+    if(selectedTurret){
+      if(selectedTurret.isLazer){
+        sight.visible = true;
+        sight.x = selectedTurret.sightX;
+        sight.y = selectedTurret.sightY;
+      }
+    }
   });
 
   this.physics.add.collider(bullets, mainEnemies, bulletCollision, null, this);
@@ -563,6 +570,7 @@ function handleClick(pointer){
   }
   if(selectedTurret && tileChecker(tileX, tileY) == true){
     selectedTurret = undefined;
+    sight.visible = false;
   }
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
