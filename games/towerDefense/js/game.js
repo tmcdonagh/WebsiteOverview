@@ -209,6 +209,7 @@ function create(){
   arrowCostText = game.add.text(22.5*32, 8.8*32, '$' + arrowCost, {font: '18px Arial'});
   lazerCostText = game.add.text(22.3*32, 11.3*32, '$' + lazerCost, {font: '18px Arial'});
   fireCostText = game.add.text(25.1*32, 8.8*32, '$' + fireCost, {font: '18px Arial'});
+  sellText = game.add.text(22.5*32, 13.8*32, 'Sell', {font: '18px Arial'}); 
   turretCountText = game.add.text(22.2*32, 5.5*32, 'Turrets: ' + turretCount + '/' + maxTurretCount, {font: '18px Arial'});
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
@@ -560,9 +561,8 @@ function handleClick(pointer){
 
     }, this);
   }
-  if(selectedTurret){
-    console.log(selectedTurret.x);
-
+  if(selectedTurret && tileChecker(tileX, tileY) == true){
+    selectedTurret = undefined;
   }
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
