@@ -47,7 +47,7 @@ var spawnTimer = 0;
 var firingTimer = 0;
 var enemiesLeft = 10;
 var lives = 10;
-var cash = 100;
+var cash = 100; // change to 95 for gameplay 100 for testing
 var arrowFollow = false;
 var sellFollow = false;
 var wave = 1;
@@ -517,6 +517,8 @@ function getEnemy(x, y, distance){
 }
 
 function handleClick(pointer){
+
+  
 
   if(game.paused == true){
     if(pointerX >= 231 && pointerX <= 441 && pointerY >= 345 && pointerY <= 381){
