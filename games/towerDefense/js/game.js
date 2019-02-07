@@ -79,6 +79,7 @@ function preload(){
   this.load.image('mainDetectionCircle', 'assets/mainDetectionCircle.png');
   this.load.image('redDetectionCircle', 'assets/redDetectionCircle.png');
   this.load.image('greenDetectionCircle', 'assets/greenDetectionCircle.png');
+  this.load.image('fireDetectionCircle', 'assets/fireDetectionCircle.png');
   this.load.image('arrowHelp', 'assets/arrowHelp.png');
   this.load.spritesheet('enemy', 'assets/alienSpritesheet.png', {frameWidth: 34, frameHeight: 28 });
   this.load.spritesheet('arrow', 'assets/arrowCharge.png', {frameWidth: 34, frameHeight: 34});
@@ -287,6 +288,12 @@ function create(){
   secondDetectionCircle = this.add.image(5000, 5000, 'mainDetectionCircle');
   secondDetectionCircle.visible = false;
 
+  fireDetectionCircle = this.add.image(5000, 5000, 'fireDetectionCircle');
+  fireDetectionCircle.visible = false;
+
+  secondFireDetectionCircle = this.add.image(5000, 5000, 'fireDetectionCircle');
+  secondFireDetectionCircle.visible = false;
+
   sight = this.add.image(5000, 5000, 'sight');
   sight.visible = false;
 
@@ -299,10 +306,17 @@ function create(){
   arrowHelp = this.add.image(815, 575, 'arrowHelp');
 
   this.input.on('gameobjectover', function(pointer, gameObject){
-    if(pointer.x <= 672 && selectedTurret == undefined){
-      mainDetectionCircle.visible = true;
-      mainDetectionCircle.x = gameObject.x;
-      mainDetectionCircle.y = gameObject.y;
+    if(selectedTurret == undefined){
+      if(pointer.x <= 672 && gameObject.isFire != true){
+        mainDetectionCircle.visible = true;
+        mainDetectionCircle.x = gameObject.x;
+        mainDetectionCircle.y = gameObject.y;
+      }
+      else if(gameObject.isFire){
+        fireDetectionCircle.visible = true;
+        fireDetectionCircle.x = gameObject.x;
+        fireDetectionCircle.y = gameObject.y;
+      }
     }
     if(gameObject.isLazer == true){
       sight.visible = true;
@@ -313,6 +327,7 @@ function create(){
   this.input.on('gameobjectout', function(pointer, gameObject){
     sight.visible = false;
     mainDetectionCircle.visible = false;
+    fireDetectionCircle.visible = false;
     if(selectedTurret){
       if(selectedTurret.isLazer){
         sight.visible = true;
@@ -518,7 +533,7 @@ function getEnemy(x, y, distance){
 
 function handleClick(pointer){
 
-  
+
 
   if(game.paused == true){
     if(pointerX >= 231 && pointerX <= 441 && pointerY >= 345 && pointerY <= 381){
@@ -582,10 +597,11 @@ function handleClick(pointer){
       if(Math.floor(fireTurret.x/32) == tileX && Math.floor(fireTurret.y/32) == tileY && fireTurret.isAlive == true){
         selectedTurret = fireTurret;
         // Creates detection circle that stays indicating a selected turret
-        secondDetectionCircle.visible = true;
-        secondDetectionCircle.x = selectedTurret.x;
-        secondDetectionCircle.y = selectedTurret.y;
+        secondFireDetectionCircle.visible = true;
+        secondFireDetectionCircle.x = selectedTurret.x;
+        secondFireDetectionCircle.y = selectedTurret.y;
         mainDetectionCircle.visible = false;
+        fireDetectionCircle.visible = false;
       }
 
     }, this);
@@ -594,6 +610,7 @@ function handleClick(pointer){
     selectedTurret = undefined;
     sight.visible = false;
     secondDetectionCircle.visible = false;
+    secondFireDetectionCircle.visible = false;
   }
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
@@ -728,6 +745,8 @@ function placeFire(x, y){
     detectionCircle.visible = false;
     cash -= fireCost;
     cashText.setText('$' + cash);
+
+    fireTurret.isFire = true; 
 
     turretCount++;
     resetText();
