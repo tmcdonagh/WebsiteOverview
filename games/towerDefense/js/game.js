@@ -341,7 +341,7 @@ function update(){
 
 
   if(game.paused == false){
-    if(pointerX <= 762 && pointerX >= 713 && pointerY >= 233 && pointerY <= 283){
+    if(pointerX <= 762 && pointerX >= 713 && pointerY >= 233 && pointerY <= 283 && selectedTurret == undefined){
       arrowHelp.visible = true;
     }
     else if(pointerX <= 762 && pointerX >= 713 && pointerY >= 168 && pointerY <= 220){
