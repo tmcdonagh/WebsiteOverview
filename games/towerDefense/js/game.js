@@ -88,6 +88,7 @@ function preload(){
   this.load.image('lazer', 'assets/lazer.png');
   this.load.image('lazerTurretButton', 'assets/lazerTurretButton.png');
   this.load.image('startScreen', 'assets/startScreen.png');
+  this.load.image('infoTray', 'assets/infoTray.png');
 }
 
 var arrowCost = 50;
@@ -202,6 +203,8 @@ function create(){
 
   shopScreen = this.add.image(672, 335, 'shop');
   shopScreen.setOrigin(0, 0.5);
+  
+  infoTray = this.add.image(817, 562, 'infoTray');
 
   waveText = game.add.text(26.5*32, 0.75*32, 'Wave ' + wave, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
@@ -281,6 +284,9 @@ function create(){
   mainDetectionCircle = this.add.image(5000, 5000, 'mainDetectionCircle');
   mainDetectionCircle.visible = false;
 
+  secondDetectionCircle = this.add.image(5000, 5000, 'mainDetectionCircle');
+  secondDetectionCircle.visible = false;
+
   sight = this.add.image(5000, 5000, 'sight');
   sight.visible = false;
 
@@ -293,8 +299,7 @@ function create(){
   arrowHelp = this.add.image(815, 575, 'arrowHelp');
 
   this.input.on('gameobjectover', function(pointer, gameObject){
-    
-    if(!arrowFollow && pointer.x <= 672){
+    if(pointer.x <= 672 && selectedTurret == undefined){
       mainDetectionCircle.visible = true;
       mainDetectionCircle.x = gameObject.x;
       mainDetectionCircle.y = gameObject.y;
@@ -306,19 +311,14 @@ function create(){
     }
   });
   this.input.on('gameobjectout', function(pointer, gameObject){
-    mainDetectionCircle.visible = false;
     sight.visible = false;
+    mainDetectionCircle.visible = false;
     if(selectedTurret){
       if(selectedTurret.isLazer){
         sight.visible = true;
         sight.x = selectedTurret.sightX;
         sight.y = selectedTurret.sightY;
       }
-      /*
-      mainDetectionCircle.visible = true;
-      mainDetectionCircle.x = gameObject.x;
-      mainDetectionCircle.y = gameObject.y;
-      */
     }
   });
 
@@ -561,16 +561,31 @@ function handleClick(pointer){
     arrowTurrets.children.each(function(arrowTurret){
       if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY && arrowTurret.isAlive == true){
         selectedTurret = arrowTurret;
+        // Creates detection circle that stays indicating a selected turret
+        secondDetectionCircle.visible = true;
+        secondDetectionCircle.x = selectedTurret.x;
+        secondDetectionCircle.y = selectedTurret.y;
+        mainDetectionCircle.visible = false;
       }
     }, this);
     lazerTurrets.children.each(function(lazerTurret){
       if(Math.floor(lazerTurret.x/32) == tileX && Math.floor(lazerTurret.y/32) == tileY && lazerTurret.isAlive == true){
         selectedTurret = lazerTurret;
+        // Creates detection circle that stays indicating a selected turret
+        secondDetectionCircle.visible = true;
+        secondDetectionCircle.x = selectedTurret.x;
+        secondDetectionCircle.y = selectedTurret.y;
+        mainDetectionCircle.visible = false;
       }
     }, this);
     fireTurrets.children.each(function(fireTurret){
       if(Math.floor(fireTurret.x/32) == tileX && Math.floor(fireTurret.y/32) == tileY && fireTurret.isAlive == true){
         selectedTurret = fireTurret;
+        // Creates detection circle that stays indicating a selected turret
+        secondDetectionCircle.visible = true;
+        secondDetectionCircle.x = selectedTurret.x;
+        secondDetectionCircle.y = selectedTurret.y;
+        mainDetectionCircle.visible = false;
       }
 
     }, this);
@@ -578,7 +593,7 @@ function handleClick(pointer){
   if(selectedTurret && tileChecker(tileX, tileY) == true){
     selectedTurret = undefined;
     sight.visible = false;
-    mainDetectionCircle.visible = false;
+    secondDetectionCircle.visible = false;
   }
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     arrowFollow = true;
