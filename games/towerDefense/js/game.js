@@ -950,16 +950,20 @@ function lazerFire(){
 
 function fireTurretFire(){
   this.fireTurrets.children.each(function(fireTurret){
-    var enemy = getEnemy(fireTurret.x, fireTurret.y, 75);
+    var enemy = getEnemy(fireTurret.x, fireTurret.y, 150);
     if(enemy){
 
       if(create.time.now > fireTurret.firingTimer && fireTurret.isAlive == true){
         fireTurret.anims.play('fireTurretFire', true);
         fireTurret.firingTimer = create.time.now + 6000;
         outside.mainEnemies.children.each(function(enemy){
-          if(Phaser.Math.Distance.Between(enemy.x, enemy.y, fireTurret.x, fireTurret.y) <= 75){
-            enemy.hp--;
-            checkHp(enemy);         
+          if(Phaser.Math.Distance.Between(enemy.x, enemy.y, fireTurret.x, fireTurret.y) <= 150){
+            // Changes enemy to the next enemy within area
+            enemy = getEnemy(fireTurret.x, fireTurret.y, 150);
+            // Takes away 2 health points and checks to see if it kills enemy
+            enemy.hp -= 2;
+            checkHp(enemy);
+
             cash += 5;
             cashText.setText('$' + cash);
 
