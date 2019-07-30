@@ -1,6 +1,6 @@
 <?php
 function getDBData(){
-  $servername = "10.0.0.84";
+  $servername = "10.0.0.63";
   $username = "test";
   $password = "test";
   $dbname = "clouddb";
