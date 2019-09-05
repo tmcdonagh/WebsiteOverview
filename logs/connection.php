@@ -1,12 +1,12 @@
 <?php
 function getDBData(){
-  $servername = "10.0.0.63";
+  $servername = "172.18.0.3"; // Docker network ip
   $username = "test";
   $password = "test";
   $dbname = "clouddb";
 
   // Create connection
-  $conn = new mysqli($servername, $username, $password, $dbname, 2162);
+  $conn = new mysqli($servername, $username, $password, $dbname, 3306);
   // Check connection
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
