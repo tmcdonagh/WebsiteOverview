@@ -37,40 +37,42 @@ svg {
 <div id="main">
 <center>
 <h1>McDonagh Corp</h1>
-
+<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 <p id="mem">Loading...</p>
+</div>
 <script type="text/javascript">
 var statusIntervalId = window.setInterval(update, 2000);
 window.freeMem = [];
 window.usedMem = [];
 
 function update() {
-  $.ajax({
-  url: 'connection.php',
-    dataType: 'text',
-    success: function(data) {
-      document.getElementById("mem").innerHTML = data;
-    }
+	$.ajax({
+	url: 'connection.php',
+		dataType: 'text',
+		success: function(data) {
+			document.getElementById("mem").innerHTML = data;
+		}
 });
 var xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
-  if (this.readyState == 4 && this.status == 200) {
-    //var myObj = JSON.parse(this.responseText);
-    //var memData = this.responseText;
-    var varsData = JSON.parse(this.responseText);
+	if (this.readyState == 4 && this.status == 200) {
+		//var myObj = JSON.parse(this.responseText);
+		//var memData = this.responseText;
+		console.log(this.responseText);
+		var varsData = JSON.parse(this.responseText);
 
-    // Make arrays public so other functions can use them
-    window.total = varsData.total;
-    window.freeMem = varsData.freeMem;
+		// Make arrays public so other functions can use them
+		window.total = varsData.total;
+		window.freeMem = varsData.freeMem;
 
-    
 
-    // Delete old graph before creating new one
-    $('svg').remove();
-    showGraph("#cpuGraph", 300, 200, 1000, 1000, varsData.cpuPerc, 100, "cpu");
-    showGraph("#memGraph", 300, 200, 1000, 1000, varsData.usedMem, varsData.total, "mem");
 
-  }
+		// Delete old graph before creating new one
+		$('svg').remove();
+		showGraph("#cpuGraph", 300, 200, 1000, 1000, varsData.cpuPerc, 100, "cpu");
+		showGraph("#memGraph", 300, 200, 1000, 1000, varsData.usedMem, varsData.total, "mem");
+
+	}
 };
 xmlhttp.open("GET", "vars.php", true);
 xmlhttp.send();
@@ -80,90 +82,90 @@ xmlhttp.send();
 
 function showGraph(id, width, height, updateDelay, transitionDelay, data, totalY, type) {
 
-  // Types:
-  // cpu
-  // mem
+	// Types:
+	// cpu
+	// mem
 
-  //console.log(window.usedMem);
-  //console.log(window.freeMem);
+	//console.log(window.usedMem);
+	//console.log(window.freeMem);
 
-  var margin = {top: 50, right: 50, bottom: 50, left: 50}
-  //, width = window.innerWidth - margin.left - margin.right // Use the window's width 
-  //, height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+	var margin = {top: 50, right: 50, bottom: 50, left: 50}
+		//, width = window.innerWidth - margin.left - margin.right // Use the window's width 
+		//, height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
 
-  // The number of datapoints
-  var n = 50;
+		// The number of datapoints
+		var n = 50;
 
-  // 5. X scale will use the index of our data
-  var xScale = d3.scaleLinear()
-    .domain([0, n-1]) // input
-    .range([0, width]); // output
+	// 5. X scale will use the index of our data
+	var xScale = d3.scaleLinear()
+		.domain([0, n-1]) // input
+		.range([0, width]); // output
 
-  // 6. Y scale will use the randomly generate number 
-  var yScale = d3.scaleLinear()
-    .domain([0, totalY]) // input 
-    .range([height, 0]); // output 
+	// 6. Y scale will use the randomly generate number 
+	var yScale = d3.scaleLinear()
+		.domain([0, totalY]) // input 
+		.range([height, 0]); // output 
 
-  // 7. d3's line generator
-  var line = d3.line()
-    .x(function(d, i) { return xScale(i); }) // set the x values for the line generator
-    .y(function(d) { return yScale(d.y); }) // set the y values for the line generator 
-    //.curve(d3.curveMonotoneX) // apply smoothing to the line
+	// 7. d3's line generator
+	var line = d3.line()
+		.x(function(d, i) { return xScale(i); }) // set the x values for the line generator
+		.y(function(d) { return yScale(d.y); }) // set the y values for the line generator 
+		//.curve(d3.curveMonotoneX) // apply smoothing to the line
 
-    // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
-    //var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
-    var dataset = d3.range(n).map(function(d) { return { "y": data[+d] } })
+		// 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
+		//var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
+		var dataset = d3.range(n).map(function(d) { return { "y": data[+d] } })
 
-    // 1. Add the SVG to the page and employ #2
-    var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		// 1. Add the SVG to the page and employ #2
+		var svg = d3.select("body").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // 3. Call the x axis in a group tag
-  svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+	// 3. Call the x axis in a group tag
+	svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
 
-  // 4. Call the y axis in a group tag
-  svg.append("g")
-    .attr("class", "y axis")
-    .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+	// 4. Call the y axis in a group tag
+	svg.append("g")
+		.attr("class", "y axis")
+		.call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
 
-  // 9. Append the path, bind the data, and call the line generator 
-  svg.append("path")
-    .datum(dataset) // 10. Binds data to the line 
-    .attr("class", "line") // Assign a class for styling 
-    .attr("d", line); // 11. Calls the line generator 
+	// 9. Append the path, bind the data, and call the line generator 
+	svg.append("path")
+		.datum(dataset) // 10. Binds data to the line 
+		.attr("class", "line") // Assign a class for styling 
+		.attr("d", line); // 11. Calls the line generator 
 
-  // Adds Title
-  if(data[49] != undefined && type == "mem"){
-    svg.append("text")
-      .attr("x", (width / 2))             
-      .attr("y", 0 - (margin.top / 2))
-      .attr("text-anchor", "middle")  
-      .style("font-size", "16px") 
-      .text("RAM Usage: " + data[49] + "MB");
-  }
-  else if(data[49] != undefined && type == "cpu"){
-    svg.append("text")
-      .attr("x", (width / 2))             
-      .attr("y", 0 - (margin.top / 2))
-      .attr("text-anchor", "middle")  
-      .style("font-size", "16px") 
-      .text("CPU Usage: " + data[49] + "%");
-  }
-  else{
-    svg.append("text")
-      .attr("x", (width / 2))             
-      .attr("y", 0 - (margin.top / 2))
-      .attr("text-anchor", "middle")  
-      .style("font-size", "16px") 
-      .text("Loading...");
+	// Adds Title
+	if(data[49] != undefined && type == "mem"){
+		svg.append("text")
+			.attr("x", (width / 2))             
+			.attr("y", 0 - (margin.top / 2))
+			.attr("text-anchor", "middle")  
+			.style("font-size", "16px") 
+			.text("RAM Usage: " + data[49] + "MB");
+	}
+	else if(data[49] != undefined && type == "cpu"){
+		svg.append("text")
+			.attr("x", (width / 2))             
+			.attr("y", 0 - (margin.top / 2))
+			.attr("text-anchor", "middle")  
+			.style("font-size", "16px") 
+			.text("CPU Usage: " + data[49] + "%");
+	}
+	else{
+		svg.append("text")
+			.attr("x", (width / 2))             
+			.attr("y", 0 - (margin.top / 2))
+			.attr("text-anchor", "middle")  
+			.style("font-size", "16px") 
+			.text("Loading...");
 
-  }
+	}
 
 }
 showGraph("#cpuGraph", 300, 200, 1000, 1000, window.freeMem);
