@@ -58,7 +58,7 @@ xmlhttp.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
 		//var myObj = JSON.parse(this.responseText);
 		//var memData = this.responseText;
-		console.log(this.responseText);
+		//console.log(this.responseText);
 		var varsData = JSON.parse(this.responseText);
 
 		// Make arrays public so other functions can use them

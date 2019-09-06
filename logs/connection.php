@@ -1,6 +1,6 @@
 <?php
 function getDBData(){
-  $servername = "172.18.0.3"; // Docker network ip
+  $servername = "172.18.0.3";
   $username = "test";
   $password = "test";
   $dbname = "clouddb";
@@ -12,7 +12,7 @@ function getDBData(){
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql = "SELECT status, time FROM logs";
+  $sql = "SELECT * FROM logs ORDER BY time DESC";
   $result = $conn->query($sql);
 
   echo "<h3>Connection Loss Data</h2>";
