@@ -1,14 +1,14 @@
 <?php
 function getDBData(){
-	
-	$servername = "172.18.0.3";
+
+	$servername = "172.18.0.2";
 	$username = "test";
 	$password = "test";
 	$dbname = "clouddb";
 
 	session_start();
 	$_SESSION['servername'] = $servername; // Lets other files use ip variable (see vars.php)
-	
+
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname, 3306);
