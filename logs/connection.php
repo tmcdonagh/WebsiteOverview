@@ -1,7 +1,7 @@
 <?php
 function getDBData(){
 
-	$servername = "172.18.0.2";
+	$servername = "172.21.0.2";
 	$username = "test";
 	$password = "test";
 	$dbname = "clouddb";
@@ -17,7 +17,7 @@ function getDBData(){
 		die("Connection failed: " . $conn->connect_error);
 	}
 
-	$sql = "SELECT * FROM logs ORDER BY time DESC";
+	$sql = "SELECT * FROM logs ORDER BY ID DESC";
 	$result = $conn->query($sql);
 
 	echo "<h3>Connection Loss Data</h2>";
