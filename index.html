@@ -1,47 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>McDonagh Corp</title>
-    <link rel="stylesheet" type="text/css" href="/main.css">
-    <link rel="stylesheet" type="text/css" href="/menu.css">
-    <link rel="icon" type="img/ico" href="/favicon.ico">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>McDonagh Corp Home</title>
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="/main.css" rel="stylesheet" />
+    <link href="/menu.css" rel="stylesheet" />
   </head>
   <body>
 
-    <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="/">Home</a>
-      <a href="/games">Games</a>
-      <a href="/emulators">Emulators</a>
-    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 
-    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
 
-    <script type="text/javascript" src="/nav.js"></script>
-    <div id="main">
 
-      <center>
-
-        <h1 style="font-size:60px">McDonagh Corp</h1>
-        <br>
-        <h2><a href="games">Games</a></h2>
-        <p>Javascript Games</p>
-        <br>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="/">McDonagh Corp</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/"> Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/games/"> Games </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logs/"> Logs </a>
+          </li>
+        </ul>
         <!--
-        <h2><a href="/" onclick="javascript:event.target.port=8083">Monitor</a></h2>
-        <p>Monitors CPU utilization on my servers</p>
-        <br>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-brand" href="#"><img src="/githubLogo.png"></a>
+          </li>
+        </ul>
         -->
-        <h2><a href="logs">Logs</a></h2>
-        <p>Show connection loss data and current RAM and CPU usage</p>
-    </div>
+      </div>
+    </nav>
 
 
+    <center>
 
-
-
-      </center>
+      <br>
+      <br>
+      <br>
+      <h1 style="font-size:60px">McDonagh Corp</h1>
+      <br>
+      <h2><a href="/games">Games</a></h2>
+      <p>Javascript Games</p>
+      <br>
+      <h2><a href="/logs">Logs</a></h2>
+      <p>Show connection loss data and current RAM and CPU usage of the server running this site</p>
+      </div>
   </body>
-</html> 
+</html>
