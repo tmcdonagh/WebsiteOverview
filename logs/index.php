@@ -10,6 +10,7 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="style.css">
 <link rel="stylesheet" type="text/css" href="/menu.css">
 <link rel="icon" type="img/ico" href="/favicon.ico">
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -51,7 +52,6 @@ svg {
 <br><br><br>
 
 
-<script type="text/javascript" src="/nav.js"></script>
 <div id="main">
 <center>
 <h1>McDonagh Corp</h1>
@@ -135,7 +135,7 @@ function showGraph(id, width, height, updateDelay, transitionDelay, data, totalY
     var dataset = d3.range(n).map(function(d) { return { "y": data[+d] } })
 
     // 1. Add the SVG to the page and employ #2
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select(id).append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -191,7 +191,15 @@ showGraph("#memGraph", 300, 200, 1000, 1000, window.freeMem);
 </script>
 </center>
 </div>
+<div class="wrapper">
+<div class="shortcuts">
+<div class="shortcut">
 <div id="cpuGraph" class="aGraph"></div>
+</div>
+<div class="shortcut">
 <div id="memGraph" class="bGraph"></div>
+</div>
+</div>
+</div>
 </body>
 </html> 
