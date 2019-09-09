@@ -1,58 +1,93 @@
 <html>
-	<head>
-		<title>McDonaghCorp Launch Page</title>
-		<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="style.css">
-	</head>
+  <head>
+    <title>McDonaghCorp Launch Page</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="/main.css" rel="stylesheet" />
+    <link href="/menu.css" rel="stylesheet" />
+  </head>
 
-	<body>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 
-		<div class="wrapper">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="/">McDonagh Corp</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/"> Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/games/"> Games </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logs/"> Logs </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/launch/"> Launch </a>
+          </li>
+        </ul>
+        <!--
+          <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+          <a class="nav-brand" href="#"><img src="/githubLogo.png"></a>
+          </li>
+          </ul>
+        -->
+      </div>
+    </nav>
 
-			<iframe src="https://duckduckgo.com/search.html?duck=yes&prefill=Search DuckDuckGo&focus=yes" style="margin:10;padding:10;width:485px;height:60px;" frameborder="0"></iframe>
+    <div class="wrapper">
+      <iframe src="https://duckduckgo.com/search.html?prefill=Search DuckDuckGo&focus=yes" style="overflow:hidden;margin:0;padding:0;width:408px;height:40px;" frameborder="0"></iframe>
 
-			<div class="shortcuts">
-				<h2>Shortcuts</h2>
 
-				<div class="break"></div>
+      <div class="shortcuts">
+        <h2>Shortcuts</h2>
 
-				<div class="shortcut">
-					<a href="http://mcdonaghcorp.com:32400">
-						<img src="assets/plexLogo.png">
+        <div class="break"></div>
 
-						<p>Plex</p>
-					</a>
-				</div>
-				<div class="shortcut">
-					<a href="http://mcdonaghcorp.com:3000">
-						<img src="/assets/grafanaLogo.png">
+        <div class="shortcut">
+          <a href="http://mcdonaghcorp.com:32400">
+            <img src="assets/plexLogo.png">
 
-						<p>Grafana</p>
-					</a>
-				</div>
+            <p>Plex</p>
+          </a>
+        </div>
+        <div class="shortcut">
+          <a href="http://mcdonaghcorp.com:3000">
+            <img src="/assets/grafanaLogo.png">
 
-				<div class="shortcut">
-					<a href="http://mcdonaghcorp.com:220">
-						<img src="assets/nextcloudLogo.png">
+            <p>Grafana</p>
+          </a>
+        </div>
 
-						<p>Nextcloud</p>
-					</a>
-				</div>
-				<div class="shortcut">
-					<a href="https://github.com/tmcdonagh">
-						<img src="assets/githubLogo.png">
+        <div class="shortcut">
+          <a href="http://mcdonaghcorp.com:220">
+            <img src="assets/nextcloudLogo.png">
 
-						<p>GitHub</p>
-					</a>
-				</div>
-				<div class="shortcut">
-					<a href="https://thingiverse.com/tmcdonagh">
-						<img src="assets/thingiverseLogo.png">
+            <p>Nextcloud</p>
+          </a>
+        </div>
+        <div class="shortcut">
+          <a href="https://github.com/tmcdonagh">
+            <img src="assets/githubLogo.png">
 
-						<p>Thingiverse</p>
-					</a>
-				</div>
-			</div>
-		</div>
-	</body>
+            <p>GitHub</p>
+          </a>
+        </div>
+        <div class="shortcut">
+          <a href="https://thingiverse.com/tmcdonagh">
+            <img src="assets/thingiverseLogo.png">
+
+            <p>Thingiverse</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
