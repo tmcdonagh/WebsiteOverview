@@ -55,9 +55,22 @@ svg {
 <div id="main">
 <center>
 <h1>McDonagh Corp</h1>
+<div class="wrapper">
+<div class="shortcuts">
+<div class="shortcut">
 <div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-<p id="mem">Loading...</p>
+<div id="mem"<p><h3>Connection Loss Data</h3><br>Loading...</p></div>
 </div>
+</div>
+<div class="shortcut">
+<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+<h3>Docker Containers</h3>
+<p id="dockerP"><br>Loading...</p>
+</div>
+</div>
+</div>
+</div>
+
 <script type="text/javascript">
 var statusIntervalId = window.setInterval(update, 2000);
 window.freeMem = [];
@@ -72,6 +85,7 @@ function update() {
     }
 });
 var xmlhttp = new XMLHttpRequest();
+var xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
     //var myObj = JSON.parse(this.responseText);
@@ -82,6 +96,7 @@ xmlhttp.onreadystatechange = function() {
     // Make arrays public so other functions can use them
     window.total = varsData.total;
     window.freeMem = varsData.freeMem;
+    
 
 
 
@@ -89,12 +104,12 @@ xmlhttp.onreadystatechange = function() {
     $('svg').remove();
     showGraph("#cpuGraph", 300, 200, 1000, 1000, varsData.cpuPerc, 100, "cpu");
     showGraph("#memGraph", 300, 200, 1000, 1000, varsData.usedMem, varsData.total, "mem");
+    document.getElementById("dockerP").innerHTML = "<br>Web: Online<br>Clouddb: Online" + "<br>Plex: " + varsData.plexStatus + "<br>NextCloud: " + varsData.nextcloudStatus + "<br>Grafana: " + varsData.grafanaStatus;
 
   }
 };
 xmlhttp.open("GET", "vars.php", true);
 xmlhttp.send();
-
 
 }
 
