@@ -15,6 +15,8 @@
 // / -Fix animation for fireturret by adding timer like the firing timer
 // X -Turret Count
 //   -Make it so you can buy new turret slots
+//   -Game over screen
+//   -High Scores (possibly mysql)
 
 
 
@@ -26,8 +28,8 @@ var config = {
   height: 21*32,
   physics: {
     default: 'arcade',
-             arcade: {
-             }
+    arcade: {
+    }
   },
   scene: {
     preload: preload,
@@ -57,6 +59,14 @@ var fireTurretFollow = false;
 var spawnRight = false;
 var turretCount = 0;
 var maxTurretCount = 10;
+var arrowCost = 50;
+var lazerCost = 100;
+var fireCost = 100;
+
+var speedUpgradeCost = 5;
+var damageUpgradeCost = 5;
+
+var arrowTurretDelays = [ 5000, 4000, 3334, 2858 ]; // values based on 5 second interval divided by frame rate of animation
 
 
 function preload(){
@@ -90,11 +100,10 @@ function preload(){
   this.load.image('lazerTurretButton', 'assets/lazerTurretButton.png');
   this.load.image('startScreen', 'assets/startScreen.png');
   this.load.image('infoTray', 'assets/infoTray.png');
+  this.load.image('infoTrayMain', 'assets/infoTrayMain.png');
 }
 
-var arrowCost = 50;
-var lazerCost = 100;
-var fireCost = 100;
+
 
 function create(){
 
@@ -124,6 +133,24 @@ function create(){
     key: 'arrowCharge',
     frames: this.anims.generateFrameNumbers('arrow', { start: 0, end: 4 }),
     frameRate: 1,
+  });
+
+  this.anims.create({
+    key: 'arrowChargeSpeed1',
+    frames: this.anims.generateFrameNumbers('arrow', { start: 0, end: 4 }),
+    frameRate: 1.25,
+  });
+
+  this.anims.create({
+    key: 'arrowChargeSpeed2',
+    frames: this.anims.generateFrameNumbers('arrow', { start: 0, end: 4 }),
+    frameRate: 1.5,
+  });
+
+  this.anims.create({
+    key: 'arrowChargeSpeed3',
+    frames: this.anims.generateFrameNumbers('arrow', { start: 0, end: 4 }),
+    frameRate: 1.75,
   });
 
   this.anims.create({
@@ -204,8 +231,11 @@ function create(){
 
   shopScreen = this.add.image(672, 335, 'shop');
   shopScreen.setOrigin(0, 0.5);
-  
+
   infoTray = this.add.image(817, 562, 'infoTray');
+
+  infoTrayMain = this.add.image(817, 562, 'infoTrayMain');
+  infoTrayMain.visible = false;
 
   waveText = game.add.text(26.5*32, 0.75*32, 'Wave ' + wave, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
@@ -215,6 +245,12 @@ function create(){
   fireCostText = game.add.text(25.1*32, 8.8*32, '$' + fireCost, {font: '18px Arial'});
   sellText = game.add.text(22.5*32, 13.8*32, 'Sell', {font: '18px Arial'}); 
   turretCountText = game.add.text(22.2*32, 5.5*32, 'Turrets: ' + turretCount + '/' + maxTurretCount, {font: '18px Arial'});
+
+  speedUpgradeText = game.add.text(860, 575, '$' + speedUpgradeCost, {font: '26px Arial'});
+  speedUpgradeText.visible = false;
+
+  damageUpgradeText = game.add.text(720, 575, '$' + damageUpgradeCost, {font: '26px Arial'});
+  damageUpgradeText.visible = false;
 
   arrowDock = this.add.image(23*32, 8*32, 'dock');
   arrowTurretButton = this.add.image(23*32, 8*32, 'arrowTurret');
@@ -308,14 +344,14 @@ function create(){
   this.input.on('gameobjectover', function(pointer, gameObject){
     if(selectedTurret == undefined){
       if(pointer.x <= 672 && gameObject.isFire != true){
-        mainDetectionCircle.visible = true;
-        mainDetectionCircle.x = gameObject.x;
-        mainDetectionCircle.y = gameObject.y;
+	mainDetectionCircle.visible = true;
+	mainDetectionCircle.x = gameObject.x;
+	mainDetectionCircle.y = gameObject.y;
       }
       else if(gameObject.isFire){
-        fireDetectionCircle.visible = true;
-        fireDetectionCircle.x = gameObject.x;
-        fireDetectionCircle.y = gameObject.y;
+	fireDetectionCircle.visible = true;
+	fireDetectionCircle.x = gameObject.x;
+	fireDetectionCircle.y = gameObject.y;
       }
     }
     if(gameObject.isLazer == true){
@@ -330,9 +366,9 @@ function create(){
     fireDetectionCircle.visible = false;
     if(selectedTurret){
       if(selectedTurret.isLazer){
-        sight.visible = true;
-        sight.x = selectedTurret.sightX;
-        sight.y = selectedTurret.sightY;
+	sight.visible = true;
+	sight.x = selectedTurret.sightX;
+	sight.y = selectedTurret.sightY;
       }
     }
   });
@@ -356,6 +392,32 @@ function update(){
 
 
   if(game.paused == false){
+
+    // Checks if damage upgrade is affordable
+    if(cash >= damageUpgradeCost){
+      damageUpgradeText.setColor('#00df00'); // Sets color to green if enough cash
+    }
+    else{
+      damageUpgradeText.setColor('#ff0000'); // Sets color to red if not enough cash
+    }
+    // Checks if speed upgrade is affordable
+    if(cash >= speedUpgradeCost){
+      speedUpgradeText.setColor('#00df00'); // Sets color to green if enough cash
+    }
+    else{
+      speedUpgradeText.setColor('#ff0000'); // Sets color to red if not enough cash
+    }
+
+    if(selectedTurret != undefined){
+      if(selectedTurret.damage == 2){
+	damageUpgradeText.visible = false;
+      }
+      if(selectedTurret.speed == 3){
+	speedUpgradeText.visible = false;
+      }	
+    }
+
+
     if(pointerX <= 762 && pointerX >= 713 && pointerY >= 233 && pointerY <= 283 && selectedTurret == undefined){
       arrowHelp.visible = true;
     }
@@ -380,22 +442,22 @@ function update(){
 
     if(arrowFollow || lazerFollow || fireTurretFollow){
       if(arrowFollow){
-        arrowTurretButton.x = this.input.activePointer.x;
-        arrowTurretButton.y = this.input.activePointer.y;
+	arrowTurretButton.x = this.input.activePointer.x;
+	arrowTurretButton.y = this.input.activePointer.y;
 
-        resetButtonsExcept("arrowTurretButton");
+	resetButtonsExcept("arrowTurretButton");
       }
       else if(lazerFollow){
-        lazerTurretButton.x = this.input.activePointer.x;
-        lazerTurretButton.y = this.input.activePointer.y;
+	lazerTurretButton.x = this.input.activePointer.x;
+	lazerTurretButton.y = this.input.activePointer.y;
 
-        resetButtonsExcept("lazerTurretButton");
+	resetButtonsExcept("lazerTurretButton");
       }
       else if(fireTurretFollow){
-        fireTurretButton.x = this.input.activePointer.x + 3;
-        fireTurretButton.y = this.input.activePointer.y + 3;
+	fireTurretButton.x = this.input.activePointer.x + 3;
+	fireTurretButton.y = this.input.activePointer.y + 3;
 
-        resetButtonsExcept("fireTurretButton");
+	resetButtonsExcept("fireTurretButton");
       }
 
       sellIcon.x = 23*32;
@@ -406,16 +468,16 @@ function update(){
       turretTileY = Math.floor(this.input.activePointer.y/32);
 
       if(getTileID(turretTileX, turretTileY) == 15 && cash >= arrowCost && tileChecker(turretTileX, turretTileY) == true && turretCount < maxTurretCount){
-        greenDetectionCircle.x = this.input.activePointer.x;
-        greenDetectionCircle.y = this.input.activePointer.y;
-        greenDetectionCircle.visible = true;
-        redDetectionCircle.visible = false;
+	greenDetectionCircle.x = this.input.activePointer.x;
+	greenDetectionCircle.y = this.input.activePointer.y;
+	greenDetectionCircle.visible = true;
+	redDetectionCircle.visible = false;
       }
       else{
-        redDetectionCircle.x = this.input.activePointer.x;
-        redDetectionCircle.y = this.input.activePointer.y;
-        redDetectionCircle.visible = true;
-        greenDetectionCircle.visible = false;
+	redDetectionCircle.x = this.input.activePointer.x;
+	redDetectionCircle.y = this.input.activePointer.y;
+	redDetectionCircle.visible = true;
+	greenDetectionCircle.visible = false;
 
       }
       //console.log(getTileID(1,1));
@@ -431,36 +493,36 @@ function update(){
 
     outside.lazerTurrets.children.each(function(lazerTurret){
       if(lazerTurret.isAiming){
-        lazerTurret.initAngle = Phaser.Math.Angle.Between(lazerTurret.x, lazerTurret.y, this.input.activePointer.x, this.input.activePointer.y);
-        lazerTurret.angle = (lazerTurret.initAngle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-        sight.x = this.input.activePointer.x;
-        sight.y = this.input.activePointer.y;
-        sight.visible = true;
+	lazerTurret.initAngle = Phaser.Math.Angle.Between(lazerTurret.x, lazerTurret.y, this.input.activePointer.x, this.input.activePointer.y);
+	lazerTurret.angle = (lazerTurret.initAngle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+	sight.x = this.input.activePointer.x;
+	sight.y = this.input.activePointer.y;
+	sight.visible = true;
       }
     }, this);
 
     if(this.time.now > spawnTimer && enemiesLeft > 0){
       var canSpawn = true;
       outside.mainEnemies.children.each(function(mainEnemy){
-        if(Math.floor(mainEnemy.x/32) <= 1 && Math.floor(mainEnemy.y/32) <=11){
-          canSpawn = false;
-        }
+	if(Math.floor(mainEnemy.x/32) <= 1 && Math.floor(mainEnemy.y/32) <=11){
+	  canSpawn = false;
+	}
       }, this);
       if(canSpawn && wave <= 3){
-        spawnEnemy(1);
-        enemiesLeft--;
-        spawnTimer = this.time.now + 2000;
+	spawnEnemy(1);
+	enemiesLeft--;
+	spawnTimer = this.time.now + 2000;
       }
       else if(canSpawn){
-        spawnEnemy(1);
-        enemiesLeft--;
-        spawnTimer = this.time.now + 1000;
+	spawnEnemy(1);
+	enemiesLeft--;
+	spawnTimer = this.time.now + 1000;
       }
     }
     if(this.time.now > spawnTimer && enemiesLeft <= 0){
 
       if(checkIfAllDead == true){
-        changeLevel();
+	changeLevel();
       }
     }
 
@@ -548,94 +610,159 @@ function handleClick(pointer){
   var tile = map.getTileAt(Math.floor(pointer.x/32), Math.floor(pointer.y/32));
   //console.log(tile.index);
   //finder.setTileCost(44, 500);
-  //console.log(pointer.x + " " + pointer.y);
+  console.log(pointer.x + " " + pointer.y);
   //finder.setTileCost(Math.floor(pointer.x/32), Math.floor(pointer.y/32), 15);
 
   //console.log(tile.x + " " + tile.y);
   /*
-     var grid = [];
-     for(var y = 0; y < map.height; y++){
-     var col = [];
-     for(var x = 0; x < map.width; x++){
-     if(tile.x == x && tile.y == y){
-     col.push(4);
-     }
-     else{
-     col.push(getTileID(x,y));
-     }
+		 var grid = [];
+		 for(var y = 0; y < map.height; y++){
+		 var col = [];
+		 for(var x = 0; x < map.width; x++){
+		 if(tile.x == x && tile.y == y){
+		 col.push(4);
+		 }
+		 else{
+		 col.push(getTileID(x,y));
+		 }
 
-     }
-     grid.push(col);
-     }
-     finder.setGrid(grid);
-     */
+		 }
+		 grid.push(col);
+		 }
+		 finder.setGrid(grid);
+		 */
   var tileX = Math.floor(pointer.x/32);
   var tileY = Math.floor(pointer.y/32);
 
-  if(tileChecker(tileX, tileY) == false && game.paused == false){
+  if(tileChecker(tileX, tileY) == false && game.paused == false && !sellFollow){
     arrowTurrets.children.each(function(arrowTurret){
       if(Math.floor(arrowTurret.x/32) == tileX && Math.floor(arrowTurret.y/32) == tileY && arrowTurret.isAlive == true){
-        selectedTurret = arrowTurret;
-        // Creates detection circle that stays indicating a selected turret
-        secondDetectionCircle.visible = true;
-        secondDetectionCircle.x = selectedTurret.x;
-        secondDetectionCircle.y = selectedTurret.y;
-        mainDetectionCircle.visible = false;
+	selectedTurret = arrowTurret;
+	// Creates detection circle that stays indicating a selected turret
+	secondDetectionCircle.visible = true;
+	secondDetectionCircle.x = selectedTurret.x;
+	secondDetectionCircle.y = selectedTurret.y;
+	mainDetectionCircle.visible = false;
+
+	infoTrayMain.visible = true;
+	if(arrowTurret.speed < 3){
+	  speedUpgradeText.visible = true;
+	}
+	if(arrowTurret.damage == 1){
+	  damageUpgradeText.visible = true;
+	}
+
       }
     }, this);
     lazerTurrets.children.each(function(lazerTurret){
       if(Math.floor(lazerTurret.x/32) == tileX && Math.floor(lazerTurret.y/32) == tileY && lazerTurret.isAlive == true){
-        selectedTurret = lazerTurret;
-        // Creates detection circle that stays indicating a selected turret
-        secondDetectionCircle.visible = true;
-        secondDetectionCircle.x = selectedTurret.x;
-        secondDetectionCircle.y = selectedTurret.y;
-        mainDetectionCircle.visible = false;
+	selectedTurret = lazerTurret;
+	// Creates detection circle that stays indicating a selected turret
+	secondDetectionCircle.visible = true;
+	secondDetectionCircle.x = selectedTurret.x;
+	secondDetectionCircle.y = selectedTurret.y;
+	mainDetectionCircle.visible = false;
       }
     }, this);
     fireTurrets.children.each(function(fireTurret){
       if(Math.floor(fireTurret.x/32) == tileX && Math.floor(fireTurret.y/32) == tileY && fireTurret.isAlive == true){
-        selectedTurret = fireTurret;
-        // Creates detection circle that stays indicating a selected turret
-        secondFireDetectionCircle.visible = true;
-        secondFireDetectionCircle.x = selectedTurret.x;
-        secondFireDetectionCircle.y = selectedTurret.y;
-        mainDetectionCircle.visible = false;
-        fireDetectionCircle.visible = false;
+	selectedTurret = fireTurret;
+	// Creates detection circle that stays indicating a selected turret
+	secondFireDetectionCircle.visible = true;
+	secondFireDetectionCircle.x = selectedTurret.x;
+	secondFireDetectionCircle.y = selectedTurret.y;
+	mainDetectionCircle.visible = false;
+	fireDetectionCircle.visible = false;
       }
 
     }, this);
   }
-  if(selectedTurret && tileChecker(tileX, tileY) == true){
+  if(selectedTurret && tileChecker(tileX, tileY) == true && pointer.x <= 671){
     selectedTurret = undefined;
     sight.visible = false;
     secondDetectionCircle.visible = false;
     secondFireDetectionCircle.visible = false;
+    infoTrayMain.visible = false;
+    speedUpgradeText.visible = false;
+    damageUpgradeText.visible = false;
   }
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
+    // Clicked on arrow turret icon
     arrowFollow = true;
     sellFollow = false;
     lazerFollow = false;
     fireTurretFollow = false;
+    mainDetectionCircle.visible = false;
+    secondDetectionCircle.visible = false;
+    infoTrayMain.visible = false;
+    speedUpgradeText.visible = false;
+    damageUpgradeText.visible = false;
+    sight.visible = false;
+    selectedTurret = undefined;
   }
   else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 393 && pointer.y <= 442 && sellFollow == false){
+    // Clicked on sell icon
     sellFollow = true;
     arrowFollow = false;
     lazerFollow = false;
     fireTurretFollow = false;
+    mainDetectionCircle.visible = false;
+    secondDetectionCircle.visible = false;
+    infoTrayMain.visible = false;
+    speedUpgradeText.visible = false;
+    damageUpgradeText.visible = false;
+    sight.visible = false;
+    selectedTurret = undefined;
 
   }
   else if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 312 && pointer.y <= 362 && lazerFollow == false){
+    // Clicked on lazer icon
     sellFollow = false;
     arrowFollow = false;
     lazerFollow = true;
     fireTurretFollow = false;
+    mainDetectionCircle.visible = false;
+    secondDetectionCircle.visible = false;
+    infoTrayMain.visible = false;
+    speedUpgradeText.visible = false;
+    damageUpgradeText.visible = false;
+    sight.visible = false;
+    selectedTurret = undefined;
   }
   else if(pointer.x <= 850 && pointer.x >= 800 && pointer.y >= 233 && pointer.y <= 282 && fireTurretFollow == false){
+    // Clicked on fire turret icon
     sellFollow = false;
     arrowFollow = false;
     lazerFollow = false;
     fireTurretFollow = true;
+    mainDetectionCircle.visible = false;
+    secondDetectionCircle.visible = false;
+    infoTrayMain.visible = false;
+    speedUpgradeText.visible = false;
+    damageUpgradeText.visible = false;
+    sight.visible = false;
+    selectedTurret = undefined;
+  }
+  else if(pointer.x >= 825 && pointer.x <= 938 && pointer.y >= 475 && pointer.y <= 650 && selectedTurret != undefined){
+    // Allows for speed upgrade to be bought
+    if(selectedTurret.speed < 3 && cash >= speedUpgradeCost){
+      selectedTurret.speed++;
+      selectedTurret.delay = arrowTurretDelays[selectedTurret.speed];
+      cash -= speedUpgradeCost;
+      cashText.setText('$' + cash);
+
+    }
+    //console.log(selectedTurret.speed);
+  }
+  else if(pointer.x >= 693 && pointer.x <= 809 && pointer.y >= 475 && pointer.y <= 650){
+    // Allows for damage upgrade to be bought
+    if(selectedTurret.damage == 1 && cash >= damageUpgradeCost){
+      selectedTurret.damage = 2;
+      cash -= damageUpgradeCost;
+      cashText.setText('$' + cash);
+      //damageUpgradeText.setText('DONE');
+    }
+
   }
   else if(pointer.x >= 672){
     redDetectionCircle.visible = false;
@@ -659,10 +786,10 @@ function handleClick(pointer){
   else{
     outside.lazerTurrets.children.each(function(lazerTurret){
       if(lazerTurret.isAiming){
-        lazerTurret.isAiming = false;
-        sight.visible = false;
-        lazerTurret.sightX = pointer.x;
-        lazerTurret.sightY = pointer.y;
+	lazerTurret.isAiming = false;
+	sight.visible = false;
+	lazerTurret.sightX = pointer.x;
+	lazerTurret.sightY = pointer.y;
       }
     }, this);
   }
@@ -673,7 +800,7 @@ function checkIfAllDead(){
     var count = 0;
     this.mainEnemies.children.each(function(mainEnemy){
       if(mainEnemy.isAlive){
-        count++;
+	count++;
       }
     }, this);
     if(count != 0){
@@ -697,6 +824,9 @@ function placeArrow(x, y){
     cash -= arrowCost;
     turretCount++;
     resetText();
+    arrowTurret.speed = 0; // Sets firing speed to default
+    arrowTurret.delay = 5000;
+    arrowTurret.damage = 1;
   }
 }
 function resetText(){
@@ -823,7 +953,7 @@ function spawnEnemy(type){
     else if(spawnRight == false){
       var mainEnemy = mainEnemies.create(0, 32, 'enemy');
       if(wave > 3){
-        spawnRight = true;
+	spawnRight = true;
       }
     }
 
@@ -844,41 +974,41 @@ function spawnEnemy(type){
     // 7: All Yellow
     if(wave >= 2){
       if(enemiesLeft % 2 == 0){
-        mainEnemy.anims.play('green');
-        mainEnemy.hp = 2;
+	mainEnemy.anims.play('green');
+	mainEnemy.hp = 2;
       }
       else{
-        mainEnemy.anims.play('red');
-        mainEnemy.hp = 1;
+	mainEnemy.anims.play('red');
+	mainEnemy.hp = 1;
       }
       if(wave >= 3){
-        mainEnemy.anims.play('green');
-        mainEnemy.hp = 2;
+	mainEnemy.anims.play('green');
+	mainEnemy.hp = 2;
 
-        if(wave >= 4){
-          if(enemiesLeft % 2 == 0){
-            mainEnemy.anims.play('green');
-            mainEnemy.hp = 2;
-          }
-          else{
-            mainEnemy.anims.play('blue');
-            mainEnemy.hp = 3;
-          }
-          if(wave >= 5){
-            mainEnemy.anims.play('blue');
-            mainEnemy.hp = 3;
-            if(wave >= 6){
-              if(enemiesLeft % 2 == 0){
-                mainEnemy.anims.play('yellow');
-                mainEnemy.hp = 4;
-              }
-              if(wave >= 7){
-                mainEnemy.anims.play('yellow');
-                mainEnemy.hp = 4;
-              }
-            }
-          }
-        }
+	if(wave >= 4){
+	  if(enemiesLeft % 2 == 0){
+	    mainEnemy.anims.play('green');
+	    mainEnemy.hp = 2;
+	  }
+	  else{
+	    mainEnemy.anims.play('blue');
+	    mainEnemy.hp = 3;
+	  }
+	  if(wave >= 5){
+	    mainEnemy.anims.play('blue');
+	    mainEnemy.hp = 3;
+	    if(wave >= 6){
+	      if(enemiesLeft % 2 == 0){
+		mainEnemy.anims.play('yellow');
+		mainEnemy.hp = 4;
+	      }
+	      if(wave >= 7){
+		mainEnemy.anims.play('yellow');
+		mainEnemy.hp = 4;
+	      }
+	    }
+	  }
+	}
       }
     }
     mainEnemy.isAlive = true;
@@ -902,23 +1032,40 @@ function arrowFire(){
 
       var enemy = getEnemy(arrowTurret.x, arrowTurret.y, 75);
       if(enemy) {
-        var angle = Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
-        arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+	var angle = Phaser.Math.Angle.Between(arrowTurret.x, arrowTurret.y, enemy.x, enemy.y);
+	arrowTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
 
-        // Fires Bullet
-        if(create.time.now > arrowTurret.firingTimer){
-          arrowTurret.anims.play('arrowCharge', true);
-          var bullet = bullets.create(arrowTurret.x, arrowTurret.y, 'bullet');
-          bullet.checkWorldBounds = true;
-          bullet.outOfBoundsKill = true;
-          bullet.setDepth(1);
-          bullet.setOrigin(0, 0.5);
-          var dx = Math.cos(angle);
-          var dy = Math.sin(angle);
-          bullet.body.velocity.x = dx*1000;
-          bullet.body.velocity.y = dy*1000;
-          arrowTurret.firingTimer = create.time.now + 5250;
-        }
+	// Fires Bullet
+	if(create.time.now > arrowTurret.firingTimer){
+	  if(arrowTurret.speed == 0){
+	    arrowTurret.anims.play('arrowCharge', true);
+	  }
+	  else if(arrowTurret.speed == 1){
+	    arrowTurret.anims.play('arrowChargeSpeed1', true);
+	  }
+
+	  else if(arrowTurret.speed == 2){
+	    arrowTurret.anims.play('arrowChargeSpeed2', true);
+	  }
+
+	  else if(arrowTurret.speed == 3){
+	    arrowTurret.anims.play('arrowChargeSpeed3', true);
+	  }
+
+	  var bullet = bullets.create(arrowTurret.x, arrowTurret.y, 'bullet');
+	  bullet.checkWorldBounds = true;
+	  bullet.outOfBoundsKill = true;
+	  bullet.setDepth(1);
+	  bullet.setOrigin(0, 0.5);
+	  var dx = Math.cos(angle);
+	  var dy = Math.sin(angle);
+	  bullet.body.velocity.x = dx*1000;
+	  bullet.body.velocity.y = dy*1000;
+
+	  bullet.damage = arrowTurret.damage;
+
+	  arrowTurret.firingTimer = create.time.now + arrowTurret.delay;
+	}
 
 
       }
@@ -941,27 +1088,27 @@ function lazerFire(){
       if(enemy) {
 
 
-        var angle = Phaser.Math.Angle.Between(lazerTurret.x, lazerTurret.y, enemy.x, enemy.y);
-        //lazerTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+	var angle = Phaser.Math.Angle.Between(lazerTurret.x, lazerTurret.y, enemy.x, enemy.y);
+	//lazerTurret.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
 
 
-        if(create.time.now > lazerTurret.firingTimer && lazerTurret.isAiming == false){
-          lazerTurret.anims.play('lazerCharge', true);
-          var lazer = lazers.create(lazerTurret.x, lazerTurret.y, 'lazer');
-          lazer.checkWorldBounds = true;
-          lazer.outOfBoundsKill = true;
-          lazer.setDepth(1);
-          lazer.setOrigin(0, 0);
-          /*
-             var dx = 0.2 + Math.cos(angle);
-             var dy = 0.2 + Math.sin(angle);
-             */
-          var dx = Math.cos(lazerTurret.initAngle);
-          var dy = Math.sin(lazerTurret.initAngle);
-          lazer.body.velocity.x = dx*1000;
-          lazer.body.velocity.y = dy*1000;
-          lazerTurret.firingTimer = create.time.now + 12250;
-        }
+	if(create.time.now > lazerTurret.firingTimer && lazerTurret.isAiming == false){
+	  lazerTurret.anims.play('lazerCharge', true);
+	  var lazer = lazers.create(lazerTurret.x, lazerTurret.y, 'lazer');
+	  lazer.checkWorldBounds = true;
+	  lazer.outOfBoundsKill = true;
+	  lazer.setDepth(1);
+	  lazer.setOrigin(0, 0);
+	  /*
+							var dx = 0.2 + Math.cos(angle);
+							var dy = 0.2 + Math.sin(angle);
+							*/
+	  var dx = Math.cos(lazerTurret.initAngle);
+	  var dy = Math.sin(lazerTurret.initAngle);
+	  lazer.body.velocity.x = dx*1000;
+	  lazer.body.velocity.y = dy*1000;
+	  lazerTurret.firingTimer = create.time.now + 12250;
+	}
       }
     }
   }, this);
@@ -973,21 +1120,21 @@ function fireTurretFire(){
     if(enemy){
 
       if(create.time.now > fireTurret.firingTimer && fireTurret.isAlive == true){
-        fireTurret.anims.play('fireTurretFire', true);
-        fireTurret.firingTimer = create.time.now + 6000;
-        outside.mainEnemies.children.each(function(enemy){
-          if(Phaser.Math.Distance.Between(enemy.x, enemy.y, fireTurret.x, fireTurret.y) <= 150){
-            // Changes enemy to the next enemy within area
-            enemy = getEnemy(fireTurret.x, fireTurret.y, 150);
-            // Takes away 2 health points and checks to see if it kills enemy
-            enemy.hp -= 2;
-            checkHp(enemy);
+	fireTurret.anims.play('fireTurretFire', true);
+	fireTurret.firingTimer = create.time.now + 6000;
+	outside.mainEnemies.children.each(function(enemy){
+	  if(Phaser.Math.Distance.Between(enemy.x, enemy.y, fireTurret.x, fireTurret.y) <= 150){
+	    // Changes enemy to the next enemy within area
+	    enemy = getEnemy(fireTurret.x, fireTurret.y, 150);
+	    // Takes away 2 health points and checks to see if it kills enemy
+	    enemy.hp -= 2;
+	    checkHp(enemy);
 
-            cash += 5;
-            cashText.setText('$' + cash);
+	    cash += 5;
+	    cashText.setText('$' + cash);
 
-          }
-        }, this);
+	  }
+	}, this);
 
       }
     }
@@ -1024,27 +1171,16 @@ function checkHp(enemy){
 function bulletCollision(bullet, enemy){
   bullet.setActive(false);
   bullet.destroy();
-  cash += 5;
   cashText.setText('$' + cash);
-  enemy.hp--;
-  if(enemy.hp <= 0){
-    enemy.destroy();
-    enemy.isAlive = false;
-    //cash += 10;
-    //cashText.setText('$' + cash);
+  if(enemy.hp == 1){
+    enemy.hp--;
+    cash += 5;
   }
-  else if(enemy.hp == 1){
-    enemy.anims.play('red', true);
+  else{
+    enemy.hp = enemy.hp - bullet.damage;
+    cash = cash + (5*bullet.damage);
   }
-  else if(enemy.hp == 2){
-    enemy.anims.play('green', true);
-  }
-  else if(enemy.hp == 3){
-    enemy.anims.play('blue', true);
-  }
-  else if(enemy.hp == 4){
-    enemy.anims.play('yellow', true);
-  }
+  checkHp(enemy);
 };
 function lazerCollision(lazer, enemy){
   if(enemy.invulnTimer < create.time.now){
