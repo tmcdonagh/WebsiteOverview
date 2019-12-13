@@ -63,10 +63,10 @@ var arrowCost = 50;
 var lazerCost = 100;
 var fireCost = 100;
 
-var speedUpgradeCost = 5;
-var damageUpgradeCost = 5;
+var speedUpgradeCost = 25;
+var damageUpgradeCost = 100;
 
-var arrowTurretDelays = [ 5000, 4000, 3334, 2858 ]; // values based on 5 second interval divided by frame rate of animation
+var arrowTurretDelays = [ 5000, 4100, 3400, 2900 ]; // values based on 5 second interval divided by frame rate of animation
 
 
 function preload(){
@@ -101,6 +101,9 @@ function preload(){
   this.load.image('startScreen', 'assets/startScreen.png');
   this.load.image('infoTray', 'assets/infoTray.png');
   this.load.image('infoTrayMain', 'assets/infoTrayMain.png');
+  this.load.image('damageUpgradeIcon', 'assets/damageUpgradeIcon.png');
+  this.load.image('speedUpgradeIcon', 'assets/speedUpgradeIcon.png');
+
 }
 
 
@@ -236,6 +239,17 @@ function create(){
 
   infoTrayMain = this.add.image(817, 562, 'infoTrayMain');
   infoTrayMain.visible = false;
+
+  damageUpgradeIcon1 = this.add.image(715, 629, 'damageUpgradeIcon');
+  damageUpgradeIcon2 = this.add.image(789, 629, 'damageUpgradeIcon');
+  speedUpgradeIcon1 = this.add.image(869, 632, 'speedUpgradeIcon');
+  speedUpgradeIcon2 = this.add.image(886, 632, 'speedUpgradeIcon');
+  speedUpgradeIcon3 = this.add.image(903, 632, 'speedUpgradeIcon');
+  damageUpgradeIcon1.visible = false;
+  damageUpgradeIcon2.visible = false;
+  speedUpgradeIcon1.visible = false;
+  speedUpgradeIcon2.visible = false;
+  speedUpgradeIcon3.visible = false;
 
   waveText = game.add.text(26.5*32, 0.75*32, 'Wave ' + wave, {font: '18px Arial'});
   cashText = game.add.text(25*32, 1.5*32, '$' + cash, {font: '18px Arial'});
@@ -411,10 +425,19 @@ function update(){
     if(selectedTurret != undefined){
       if(selectedTurret.damage == 2){
 	damageUpgradeText.visible = false;
+	damageUpgradeIcon1.visible = true;
+	damageUpgradeIcon2.visible = true;
       }
-      if(selectedTurret.speed == 3){
+      if(selectedTurret.speed >= 1){
+	speedUpgradeIcon1.visible = true;
+      }
+      if(selectedTurret.speed >= 2){
+	speedUpgradeIcon2.visible = true;
+      }
+      if(selectedTurret.speed >= 3){
+	speedUpgradeIcon3.visible = true;
 	speedUpgradeText.visible = false;
-      }	
+      }
     }
 
 
@@ -645,6 +668,35 @@ function handleClick(pointer){
 	mainDetectionCircle.visible = false;
 
 	infoTrayMain.visible = true;
+
+	if(arrowTurret.speed >= 1){
+	  speedUpgradeIcon1.visible = true;
+	}
+	if(arrowTurret.speed >= 2){
+	  speedUpgradeIcon2.visible = true;
+	}
+	if(arrowTurret.speed >= 3){
+	  speedUpgradeIcon3.visible = true;
+	}
+	if(arrowTurret.speed < 1){
+	  speedUpgradeIcon1.visible = false;
+	}
+	if(arrowTurret.speed < 2){
+	  speedUpgradeIcon2.visible = false;
+	}
+	if(arrowTurret.speed < 3){
+	  speedUpgradeIcon3.visible = false;
+	}
+
+	if(arrowTurret.damage == 2){
+	  damageUpgradeIcon1.visible = true;
+	  damageUpgradeIcon2.visible = true;
+	}
+	else{
+	  damageUpgradeIcon1.visible = false;
+	  damageUpgradeIcon2.visible = false;
+	}
+	
 	if(arrowTurret.speed < 3){
 	  speedUpgradeText.visible = true;
 	}
@@ -682,9 +734,7 @@ function handleClick(pointer){
     sight.visible = false;
     secondDetectionCircle.visible = false;
     secondFireDetectionCircle.visible = false;
-    infoTrayMain.visible = false;
-    speedUpgradeText.visible = false;
-    damageUpgradeText.visible = false;
+    hideTray();
   }
   if(pointer.x <= 762 && pointer.x >= 713 && pointer.y >= 233 && pointer.y <= 283 && arrowFollow == false){
     // Clicked on arrow turret icon
@@ -694,9 +744,7 @@ function handleClick(pointer){
     fireTurretFollow = false;
     mainDetectionCircle.visible = false;
     secondDetectionCircle.visible = false;
-    infoTrayMain.visible = false;
-    speedUpgradeText.visible = false;
-    damageUpgradeText.visible = false;
+    hideTray();
     sight.visible = false;
     selectedTurret = undefined;
   }
@@ -708,9 +756,7 @@ function handleClick(pointer){
     fireTurretFollow = false;
     mainDetectionCircle.visible = false;
     secondDetectionCircle.visible = false;
-    infoTrayMain.visible = false;
-    speedUpgradeText.visible = false;
-    damageUpgradeText.visible = false;
+    hideTray();
     sight.visible = false;
     selectedTurret = undefined;
 
@@ -832,6 +878,19 @@ function placeArrow(x, y){
 function resetText(){
   cashText.setText('$' + cash);
   turretCountText.setText('Turrets: ' + turretCount + '/' + maxTurretCount);
+}
+
+function hideTray(){
+  infoTrayMain.visible = false;
+  damageUpgradeText.visible = false;
+  speedUpgradeText.visible = false;
+
+  damageUpgradeIcon1.visible = false;
+  damageUpgradeIcon2.visible = false;
+  speedUpgradeIcon1.visible = false;
+  speedUpgradeIcon2.visible = false;
+  speedUpgradeIcon3.visible = false;
+  
 }
 
 function placeLazer(x, y){
