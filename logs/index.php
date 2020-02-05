@@ -58,14 +58,14 @@ svg {
 <div class="wrapper">
 <div class="shortcuts">
 <div class="shortcut">
-<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;margin:auto;">
 <h3>Connection Loss Data</h3>
+<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;margin:auto;">
 <p id="mem"><br>Loading...</p>
 </div>
 </div>
 <div class="shortcut">
-<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 <h3>Docker Containers</h3>
+<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 <p id="dockerP"><br>Loading...</p>
 </div>
 </div>
