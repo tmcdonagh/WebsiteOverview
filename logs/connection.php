@@ -20,10 +20,9 @@ function getDBData(){
 	$sql = "SELECT * FROM logs ORDER BY ID DESC";
 	$result = $conn->query($sql);
 
-	echo "<h3>Connection Loss Data</h2>";
 
 	if ($result->num_rows > 0) {
-		echo "<table><tr><th>Status</th><th>Date</th></tr>";
+		echo "<table align=\"center\" class=\"table-bordered\"><tr><th>Status</th><th>Date</th></tr>";
 		// output data of each row
 		while($row = $result->fetch_assoc()) {
 			echo "<tr><td>".$row["status"]."</td><td>".$row["time"]."</td></tr>";

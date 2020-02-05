@@ -58,8 +58,9 @@ svg {
 <div class="wrapper">
 <div class="shortcuts">
 <div class="shortcut">
-<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-<div id="mem"<p><h3>Connection Loss Data</h3><br>Loading...</p></div>
+<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;margin:auto;">
+<h3>Connection Loss Data</h3>
+<p id="mem"><br>Loading...</p>
 </div>
 </div>
 <div class="shortcut">
