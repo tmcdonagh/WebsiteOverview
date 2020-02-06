@@ -61,6 +61,18 @@ function getVars(){
     }
   }
 
+  $uptimeSql = "SELECT * FROM uptime;";
+  $uptimeResult = $conn->query($uptimeSql);
+
+  if($uptimeResult->num_rows > 0){
+    while($row = $uptimeResult->fetch_assoc()){
+      $uptime = $row["uptime"];
+      $uptimeDateStamp = $row["dateStamp"];
+    }
+  }
+    
+	  
+
   $conn->close();
 
   $varsData = new \stdClass();
@@ -74,6 +86,9 @@ function getVars(){
   $varsData->plexStatus = $plexStatus;
   $varsData->nextcloudStatus = $plexStatus;
   $varsData->grafanaStatus = $grafanaStatus;
+
+  $varsData->uptime = $uptime;
+  $varsData->uptimeDateStamp = $uptimeDateStamp;
 
   $JSON = json_encode($varsData);
   echo $JSON;
