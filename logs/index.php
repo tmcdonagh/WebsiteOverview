@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109033178-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'UA-109033178-1');
+</script>
+
 <title>McDonagh Corp</title>
 <!-- Imports css and favicon -->
 
@@ -100,7 +110,7 @@ xmlhttp.onreadystatechange = function() {
     // Make arrays public so other functions can use them
     window.total = varsData.total;
     window.freeMem = varsData.freeMem;
-    
+
 
 
 
