@@ -1,64 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>McDonagh Corp</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="/main.css">
-    <link rel="stylesheet" type="text/css" href="/menu.css">
-    <link rel="icon" type="img/ico" href="/favicon.ico">
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109033178-1"></script>
-    <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-
-gtag('config', 'UA-109033178-1');
-    </script>
-
+    <?php include('/var/www/html/included/header.html') ?>
   </head>
   <body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="/">McDonagh Corp</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/"> Home </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/games/"> Games <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/logs/"> Logs </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/3dPrinting/"> 3D Printing </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <div id="main">
-
-      <center>
-        <br><br><br>
-
-        <h1 style="font-size:60px">McDonagh Corp</h1>
-        <br>
         <h1>Games</h1>
-
         <div class="album py-5 bg-light">
           <div class="container">
-
             <div class="row">
               <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
@@ -102,25 +50,7 @@ gtag('config', 'UA-109033178-1');
                   </div>
                 </div>
               </div>
-
-
             </div>
-            <center>
-              <footer class="pt-4 my-md-5 pt-md-5 border-top">
-                <div class="row">
-                  <div class="col-12 col-md">
-                    <small class="d-block mb-3 text-muted">&copy; 2020, Thomas McDonagh</small>
-                  </div>
-                </div>
-              </footer>
-            </center>
-
-
-
-
-
-
-      </center>
+        <?php include('/var/www/html/included/footer.html') ?>
   </body>
-</html> 
-
+</html>
