@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <?php include('/var/www/html/included/header.html') ?>
+    <?php $currentPage = 'Home'; ?>
+    <?php include('/var/www/html/included/header.php') ?>
   </head>
   <body>
       <div class="album py-5 bg-light">
@@ -33,6 +34,6 @@
             </div>
           </div>
         </div>
-        <?php include('/var/www/html/included/footer.html') ?>
+        <?php include('/var/www/html/included/footer.php') ?>
   </body>
 </html>

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <?php include('/var/www/html/included/header.html') ?>
+    <?php $currentPage = 'Games'; ?>
+    <?php include('/var/www/html/included/header.php') ?>
   </head>
   <body>
         <h1>Games</h1>
@@ -51,6 +52,6 @@
                 </div>
               </div>
             </div>
-        <?php include('/var/www/html/included/footer.html') ?>
+        <?php include('/var/www/html/included/footer.php') ?>
   </body>
 </html>

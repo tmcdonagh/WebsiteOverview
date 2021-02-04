@@ -1,31 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109033178-1"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
+  <head>
+    <?php $currentPage = 'Logs'; ?>
+    <?php include('/var/www/html/included/header.php') ?>
 
-gtag('config', 'UA-109033178-1');
-</script>
 
-<title>McDonagh Corp</title>
-<!-- Imports css and favicon -->
+    <!-- Imports css and js for graphs and data -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="/menu.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 
-<link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
 
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="style.css">
-<link rel="stylesheet" type="text/css" href="/menu.css">
-<link rel="icon" type="img/ico" href="/favicon.ico">
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<style>
+    <style>
 /* tell the SVG path to be a thin blue line without any area fill */
 path {
   stroke: steelblue;
@@ -33,57 +22,32 @@ path {
   fill: none;
 }
 svg {
-    display: block;
-    margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 }
-</style>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="/">McDonagh Corp</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/"> Home </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/games/"> Games <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/logs/"> Logs </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/3dPrinting/"> 3D Printing </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-</head>
-<body>
-<br><br><br>
+    </style>
+  </head>
+  <body>
 
 
-<div id="main">
-<center>
-<h1>McDonagh Corp</h1>
-<div class="wrapper">
-<div class="shortcuts">
-<div class="shortcut">
-<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-<div id="mem"<p><h3>Connection Loss Data</h3><br>Loading...</p></div>
-</div>
-</div>
-<div class="shortcut">
-<div style="height:500px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-<h3>Docker Containers</h3>
-<p id="dockerP"><br>Loading...</p>
-</div>
-</div>
-</div>
-</div>
-<h3 id="uptime"></h3>
+    <div id="main">
+      <center>
+        <div class="wrapper">
+          <div class="shortcuts">
+            <div class="shortcut">
+              <div style="height:450px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                <div id="mem"<p><h3>Connection Loss Data</h3><br>Loading...</p></div>
+              </div>
+            </div>
+            <div class="shortcut">
+              <div style="height:450px;width:480px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                <h3>Docker Containers</h3>
+                <p id="dockerP"><br>Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 id="uptime"></h3>
 
 <script type="text/javascript">
 var statusIntervalId = window.setInterval(update, 2000);
@@ -220,27 +184,19 @@ function showGraph(id, width, height, updateDelay, transitionDelay, data, totalY
 showGraph("#cpuGraph", 300, 200, 1000, 1000, window.freeMem);
 showGraph("#memGraph", 300, 200, 1000, 1000, window.freeMem);
 </script>
-</center>
-</div>
-<div class="wrapper">
-<div class="shortcuts">
-<div class="shortcut">
-<div id="cpuGraph" class="aGraph"></div>
-</div>
-<div class="shortcut">
-<div id="memGraph" class="bGraph"></div>
-</div>
-</div>
-</div>
-<center>
-<footer class="pt-4 my-md-5 pt-md-5 border-top">
-                                <div class="row">
-                                        <div class="col-12 col-md">
-                                                <small class="d-block mb-3 text-muted">&copy; 2020, Thomas McDonagh</small>
-                                                </div>
-                                        </div>
-                        </footer>
-</center>
+      </center>
+    </div>
+    <div class="wrapper">
+      <div class="shortcuts">
+        <div class="shortcut">
+          <div id="cpuGraph" class="aGraph"></div>
+        </div>
+        <div class="shortcut">
+          <div id="memGraph" class="bGraph"></div>
+        </div>
+      </div>
+    </div>
+    <?php include('/var/www/html/included/footer.php') ?>
 
-</body>
+  </body>
 </html> 
