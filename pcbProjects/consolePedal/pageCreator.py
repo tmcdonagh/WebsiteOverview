@@ -3,12 +3,12 @@ import os
 
 
 # Variables to change before running
-name = "Distortion Pedal PCB"
-date = "October 5th, 2020"
+name = "Console Pedal PCB"
+date = "February 6th, 2021"
 paragraph = """
-My first PCB project. I wanted to make soldering together my distortion pedals a little easier. Based on pedal from <a href=\"https://www.modelectronics.com/product/thunderdrive\"</a>
+I got annoyed having to solder in a new set of audio jacks, led, and battery connector for any pedal I wanted to try to make. This aims to solve that issue by using an N64 edge connector to connect different types of effects to a base. Effects will fit into N64 cartridges to make switching out of effects easier.
 """
-githubLink = "https://github.com/tmcdonagh/PCBFiles/tree/main/Distortion"
+githubLink = "https://github.com/tmcdonagh/PCBFiles/tree/main/ConsolePedal"
 thingiverseLink = "false"
 
 

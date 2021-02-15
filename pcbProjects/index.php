@@ -14,11 +14,40 @@
 
         <div class="album py-5 bg-light">
           <div class="container">
-
             <div class="row">
+
               <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
-                  <a href="/pcbProjects/distortion/"><img class="card-img-top" src="/pcbProjects/distortion/images/front.jpg" alt="front.jpg"></a>
+                  <a href="/pcbProjects/consolePedal/"><img class="card-img-top" src="/pcbProjects/consolePedal/images/front.JPG" alt="front.JPG"></a>
+                  <div class="card-body">
+                    <a class="noBlue" href="/pcbProjects/consolePedal/"><p class="card-text">Console Guitar Pedal</p></a>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <a href="/pcbProjects/consolePedal/"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                        <a href="/pcbProjects/consolePedal/consolePedal.zip"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                  <a href="/pcbProjects/consolePedal/"><img class="card-img-top" src="/pcbProjects/consolePedal/images/front.JPG" alt="front.JPG"></a>
+                  <div class="card-body">
+                    <a class="noBlue" href="/pcbProjects/consolePedal/"><p class="card-text">Console Guitar Pedal</p></a>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <a href="/pcbProjects/consolePedal/"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                        <a href="/pcbProjects/consolePedal/consolePedal.zip"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                  <a href="/pcbProjects/distortion/"><img class="card-img-top" src="/pcbProjects/distortion/images/front.PNG" alt="front.PNG"></a>
                   <div class="card-body">
                     <a class="noBlue" href="/pcbProjects/distortion/"><p class="card-text">Distortion Guitar Pedal</p></a>
                     <div class="d-flex justify-content-between align-items-center">
@@ -30,6 +59,7 @@
                   </div>
                 </div>
               </div>
+
 
 
             </div>
