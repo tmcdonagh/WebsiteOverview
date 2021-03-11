@@ -1,21 +1,27 @@
 /*
 body {
-	background-color: rgb(0,100,150);
-	width: 950px;
-	margin: 0 auto;
-	padding: 0;
+background-color: rgb(0,100,150);
+width: 950px;
+margin: 0 auto;
+padding: 0;
 }
-*/
+ */
 /*
 a {
-	color: black;
-	text-decoration: none;
-	outline: none;
+color: black;
+text-decoration: none;
+outline: none;
 }
-*/
+ */
 
 .noBlue {
-	color: black;
-	text-decoration: none;
-	outline: none;
+  color: black;
+  text-decoration: none;
+  outline: none;
 }
+.uniformFit img{
+  width: auto;
+  height: 600px;
+  max-height: 600px;
+}
+
