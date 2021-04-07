@@ -18,7 +18,7 @@
 
           <div class="col-md-4">
             <div class="card mb-4 box-shadow">
-              <a href="/pcbProjects/consolePedalFuzz/"><img class="card-img-top" src="/pcbProjects/consolePedalFuzz/images/front.JPG" alt="front.JPG"></a>
+              <a href="/pcbProjects/consolePedalFuzz/"><img class="card-img-top" src="/pcbProjects/consolePedalFuzz/images/FuzzAssembled.jpg" alt="FuzzAssembled.jpg"></a>
               <div class="card-body">
                 <a class="noBlue" href="/pcbProjects/consolePedalFuzz/"><p class="card-text">Console Guitar Pedal Fuzz</p></a>
                 <div class="d-flex justify-content-between align-items-center">
@@ -33,7 +33,7 @@
 
           <div class="col-md-4">
             <div class="card mb-4 box-shadow">
-              <a href="/pcbProjects/consolePedalDistortion/"><img class="card-img-top" src="/pcbProjects/consolePedalDistortion/images/front.JPG" alt="front.JPG"></a>
+              <a href="/pcbProjects/consolePedalDistortion/"><img class="card-img-top" src="/pcbProjects/consolePedalDistortion/images/distortionAssembled.jpg" alt="distortionAssembled.jpg"></a>
               <div class="card-body">
                 <a class="noBlue" href="/pcbProjects/consolePedalDistortion/"><p class="card-text">Console Guitar Pedal Distortion</p></a>
                 <div class="d-flex justify-content-between align-items-center">
