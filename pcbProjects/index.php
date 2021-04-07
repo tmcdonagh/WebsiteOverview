@@ -48,7 +48,7 @@
 
           <div class="col-md-4">
             <div class="card mb-4 box-shadow">
-              <a href="/pcbProjects/consolePedal/"><img class="card-img-top" src="/pcbProjects/consolePedal/images/front.JPG" alt="front.JPG"></a>
+              <a href="/pcbProjects/consolePedal/"><img class="card-img-top" src="/pcbProjects/consolePedal/images/fuzzInConsole.jpg" alt="fuzzInConsole.jpg"></a>
               <div class="card-body">
                 <a class="noBlue" href="/pcbProjects/consolePedal/"><p class="card-text">Console Guitar Pedal</p></a>
                 <div class="d-flex justify-content-between align-items-center">
