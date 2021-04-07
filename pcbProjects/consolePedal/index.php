@@ -16,22 +16,38 @@
                                 <li data-target="#carouselExampleIndicators" data-slide-to="2"></li> 
                                 <li data-target="#carouselExampleIndicators" data-slide-to="3"></li> 
                                 <li data-target="#carouselExampleIndicators" data-slide-to="4"></li> 
+                                <li data-target="#carouselExampleIndicators" data-slide-to="5"></li> 
+                                <li data-target="#carouselExampleIndicators" data-slide-to="6"></li> 
+                                <li data-target="#carouselExampleIndicators" data-slide-to="7"></li> 
+                                <li data-target="#carouselExampleIndicators" data-slide-to="8"></li> 
                             </ol>
                               <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img class="d-block w-100" src="images/front.JPG">
-                                </div>
-                                <div class="carousel-item">
-                                    <img class="d-block w-100" src="images/3dBack.JPG">
-                                </div>
-                                <div class="carousel-item">
-                                    <img class="d-block w-100" src="images/pcb.JPG">
+                                    <img class="d-block w-100" src="images/schematic.JPG">
                                 </div>
                                 <div class="carousel-item">
                                     <img class="d-block w-100" src="images/pcbTraces.JPG">
                                 </div>
                                 <div class="carousel-item">
-                                    <img class="d-block w-100" src="images/schematic.JPG">
+                                    <img class="d-block w-100" src="images/consoleBare.jpg">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="images/consoleBackwards.jpg">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="images/front.JPG">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="images/pcb.JPG">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="images/distortionInPedalOld.jpg">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="images/3dBack.JPG">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="images/consoleBlankFront.jpg">
                                 </div>
                               </div>
                                 <a class="carousel-control-prev" href="#carouselExampleIndicators" style="filter: invert(1);" role="button" data-slide="prev">

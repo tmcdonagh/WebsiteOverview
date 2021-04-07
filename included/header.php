@@ -30,6 +30,9 @@
         <li class="nav-item <?php if ($currentPage === '3dPrinting') {echo 'active';} ?>">
           <a class="nav-link" href="/3dPrinting/"> 3D Printing </a>
         </li>
+        <li class="nav-item <?php if ($currentPage === 'pcbProjects') {echo 'active';} ?>">
+          <a class="nav-link" href="/pcbProjects/"> PCB Projects </a>
+        </li>
       </ul>
       <!--
         <ul class="navbar-nav ml-auto">
