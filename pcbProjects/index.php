@@ -16,6 +16,21 @@
       <div class="container">
         <div class="row">
 
+          <div class="col-md-4"> 
+            <div class="card mb-4 box-shadow">
+              <a href="/pcbProjects/consolePedalTeensy/"><img class="card-img-top" src="/pcbProjects/consolePedalTeensy/images/teensyAssembled.jpg" alt="teensyAssembled.jpg"></a>
+              <div class="card-body">
+                <a class="noBlue" href="/pcbProjects/consolePedalTeensy/"><p class="card-text">Console Guitar Pedal Teensy</p></a>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="/pcbProjects/consolePedalTeensy/"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                    <a href="/pcbProjects/consolePedalTeensy/consolePedalTeensy.zip"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="col-md-4">
             <div class="card mb-4 box-shadow">
               <a href="/pcbProjects/consolePedal8Bitar/"><img class="card-img-top" src="/pcbProjects/consolePedal8Bitar/images/8BitarAssembled.jpg" alt="8BitarAssembled.jpg"></a>
