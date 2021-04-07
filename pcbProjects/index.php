@@ -18,6 +18,21 @@
 
           <div class="col-md-4">
             <div class="card mb-4 box-shadow">
+              <a href="/pcbProjects/consolePedal8Bitar/"><img class="card-img-top" src="/pcbProjects/consolePedal8Bitar/images/8BitarAssembled.jpg" alt="8BitarAssembled.jpg"></a>
+              <div class="card-body">
+                <a class="noBlue" href="/pcbProjects/consolePedal8Bitar/"><p class="card-text">Console Guitar Pedal 8Bitar</p></a>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="/pcbProjects/consolePedal8Bitar/"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                    <a href="/pcbProjects/consolePedal8Bitar/consolePedal8Bitar.zip"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
               <a href="/pcbProjects/consolePedalFuzz/"><img class="card-img-top" src="/pcbProjects/consolePedalFuzz/images/FuzzAssembled.jpg" alt="FuzzAssembled.jpg"></a>
               <div class="card-body">
                 <a class="noBlue" href="/pcbProjects/consolePedalFuzz/"><p class="card-text">Console Guitar Pedal Fuzz</p></a>
