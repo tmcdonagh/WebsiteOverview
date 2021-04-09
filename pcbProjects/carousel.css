@@ -1,0 +1,19 @@
+.carousel-item {
+height: 600px;
+overflow: hidden;
+width: 100%;
+}
+.carousel-item img {
+width: 100%;
+}
+.carousel-indicators .active {
+//background-color: #f00;
+background-color: #000000;
+}
+.carousel-indicators li {
+//background-color: #000000;
+background-color: #909090;
+}
+.carousel-indicators {
+bottom: -40px;
+}

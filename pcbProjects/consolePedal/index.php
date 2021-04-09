@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
   <?php include('/var/www/html/included/header.php') ?>
+  <link rel="stylesheet" type="text/css" href="/pcbProjects/carousel.css">
 </head>
 <body>
   <div id="main">
