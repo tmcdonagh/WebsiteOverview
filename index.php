@@ -39,7 +39,7 @@
             <div class="card mb-4 box-shadow">
               <a href="/pcbProjects/"><img class="card-img-top" src="/assets/pcbThumbnail.JPG" alt="View"></a>
               <div class="card-body">
-                <a class="noBlue" href="/games/"><p class="card-text">PCB Projects</p></a>
+                <a class="noBlue" href="/pcbProjects/"><p class="card-text">PCB Projects</p></a>
               </div>
             </div>
           </div>
