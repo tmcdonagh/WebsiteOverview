@@ -18,6 +18,21 @@
 
           <div class="col-md-4">
             <div class="card mb-4 box-shadow">
+              <a href="/3dPrinting/guitarv3/"><img class="card-img-top" src="/3dPrinting/guitarv3/images/front-thumbnail.png" alt="front.jpg"></a>
+              <div class="card-body">
+                <a class="noBlue" href="guitarv3/"><p class="card-text">Modular Electric Guitar Body V3</p></a>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="/3dPrinting/guitarv3"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                    <a href="https://github.com/tmcdonagh/3dPrinting/guitarv3"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
               <a href="/3dPrinting/guitarv2/"><img class="card-img-top" src="/3dPrinting/guitarv2/images/front.jpg" alt="front.jpg"></a>
               <div class="card-body">
                 <a class="noBlue" href="guitarv2/"><p class="card-text">Modular Electric Guitar Body V2</p></a>
