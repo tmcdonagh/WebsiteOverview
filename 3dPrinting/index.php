@@ -24,7 +24,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
                     <a href="/3dPrinting/guitarv3"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
-                    <a href="https://github.com/tmcdonagh/3dPrinting/guitarv3"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
+                    <a href="https://github.com/tmcdonagh/3dPrinting/tree/master/guitarv3"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
                   </div>
                 </div>
               </div>
